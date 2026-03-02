@@ -46,7 +46,7 @@ style: |
     display: flex; justify-content: center; align-items: center;
     border-radius: 50%; font-weight: bold; margin-right: 15px; flex-shrink: 0;
   }
-
+  
   .img-container {
     display: flex;
     flex-direction: column;
@@ -95,6 +95,7 @@ style: |
     align-items: flex-start;
     height: 350px;
   }
+
 ---
 
 <div class="logo-header">
@@ -103,11 +104,10 @@ style: |
 </div>
 
 # **Projet de Fin de Formation**
+### ProMatch — Système de Gestion des Terrains de Sport
 
-### \*\* Système de Gestion des Terrains de Sport
-
-**Réalisé par :** Adnane Kesksu
-**Encadré par :** M. ESSARRAJ Fouad  
+**Réalisé par :** <span class="highlight">Adnane Kesksu</span>  
+**Encadré par :** <span class="highlight">M. ESSARRAJ Fouad</span>  
 **Filière :** Développement Mobile et Web
 
 ---
@@ -120,27 +120,28 @@ style: |
   <div class="sommaire-item"><div class="sommaire-num">3</div><div class="sommaire-text">Branche Fonctionnelle</div></div>
   <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Branche Technique</div></div>
   <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Démonstration</div></div>
+    <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Démonstration</div></div>
   <div class="sommaire-item"><div class="sommaire-num">7</div><div class="sommaire-text">Conclusion</div></div>
 </div>
 
 ---
-
 ## 1. Contexte du projet
 
-- M. Karim est propriétaire d'un complexe sportif de 4 terrains loués à l'heure. Malgré une clientèle fidèle, il gère tout manuellement — appels téléphoniques et cahier manuscrit — ce qui entraîne des créneaux perdus, des doubles réservations et un suivi financier inexistant.
-Ce projet vise à concevoir une plateforme numérique qui automatise les réservations, intègre une vérification d'identité (CNI), et donne au propriétaire un contrôle total sur son complexe
 ---
 
 ## 2. Méthodologie : Design Thinking
 
+
+
 <div class="img-container">
-  <img src="images/designThinking.png" class="img-methodo" alt="Design Thinking">
+  <img src="./images/designThinking.png" class="img-methodo" alt="Design Thinking">
 </div>
 
 ---
 
 ## Méthodologie : Scrum (Agile)
+
+
 
 <div class="img-container">
   <img src="images/scrum.jpg" class="img-methodo" alt="Scrum">
@@ -148,17 +149,26 @@ Ce projet vise à concevoir une plateforme numérique qui automatise les réserv
 
 ---
 
-## 3. Branche Fonctionnelle : Design Thinking
+## Méthodologie : Processus 2TUP
 
+
+
+<div class="img-container">
+  <img src="images/2TUP.PNG" class="img-methodo" alt="2TUP">
+</div>
+
+---
+
+## 3. Branche Fonctionnelle : Design Thinking
 ### 1. EMPATHIE
 
 <div class="img-container">
   <div class="dt-card" style="border-top-color: #f39c12;">
     <h4>Comprendre l'utilisateur</h4>
     <blockquote style="font-style: italic; background: white; padding: 15px; border-radius: 8px;">
-     Propriétaire : "Observation des difficultés réelles du propriétaire dans la gestion quotidienne : pertes de réservations par téléphone, doubles créneaux et absence totale de suivi financier."
-Client / Locataire : "Observation des frustrations du locataire lors de la réservation : temps perdu à rappeler, aucune visibilité sur les disponibilités et risque de trouver un autre groupe sur son terrain."
-Staff / Employé : "Observation des difficultés de l'employé sur le terrain : vérification manuelle des réservations à l'accueil, gestion seul des conflits clients et dépendance aux consignes transmises par WhatsApp."
+      <p>- La formatrice Fatine souhaite un système simple pour créer et gérer des QCM personnalisables, avec correction automatique et affichage du score final.</p>
+      <p>- Le formateur Youssef souhaite un QCM structuré par session et objectif, lié au professeur, avec un calcul automatique des résultats.</p>
+      <p>- L’administrateur Hamouda souhaite une plateforme fiable avec des données validées, un QCM structuré et sécurisé, ainsi qu’une interface simple pour faciliter la gestion des candidats.</p>
     </blockquote>
   </div>
 </div>
@@ -166,34 +176,30 @@ Staff / Employé : "Observation des difficultés de l'employé sur le terrain : 
 ---
 
 ## Branche Fonctionnelle : Design Thinking
-
 ### 2. DÉFINITION
 
 <div class="img-container">
   <div class="dt-card" style="border-top-color: #f39c12;">
     <h4>Cadrage du problème</h4>
     <blockquote style="font-style: italic; background: white; padding: 15px; border-radius: 8px;">
-    "Comment digitaliser la gestion des terrains pour éliminer les pertes de réservations, les conflits de créneaux et la dépendance au téléphone ?"
-Focus sur : L'automatisation, la vérification d'identité (CNI) et le contrôle en temps réel.Share
+     <p> - Comment pourrions-nous permettre aux formateurs de générer des QCM par objectif en quelques clics, tout en garantissant une correction instantanée pour l'étudiant ? </p>
+      <p>- Comment pourrions-nous structurer l'interface pour que la liaison entre une question, un professeur et un objectif de session soit totalement transparente ? </p>
+      <p>-Comment pourrions-nous concevoir une interface administrateur simple, claire et ergonomique permettant une gestion efficace des candidats et des QCM ? </p>
     </blockquote>
-   
   </div>
 </div>
 
 ---
 
 ## Branche Fonctionnelle : Design Thinking
-
 ### 3. IDÉATION
 
 <div class="img-container">
   <div class="dt-card" style="border-top-color: #f39c12;">
     <h4>Solutions retenues</h4>
-    <p>• Plateforme de réservation en ligne 24h/24 pour éliminer le téléphone.
-</p>
-    <p>•  Upload de la CIN avec validation admin avant confirmation du créneau.</p>
-    <p>•Dashboard temps réel pour le suivi des terrains, réservations et revenus.
-Share.</p>
+    <p>• Interface <strong>"Single Question"</strong> pour éviter la surcharge cognitive.</p>
+    <p>• <strong>Timer dynamique</strong> par catégorie de question.</p>
+    <p>• <strong>Dashboard</strong> temps réel pour le suivi des formateurs.</p>
   </div>
 </div>
 
@@ -201,90 +207,97 @@ Share.</p>
 
 ## Branche Fonctionnelle : Cas d'utilisation
 
-### Global Use Case
 
 
 <div class="img-container">
   <h3>Interaction Utilisateur (UML)</h3>
-  <img src="" class="img-methodo" alt="Use Case">
+  <img src="images/use-case.png" class="img-methodo" alt="Use Case">
 </div>
 
 ---
-
 ## Branche Fonctionnelle : Maquettes (UI/UX)
+
+
 
 <div class="maquette-grid">
   <div style="text-align: center;">
-    <img src="images/maquette.png" alt="Maquette" style="max-height: 350px;">
+    <img src="images/maquette.png" class="img-methodo" style="height: 360px; width: auto;" alt="Maquette Desktop">
+    <p style="font-size: 0.3rem; color: #666;">Interface Administration</p>
   </div>
 </div>
 
 ---
 
 ## 4. Branche Technique : Tech Stack
-
 <div class="sommaire-grid">
   <div class="dt-card" style="margin-top:0;">
     <h4>Les technologies à utiliser</h4>
     <ul>
-      <li><strong>Base de données:</strong> MySQL</li>
+      <li><strong>Base de données:</strong> MySQL </li>
       <li><strong>Framework:</strong> Laravel 12</li>
-      <li><strong>Architecture N-Tiers:</strong>
-        <ul style="margin-top: 5px;">
-          <li>Controller: Requêtes HTTP</li>
-          <li>Service: Logique métier</li>
-          <li>Model: Base de données</li>
-        </ul>
-      </li>
-      <li><strong>Architecture MVC</strong></li>
-      <li><strong>Blade:</strong> Templates réutilisables</li>
+      <li><strong>Architecture:</strong> N-Tiers</li>
+      <strong>Controller:</strong> Requêtes HTTP
+      <strong>Service:</strong> Logique métier
+      <strong>Model:</strong> Base de données
+      <li><strong>Architecture:</strong> MVC</li>
+      <li><strong> Blade :</strong>Templates réutilisables (components, layouts).</li>
     </ul>
   </div>
   <div class="dt-card" style="margin-top:0; border-top-color: #27ae60;">
     <ul>
-      <li><strong>AJAX:</strong> Interactions dynamiques sans rechargement</li>
-      <li><strong>Alpine.js:</strong> Librairie JavaScript dynamique</li>
-      <li><strong>Spatie:</strong> Gestion permissions et rôles</li>
-      <li><strong>Vite:</strong> Outil de build rapide</li>
-      <li><strong>Lucide:</strong> Librairie d'icônes</li>
-      <li><strong>Tailwind CSS:</strong> Développement responsive</li>
+      <li><strong> AJAX :</strong> Interactions dynamiques (ex: Modales) sans rechargement de page.</li>
+      <li><strong>Alpine.js :</strong>  Librairie JavaScript pour les interactions dynamiques.</li>
+      <li><strong>Spatie :</strong> Librairie pour la gestion des permissions et rôles.</li>
+      <li><strong>Vite :</strong>   Outil de build rapide.</li>
+      <li><strong>Lucide :</strong> Librairie d'icônes.</li>
+      <li><strong>Tailwind CSS :</strong>Développement rapide, responsive.</li>
     </ul>
   </div>
 </div>
 
 ---
 
+
 ## 5. Conception : Diagramme de classe
 
-<h3>Modélisation des données (MLD)</h3>
+
+ <h3>Modélisation des données (MLD)</h3>
 <div class="img-container">
-  <img src="images/diagramme-class.png" class="img-methodo" alt="Diagramme de classe">
+ 
+  <img src="" style="width: 100%;" alt="Diagramme de classe">
 </div>
 
 ---
 
-## 6. Démonstration : Environnement & Outils
+## 5. Démonstration : Environnement & Outils
 
 <div class="sommaire-grid">
   <div class="dt-card" style="margin-top:0;">
     <h4>Environnement de Développement</h4>
     <ul>
-      <li><strong>IDE:</strong> VS Code & Antigravity</li>
-      <li><strong>Monitoring DB:</strong> Workbench SQL</li>
+      <li><strong>IDE :</strong> VS Code & Antigravity </li>
+      <li><strong>Monitoring DB :</strong> Workbench Sql</li>
     </ul>
   </div>
   <div class="dt-card" style="margin-top:0; border-top-color: #27ae60;">
     <h4>Gestion & Déploiement</h4>
     <ul>
-      <li><strong>Modélisation UML:</strong> Mermaid/PlantUML</li>
-      <li><strong>Gestion de version:</strong> Git (GitHub)</li>
-      <li><strong>Navigateur:</strong> Chrome DevTools</li>
+      <li><strong>Modelisation UML :</strong>Mermaid/PlantUML</li>
+      <li><strong>Gestion de version :</strong> Git (GitHub)</li>
+      <li><strong>Navigateur :</strong> Chrome DevTools</li>
     </ul>
   </div>
 </div>
 
----
+<br>
 
-## 7. Conclusion
+---
+## 6. Conclusion
+
+- **Objectifs atteints** : Application QCM fonctionnelle et responsive.
+- **Compétences** : Maîtrise du cycle Agile et de la stack Full-stack.
+- **Perspectives** : Intégration d'un module d'IA pour l'analyse prédictive.
+
+<br>
 
 ### Merci pour votre attention !
