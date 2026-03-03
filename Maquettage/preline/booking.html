@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProMatch — Réservation Terrain de Football</title>
+    <meta name="description" content="Réservez votre terrain de football en ligne. Sélectionnez votre créneau et validez votre identité." />
+
+    <link rel="stylesheet" href="./assets/theme.css" />
+
+    <!-- Tailwind (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: { DEFAULT: "#4f46e5", 50: "#eef2ff", 100: "#e0e7ff", 200: "#c7d2fe", 600: "#4338ca", 700: "#3730a3" },
+              success: "#16a34a",
+              warning: "#d97706",
+              danger:  "#dc2626",
+            },
+            fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="antialiased" style="background: var(--pm-bg); color: var(--pm-text-primary);">
+
+    <!-- Decorative -->
+    <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-24 right-0 h-96 w-96 rounded-full opacity-40" style="background: radial-gradient(circle, rgba(79,70,229,0.08), transparent 70%);"></div>
+    </div>
+
+    <!-- ── Navbar ── -->
+    <header class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100 transition-all duration-300">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+          
+          <!-- Logo -->
+          <div class="flex-shrink-0">
+            <a href="./index.html" class="flex items-center gap-2">
+              <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-white font-bold text-lg shadow-sm">
+                P
+              </span>
+              <span class="text-lg font-semibold tracking-tight text-gray-900">
+                Pro<span class="text-indigo-600">Match</span>
+              </span>
+            </a>
+          </div>
+
+          <!-- Desktop Nav (Right Aligned) -->
+          <nav class="hidden md:flex md:gap-8">
+            <a href="./index.html#terrains" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Terrains</a>
+            <a href="./index.html#how" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Comment ça marche</a>
+          </nav>
+
+          <!-- CTA -->
+          <div class="hidden md:flex items-center gap-4">
+             <a href="./dashboard.html" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+              Espace Admin
+            </a>
+            <button type="button" class="inline-flex items-center justify-center rounded-lg bg-indigo-50 text-indigo-700 px-4 py-2 text-sm font-semibold hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all" data-hs-overlay="#pm-help-modal">
+              Aide
+            </button>
+          </div>
+
+          <!-- Mobile toggle -->
+          <div class="flex md:hidden">
+            <button type="button" class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── Main ── -->
+    <main class="mx-auto max-w-5xl px-4 py-12 pt-24 sm:px-6">
+
+      <!-- Page header -->
+      <div class="text-center mb-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-medium mb-4">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+          </span>
+          Réservation en temps réel
+        </div>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-2">Terrain de Football N°1</h1>
+        <p class="text-lg text-gray-600">Gazon synthétique · Éclairage LED · Vestiaires inclus</p>
+      </div>
+
+      <!-- Step progress bar (Simplified) -->
+      <div class="mb-12">
+        <div class="flex items-center justify-between relative">
+          <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-100 rounded-full -z-10"></div>
+          
+          <!-- Step 1 -->
+          <div class="flex flex-col items-center gap-2 bg-white px-2">
+            <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold shadow-lg shadow-indigo-200">1</div>
+            <span class="text-xs font-semibold text-indigo-600">Créneau</span>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex flex-col items-center gap-2 bg-white px-2">
+            <div class="w-8 h-8 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center text-sm font-bold">2</div>
+            <span class="text-xs font-medium text-gray-500">Infos</span>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex flex-col items-center gap-2 bg-white px-2">
+            <div class="w-8 h-8 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center text-sm font-bold">3</div>
+            <span class="text-xs font-medium text-gray-500">CNI</span>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex flex-col items-center gap-2 bg-white px-2">
+            <div class="w-8 h-8 rounded-full bg-white border-2 border-gray-200 text-gray-400 flex items-center justify-center text-sm font-bold">4</div>
+            <span class="text-xs font-medium text-gray-500">Confirmé</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid gap-8 lg:grid-cols-3">
+        <!-- ── Left: Steps / Tabs ── -->
+        <section class="lg:col-span-2">
+          
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-xl shadow-gray-200/50 overflow-hidden">
+            
+            <!-- Hidden Tab Nav (We use steps above) -->
+            <nav class="hidden" role="tablist">
+              <button id="pm-step-tab-1" data-hs-tab="#pm-step-panel-1" aria-controls="pm-step-panel-1" role="tab"></button>
+              <button id="pm-step-tab-2" data-hs-tab="#pm-step-panel-2" aria-controls="pm-step-panel-2" role="tab"></button>
+              <button id="pm-step-tab-3" data-hs-tab="#pm-step-panel-3" aria-controls="pm-step-panel-3" role="tab"></button>
+              <button id="pm-step-tab-4" data-hs-tab="#pm-step-panel-4" aria-controls="pm-step-panel-4" role="tab"></button>
+            </nav>
+
+            <!-- ── Panels ── -->
+            <div class="p-6 sm:p-8">
+
+              <!-- Step 1: Créneau -->
+              <div id="pm-step-panel-1" role="tabpanel" aria-labelledby="pm-step-tab-1">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">Choisissez votre créneau</h2>
+                
+                <!-- Date Picker -->
+                <div class="mb-8">
+                  <div class="flex items-center justify-between mb-4">
+                    <button class="p-2 hover:bg-gray-50 rounded-lg text-gray-500 transition-colors">
+                      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                    </button>
+                    <span class="text-base font-semibold text-gray-900">Mars 2026</span>
+                    <button class="p-2 hover:bg-gray-50 rounded-lg text-gray-500 transition-colors">
+                      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                  </div>
+                  
+                  <div class="grid grid-cols-7 gap-2 mb-2">
+                    <div class="text-center text-xs font-medium text-gray-400 py-1">L</div>
+                    <div class="text-center text-xs font-medium text-gray-400 py-1">M</div>
+                    <div class="text-center text-xs font-medium text-gray-400 py-1">M</div>
+                    <div class="text-center text-xs font-medium text-gray-400 py-1">J</div>
+                    <div class="text-center text-xs font-medium text-gray-400 py-1">V</div>
+                    <div class="text-center text-xs font-medium text-gray-400 py-1">S</div>
+                    <div class="text-center text-xs font-medium text-gray-400 py-1">D</div>
+                  </div>
+                  
+                  <div class="grid grid-cols-7 gap-2">
+                    <button class="aspect-square rounded-lg flex items-center justify-center text-sm text-gray-400 hover:bg-gray-50 transition-colors">2</button>
+                    <button class="aspect-square rounded-lg flex items-center justify-center text-sm text-gray-400 hover:bg-gray-50 transition-colors">3</button>
+                    <button class="aspect-square rounded-lg flex items-center justify-center text-sm text-gray-400 hover:bg-gray-50 transition-colors">4</button>
+                    <button class="aspect-square rounded-lg flex items-center justify-center text-sm text-gray-400 hover:bg-gray-50 transition-colors">5</button>
+                    <button class="aspect-square rounded-lg flex items-center justify-center text-sm text-gray-400 hover:bg-gray-50 transition-colors">6</button>
+                    <button class="aspect-square rounded-lg bg-indigo-600 text-white shadow-md shadow-indigo-200 flex items-center justify-center text-sm font-bold">7</button>
+                    <button class="aspect-square rounded-lg flex items-center justify-center text-sm text-gray-700 hover:bg-gray-50 font-medium transition-colors">8</button>
+                  </div>
+                </div>
+
+                <!-- Time Slots -->
+                <div>
+                  <h3 class="text-sm font-medium text-gray-900 mb-3">Horaires disponibles</h3>
+                  <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                    <button class="py-2 px-3 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:border-indigo-600 hover:text-indigo-600 transition-all bg-white">18:00</button>
+                    <button class="py-2 px-3 rounded-lg border-2 border-indigo-600 text-sm font-bold text-indigo-700 bg-indigo-50/50 shadow-sm ring-2 ring-indigo-100">19:00</button>
+                    <button class="py-2 px-3 rounded-lg border border-gray-200 text-sm font-medium text-gray-600 hover:border-indigo-600 hover:text-indigo-600 transition-all bg-white">20:00</button>
+                    <button disabled class="py-2 px-3 rounded-lg border border-gray-100 text-sm font-medium text-gray-300 bg-gray-50 cursor-not-allowed decoration-slice">21:00</button>
+                  </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-gray-100 flex justify-end">
+                  <button type="button" class="inline-flex items-center justify-center rounded-xl bg-gray-900 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-gray-200 hover:bg-gray-800 hover:shadow-xl transition-all" data-hs-tab="#pm-step-panel-2" aria-controls="pm-step-panel-2">
+                    Continuer
+                    <svg class="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Step 2: Infos -->
+              <div id="pm-step-panel-2" class="hidden" role="tabpanel" aria-labelledby="pm-step-tab-2">
+                <div class="rounded-2xl p-5" style="background: var(--pm-surface-2); border: 1px solid var(--pm-border);">
+                  <div class="grid gap-4 sm:grid-cols-2">
+                    <label class="block">
+                      <span class="mb-1.5 block text-xs font-semibold" style="color: var(--pm-text-muted);">Prénom</span>
+                      <input type="text" value="Yassine" class="pm-input text-sm" style="color: var(--pm-text-primary);" />
+                    </label>
+                    <label class="block">
+                      <span class="mb-1.5 block text-xs font-semibold" style="color: var(--pm-text-muted);">Nom</span>
+                      <input type="text" value="Moukrim" class="pm-input text-sm" style="color: var(--pm-text-primary);" />
+                    </label>
+                    <label class="block sm:col-span-2">
+                      <span class="mb-1.5 block text-xs font-semibold" style="color: var(--pm-text-muted);">Téléphone</span>
+                      <input type="tel" value="06 61 23 45 78" class="pm-input text-sm" style="color: var(--pm-text-primary);" />
+                    </label>
+                  </div>
+
+                  <div class="mt-4 rounded-xl px-4 py-3 text-sm" style="background: var(--pm-surface); border: 1px solid var(--pm-border); color: var(--pm-text-secondary);">
+                    <span class="font-semibold" style="color: var(--pm-text-primary);">Rappel :</span> la réservation sera confirmée après validation CNI par l'admin.
+                  </div>
+
+                  <div class="mt-5 flex justify-between gap-2">
+                    <button type="button" class="pm-btn pm-btn-secondary text-sm flex items-center gap-1.5" data-hs-tab="#pm-step-panel-1" aria-controls="pm-step-panel-1">
+                      <svg class="size-4" fill="none" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      Retour
+                    </button>
+                    <button type="button" class="pm-btn pm-btn-primary text-sm" data-hs-tab="#pm-step-panel-3" aria-controls="pm-step-panel-3">
+                      Continuer
+                      <svg class="size-4" fill="none" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 3: CNI -->
+              <div id="pm-step-panel-3" class="hidden" role="tabpanel" aria-labelledby="pm-step-tab-3">
+                <div class="rounded-2xl p-5" style="background: var(--pm-surface-2); border: 1px solid var(--pm-border);">
+                  <div class="rounded-xl px-4 py-3 text-sm mb-4" style="background: var(--pm-primary-50); border: 1px solid var(--pm-primary-200); color: var(--pm-primary-700);">
+                    <span class="font-semibold">Pourquoi la CNI ?</span> Pour sécuriser la réservation. L'admin valide avant confirmation finale.
+                  </div>
+
+                  <label class="block">
+                    <span class="mb-1.5 block text-xs font-semibold" style="color: var(--pm-text-muted);">Uploader votre CNI</span>
+                    <div class="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed px-4 py-10 text-center pm-transition" style="border-color: var(--pm-border-strong); background: var(--pm-surface);">
+                      <div class="text-primary">
+                        <svg class="size-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                      </div>
+                      <div>
+                        <div class="text-sm font-semibold" style="color: var(--pm-text-primary);">Glissez-déposez ici</div>
+                        <div class="text-xs mt-1" style="color: var(--pm-text-muted);">JPG · PNG · PDF — max 5 MB</div>
+                      </div>
+                      <input type="file" class="mt-1 block text-xs file:pm-btn file:pm-btn-secondary file:text-xs file:py-1.5 file:px-3 file:mr-3" />
+                    </div>
+                  </label>
+
+                  <label class="mt-4 flex items-start gap-3 rounded-xl px-4 py-3 text-sm pm-transition" style="background: var(--pm-surface); border: 1px solid var(--pm-border); color: var(--pm-text-secondary);">
+                    <input type="checkbox" checked class="mt-0.5 size-4 rounded" style="accent-color: var(--pm-primary);" />
+                    <span>J'accepte les <a href="#" class="font-semibold pm-transition" style="color: var(--pm-primary);">conditions d'utilisation</a> et je comprends que ma réservation sera confirmée après validation.</span>
+                  </label>
+
+                  <div class="mt-5 flex justify-between gap-2">
+                    <button type="button" class="pm-btn pm-btn-secondary text-sm" data-hs-tab="#pm-step-panel-2" aria-controls="pm-step-panel-2">← Retour</button>
+                    <button type="button" class="pm-btn pm-btn-primary text-sm" data-hs-tab="#pm-step-panel-4" aria-controls="pm-step-panel-4">
+                      Envoyer
+                      <svg class="size-4" fill="none" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 4: Confirmation -->
+              <div id="pm-step-panel-4" class="hidden" role="tabpanel" aria-labelledby="pm-step-tab-4">
+                <div class="rounded-2xl p-6 text-center" style="background: var(--pm-surface-2); border: 1px solid var(--pm-border);">
+                  <div class="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-2xl text-white" style="background: var(--pm-success); box-shadow: 0 4px 12px rgba(22,163,74,0.3);">
+                    <svg class="size-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  </div>
+                  <div class="text-lg font-extrabold mb-1" style="color: var(--pm-text-primary);">Demande envoyée !</div>
+                  <div class="text-sm" style="color: var(--pm-text-secondary);">L'admin vérifie votre CNI sous 24h</div>
+
+                  <div class="mt-6 grid gap-3 sm:grid-cols-2 text-left">
+                    <div class="rounded-2xl p-4" style="background: var(--pm-surface); border: 1px solid var(--pm-border);">
+                      <div class="pm-section-label mb-1">Date</div>
+                      <div class="text-sm font-extrabold" style="color: var(--pm-text-primary);">Samedi 7 Mars 2026</div>
+                    </div>
+                    <div class="rounded-2xl p-4" style="background: var(--pm-surface); border: 1px solid var(--pm-border);">
+                      <div class="pm-section-label mb-1">Heure</div>
+                      <div class="text-sm font-extrabold" style="color: var(--pm-text-primary);">19h00 – 20h00</div>
+                    </div>
+                    <div class="rounded-2xl p-4" style="background: var(--pm-surface); border: 1px solid var(--pm-border);">
+                      <div class="pm-section-label mb-1">Paiement</div>
+                      <div class="text-sm font-extrabold" style="color: var(--pm-text-primary);">Espèces sur place</div>
+                    </div>
+                    <div class="rounded-2xl p-4" style="background: var(--pm-primary-50); border: 1px solid var(--pm-primary-200);">
+                      <div class="pm-section-label mb-1">Total</div>
+                      <div class="text-sm font-extrabold" style="color: var(--pm-primary);">80 MAD</div>
+                    </div>
+                  </div>
+
+                  <div class="mt-5 flex flex-wrap justify-center gap-2">
+                    <a href="./index.html" class="pm-btn pm-btn-secondary text-sm">Retour accueil</a>
+                    <a href="./dashboard.html" class="pm-btn pm-btn-primary text-sm">Voir côté admin</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Right: Summary card ── -->
+        <aside class="rounded-3xl" style="background: var(--pm-surface); border: 1px solid var(--pm-border); box-shadow: var(--pm-shadow-sm);">
+          <div class="border-b px-5 py-4" style="border-color: var(--pm-border);">
+            <h2 class="text-sm font-extrabold" style="color: var(--pm-text-primary);">Récapitulatif</h2>
+          </div>
+          <div class="p-5 lg:sticky lg:top-[74px]">
+
+            <!-- Court info -->
+            <div class="rounded-2xl p-4" style="background: var(--pm-surface-2); border: 1px solid var(--pm-border);">
+              <div class="flex items-start justify-between gap-2 mb-3">
+                <div class="font-extrabold text-sm" style="color: var(--pm-text-primary);">Terrain de Football N°1</div>
+                <span class="pm-badge pm-badge-success text-[11px] flex-shrink-0 whitespace-nowrap">
+                  <span class="pm-dot-live" style="width:6px; height:6px;"></span>
+                  Disponible
+                </span>
+              </div>
+              <div class="text-xs mb-4" style="color: var(--pm-text-muted);">Gazon synthétique · LED · Vestiaires</div>
+
+              <div class="space-y-2.5 text-sm border-t pt-3" style="border-color: var(--pm-border);">
+                <div class="flex items-center justify-between">
+                  <span class="flex items-center gap-1.5" style="color: var(--pm-text-secondary);">
+                    <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    Date
+                  </span>
+                  <span class="font-semibold" style="color: var(--pm-text-primary);">Sam. 7 Mars</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="flex items-center gap-1.5" style="color: var(--pm-text-secondary);">
+                    <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Heure
+                  </span>
+                  <span class="font-semibold" style="color: var(--pm-text-primary);">19h00 – 20h00</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="flex items-center gap-1.5" style="color: var(--pm-text-secondary);">
+                    <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Durée
+                  </span>
+                  <span class="font-semibold" style="color: var(--pm-text-primary);">1 heure</span>
+                </div>
+              </div>
+
+              <div class="mt-4 flex items-center justify-between border-t pt-3" style="border-color: var(--pm-border);">
+                <span class="font-bold" style="color: var(--pm-text-primary);">Total</span>
+                <span class="text-lg font-extrabold" style="color: var(--pm-primary);">80 MAD</span>
+              </div>
+            </div>
+
+            <!-- Next steps -->
+            <div class="mt-4 rounded-2xl p-4" style="background: var(--pm-surface-2); border: 1px solid var(--pm-border);">
+              <div class="pm-section-label mb-3">Prochaines étapes</div>
+              <ol class="space-y-2.5 text-sm" style="color: var(--pm-text-secondary);">
+                <li class="flex items-center gap-3">
+                  <span class="grid h-6 w-6 flex-shrink-0 place-items-center rounded-full text-xs font-bold" style="background: var(--pm-warning-bg); color: var(--pm-warning); border: 1px solid var(--pm-warning-ring);">1</span>
+                  Demande envoyée
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="grid h-6 w-6 flex-shrink-0 place-items-center rounded-full text-xs font-bold" style="background: var(--pm-warning-bg); color: var(--pm-warning); border: 1px solid var(--pm-warning-ring);">2</span>
+                  Validation CNI (≤ 24h)
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="grid h-6 w-6 flex-shrink-0 place-items-center rounded-full text-xs font-bold" style="background: var(--pm-success-bg); color: var(--pm-success); border: 1px solid var(--pm-success-ring);">3</span>
+                  Confirmation numérique
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="grid h-6 w-6 flex-shrink-0 place-items-center rounded-full text-xs font-bold" style="background: var(--pm-success-bg); color: var(--pm-success); border: 1px solid var(--pm-success-ring);">4</span>
+                  Paiement sur place
+                </li>
+              </ol>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <!-- ── Help Modal ── -->
+    <div id="pm-help-modal" class="hs-overlay pointer-events-none fixed start-0 top-0 z-[80] hidden size-full overflow-y-auto overflow-x-hidden" role="dialog" tabindex="-1" aria-labelledby="pm-help-modal-title">
+      <div class="m-3 mt-16 opacity-0 transition-all hs-overlay-open:mt-10 hs-overlay-open:opacity-100 sm:mx-auto sm:w-full sm:max-w-lg">
+        <div class="pointer-events-auto rounded-3xl p-6" style="background: var(--pm-surface); border: 1px solid var(--pm-border); box-shadow: var(--pm-shadow-xl);">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h3 id="pm-help-modal-title" class="text-base font-extrabold" style="color: var(--pm-text-primary);">Aide</h3>
+              <p class="mt-1 text-sm" style="color: var(--pm-text-secondary);">Cette page utilise Preline (tabs + modal) via CDN.</p>
+            </div>
+            <button type="button" class="pm-btn pm-btn-secondary p-2 rounded-xl" aria-label="Fermer" data-hs-overlay="#pm-help-modal">
+              <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="mt-4 rounded-2xl p-4 text-sm" style="background: var(--pm-surface-2); border: 1px solid var(--pm-border); color: var(--pm-text-secondary);">
+            Ouvre la maquette avec un serveur local (ex: Live Server VS Code). Les scripts CDN ne fonctionnent pas hors-ligne.
+          </div>
+          <div class="mt-5 flex justify-end">
+            <button type="button" class="pm-btn pm-btn-secondary text-sm" data-hs-overlay="#pm-help-modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/preline/dist/preline.js"></script>
+  </body>
+</html>

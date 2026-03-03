@@ -1,0 +1,23 @@
+<!-- Dropdown Component -->
+<div class="hs-dropdown relative inline-flex">
+  <button
+    id="[[id]]"
+    type="button"
+    class="hs-dropdown-toggle [[buttonClass]]"
+    aria-haspopup="menu"
+    aria-expanded="false"
+  >
+    [[buttonContent]]
+    <svg class="size-4 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+      <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+    </svg>
+  </button>
+  <div
+    class="hs-dropdown-menu hidden [[menuClass]]"
+    role="menu"
+    aria-orientation="vertical"
+    aria-labelledby="[[id]]"
+  >
+    [[menuItems]]
+  </div>
+</div>
