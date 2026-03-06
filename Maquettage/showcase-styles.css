@@ -209,7 +209,16 @@ body:has(#booking-form:target) a[href="#booking-form"],
 body:has(#dashboard-stat:target) a[href="#dashboard-stat"],
 body:has(#modal:target)        a[href="#modal"],
 body:has(#table:target)        a[href="#table"],
-body:has(#accordion:target)    a[href="#accordion"] {
+body:has(#accordion:target)    a[href="#accordion"],
+body:has(#admin-sidebar:target) a[href="#admin-sidebar"],
+body:has(#daily-schedule:target) a[href="#daily-schedule"],
+body:has(#verification-card:target) a[href="#verification-card"],
+body:has(#filter-bar:target)    a[href="#filter-bar"],
+body:has(#admin-table:target)  a[href="#admin-table"],
+body:has(#graphic-charter:target) a[href="#graphic-charter"],
+body:has(#mobile-preview:target) a[href="#mobile-preview"],
+body:has(#planning-item:target) a[href="#planning-item"],
+body:has(#doc-preview:target)   a[href="#doc-preview"] {
   background: var(--brand-glow);
   color: var(--brand-dark);
   font-weight: 600;
@@ -234,7 +243,16 @@ body:has(#booking-form:target) a[href="#booking-form"]::before,
 body:has(#dashboard-stat:target) a[href="#dashboard-stat"]::before,
 body:has(#modal:target)        a[href="#modal"]::before,
 body:has(#table:target)        a[href="#table"]::before,
-body:has(#accordion:target)    a[href="#accordion"]::before {
+body:has(#accordion:target)    a[href="#accordion"]::before,
+body:has(#admin-sidebar:target) a[href="#admin-sidebar"]::before,
+body:has(#daily-schedule:target) a[href="#daily-schedule"]::before,
+body:has(#verification-card:target) a[href="#verification-card"]::before,
+body:has(#filter-bar:target)    a[href="#filter-bar"]::before,
+body:has(#admin-table:target)  a[href="#admin-table"]::before,
+body:has(#graphic-charter:target) a[href="#graphic-charter"]::before,
+body:has(#mobile-preview:target) a[href="#mobile-preview"]::before,
+body:has(#planning-item:target) a[href="#planning-item"]::before,
+body:has(#doc-preview:target)   a[href="#doc-preview"]::before {
   content: '';
   position: absolute;
   left: 0; top: 20%; bottom: 20%;
@@ -289,7 +307,16 @@ body:has(#accordion:target)    a[href="#accordion"]::before {
 #dashboard-stat:target ~ #welcome,
 #modal:target         ~ #welcome,
 #table:target         ~ #welcome,
-#accordion:target     ~ #welcome {
+#accordion:target     ~ #welcome,
+#admin-sidebar:target ~ #welcome,
+#daily-schedule:target ~ #welcome,
+#verification-card:target ~ #welcome,
+#filter-bar:target    ~ #welcome,
+#admin-table:target   ~ #welcome,
+#graphic-charter:target ~ #welcome,
+#mobile-preview:target ~ #welcome,
+#planning-item:target ~ #welcome,
+#doc-preview:target   ~ #welcome {
   display: none;
 }
 
