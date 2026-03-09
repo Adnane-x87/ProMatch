@@ -1,104 +1,109 @@
 classDiagram
+%% Classes Utilisateur et ses sous-classes
 class Utilisateur {
     <<abstract>>
-    -id: String
-    -nom: String
-    -prenom: String
-    -email: String
-    -motDePasse: String
-    -telephone: String
-    +seConnecter()
-    +seDeconnecter()
+    - id : String
+    - nom : String
+    - prenom : String
+    - email : String
+    - motDePasse : String
+    - telephone : String
+    + seConnecter()
+    + seDeconnecter()
 }
 
 class Proprietaire {
-    -siret: String
-    -dateInscription: Date
-    +validerReservation(r: Reservation)
-    +verifierCNI(cniUrl: String)
+    - siret : String
+    - dateInscription : Date
+    + validerReservation(r : Reservation)
+    + verifierCNI(cniUrl : String)
 }
 
 class Locataire {
-    -cin: String
-    -dateNaissance: Date
-    +rechercherTerrain()
-    +reserver(c: Creneau, payload: ReservationPayload)
-    +annulerReservation(r: Reservation)
+    - cin : String
+    - dateNaissance : Date
+    + rechercherTerrain()
+    + reserver(c : Creneau, payload : ReservationPayload)
+    + annulerReservation(r : Reservation)
 }
 
 class Employe {
-    -poste: String
-    -dateEmbauche: Date
-    +verifierArriveeClient(r: Reservation)
-    +consulterPlanning()
+    - poste : String
+    - dateEmbauche : Date
+    + verifierArriveeClient(r : Reservation)
+    + consulterPlanning()
 }
 
 Utilisateur <|-- Proprietaire
 Utilisateur <|-- Locataire
 Utilisateur <|-- Employe
 
+%% Classe Terrain et Creneau
 class Terrain {
-    -id: String
-    -nom: String
-    -description: String
-    -adresse: String
-    -prixHeure: Float
-    +getCreneauxDisponibles()
+    - id : String
+    - nom : String
+    - description : String
+    - adresse : String
+    - prixHeure : Float
+    + getCreneauxDisponibles()
 }
 
 class Creneau {
-    -id: String
-    -date: Date
-    -heureDebut: Time
-    -heureFin: Time
-    -statut: StatutCreneau
+    - id : String
+    - date : Date
+    - heureDebut : Time
+    - heureFin : Time
+    - statut : StatutCreneau
 }
 
 class StatutCreneau {
-    <<enumeration>>
     DISPONIBLE
     RESERVE
     INDISPONIBLE
 }
 
+Terrain "1" *-- "*" Creneau : contient
+
+%% Classe Reservation
 class Reservation {
-    -id: String
-    -nom: String
-    -prenom: String
-    -email: String
-    -telephone: String
-    -dateDepot: DateTime
-    -prix: Float
-    -cniUrl: String
-    -statut: StatutReservation
-    +confirmer()
-    +annuler()
+    - id : String
+    - nom : String
+    - prenom : String
+    - email : String
+    - telephone : String
+    - dateDepot : DateTime
+    - prix : Float
+    - cniUrl : String
+    - statut : StatutReservation
+    + confirmer()
+    + annuler()
 }
 
 class StatutReservation {
-    <<enumeration>>
     EN_ATTENTE
     VALIDEE
     REFUSEE
     ANNULEE
 }
 
+Locataire "1" --> "*" Reservation : effectue
+Reservation "1" --> "*" Creneau : reserve
+Employe "1" --> "*" Reservation : verifie_arrivee
+
+%% Classes Role et Permission
 class Role {
-    -name: String
-    -guard_name: String
+    - name : String
+    - guard_name : String
 }
 
 class Permission {
-    -name: String
-    -guard_name: String
+    - name : String
+    - guard_name : String
 }
 
 Utilisateur "*" -- "*" Role : has
 Role "*" -- "*" Permission : has
 Utilisateur "*" -- "*" Permission : has_primary
 
+%% Proprietaire gère les terrains
 Proprietaire "1" --> "*" Terrain : gere
-Terrain "1" *-- "*" Creneau : contient
-Locataire "1" --> "*" Reservation : effectue
-Reservation "1" --> "*" Creneau : reserve
-Employe "1" --> "*" Reservation : verifie arrivee
