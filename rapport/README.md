@@ -128,9 +128,7 @@ style: |
 
 ## 1. Contexte du projet
 
-- M. Karim est propriétaire d'un complexe sportif de 4 terrains loués à l'heure. Malgré une clientèle fidèle, il gère tout manuellement — appels téléphoniques et cahier manuscrit — ce qui entraîne des créneaux perdus, des doubles réservations et un suivi financier inexistant.
 
-  Ce projet vise à concevoir une plateforme numérique qui automatise les réservations, intègre une vérification d'identité (CNI), et donne au propriétaire un contrôle total sur son complexe.
 
 ---
 

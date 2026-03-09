@@ -1,0 +1,20 @@
+@startuml
+title Diagramme de Cas d'Utilisation — Staff (Employé)
+
+skinparam actorStyle awesome
+skinparam usecase {
+    BackgroundColor #E8F4FD
+    BorderColor #2980B9
+}
+
+actor "Staff\n(Employé)" as Staff
+
+rectangle "Système de Gestion des Terrains de Sport" {
+    usecase "Consulter le planning\ndes réservations" as UC14
+    usecase "Vérifier l'arrivée\ndu client" as UC15
+}
+
+Staff --> UC14
+Staff --> UC15
+
+@enduml

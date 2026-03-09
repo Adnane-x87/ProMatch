@@ -1,0 +1,30 @@
+@startuml
+title Diagramme de Cas d'Utilisation — Admin (Propriétaire)
+
+skinparam actorStyle awesome
+skinparam usecase {
+    BackgroundColor #E8F4FD
+    BorderColor #2980B9
+}
+
+actor "Admin\n(Propriétaire)" as Admin
+
+rectangle "Système de Gestion des Terrains de Sport" {
+    usecase "S'inscrire / Se connecter" as UC1
+    usecase "Gérer les terrains\n(CRUD)" as UC2
+    usecase "Gérer les créneaux\nde réservation" as UC3
+    usecase "Valider une réservation" as UC4
+    usecase "Vérifier la CNI\n(Accepter / Refuser)" as UC5
+    usecase "Voir le tableau de bord\n(Statistiques / Revenus)" as UC6
+    usecase "Gérer les utilisateurs\n(Consulter / Bloquer)" as UC7
+}
+
+Admin --> UC1
+Admin --> UC2
+Admin --> UC3
+Admin --> UC4
+Admin --> UC6
+Admin --> UC7
+UC4 ..> UC5 : <<include>>
+
+@enduml

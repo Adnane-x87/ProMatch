@@ -128,8 +128,9 @@ style: |
 
 ## 1. Contexte du projet
 
-- M. Karim est propriétaire d'un complexe sportif de 4 terrains loués à l'heure. Malgré une clientèle fidèle, il gère tout manuellement — appels téléphoniques et cahier manuscrit — ce qui entraîne des créneaux perdus, des doubles réservations et un suivi financier inexistant.
-  Ce projet vise à concevoir une plateforme numérique qui automatise les réservations, intègre une vérification d'identité (CNI), et donne au propriétaire un contrôle total sur son complexe
+<div class="img-container">
+  <img src="./images/context.png" class="img-methodo" alt="contexy">
+</div>
 
 ---
 
@@ -149,54 +150,19 @@ style: |
 
 ---
 
-## 3. Branche Fonctionnelle : Design Thinking
+## 3. Branche Fonctionnelle : Carte Empathie
 
-### 1. EMPATHIE
 
-<div class="img-container">
-  <div class="dt-card" style="border-top-color: #f39c12;">
-    <h4>Comprendre l'utilisateur</h4>
-    <blockquote style="font-style: italic; background: white; padding: 15px; border-radius: 8px;">
-     Propriétaire : "Observation des difficultés réelles du propriétaire dans la gestion quotidienne : pertes de réservations par téléphone, doubles créneaux et absence totale de suivi financier."
-Client / Locataire : "Observation des frustrations du locataire lors de la réservation : temps perdu à rappeler, aucune visibilité sur les disponibilités et risque de trouver un autre groupe sur son terrain."
-Staff / Employé : "Observation des difficultés de l'employé sur le terrain : vérification manuelle des réservations à l'accueil, gestion seul des conflits clients et dépendance aux consignes transmises par WhatsApp."
-    </blockquote>
-  </div>
-</div>
 
----
 
-## Branche Fonctionnelle : Design Thinking
-
-### 2. DÉFINITION
+### 1. carte empathie
 
 <div class="img-container">
-  <div class="dt-card" style="border-top-color: #f39c12;">
-    <h4>Cadrage du problème</h4>
-    <blockquote style="font-style: italic; background: white; padding: 15px; border-radius: 8px;">
-    "Comment digitaliser la gestion des terrains pour éliminer les pertes de réservations, les conflits de créneaux et la dépendance au téléphone ?"
-Focus sur : L'automatisation, la vérification d'identité (CNI) et le contrôle en temps réel.Share
-    </blockquote>
-   
-  </div>
+  <img src="./images/Image-carte-empatie.png" class="img-methodo" alt="Scrum">
 </div>
 
----
 
-## Branche Fonctionnelle : Design Thinking
 
-### 3. IDÉATION
-
-<div class="img-container">
-  <div class="dt-card" style="border-top-color: #f39c12;">
-    <h4>Solutions retenues</h4>
-    <p>• Plateforme de réservation en ligne 24h/24 pour éliminer le téléphone.
-</p>
-    <p>•  Upload de la CIN avec validation admin avant confirmation du créneau.</p>
-    <p>•Dashboard temps réel pour le suivi des terrains, réservations et revenus.
-Share.</p>
-  </div>
-</div>
 
 ---
 
@@ -232,6 +198,28 @@ Share.</p>
     <img src="./images/sprint2.png" alt="usecas" style="max-height: 350px;">
   </div>
 </div>
+
+---
+
+## Branche Fonctionnelle : Maquettes (UI/UX)
+
+<div class="maquette-grid">
+  <div style="text-align: center;">
+    <img src="./images/maquete.png" alt="usecas" style="max-height: 350px;">
+  </div>
+</div>
+
+---
+
+## Branche Fonctionnelle : Maquettes (UI/UX) Mobile
+
+<div class="maquette-grid">
+  <div style="text-align: center;">
+    <img src="./images/mobile.png" alt="usecas" style="max-height: 350px;">
+  </div>
+</div>
+
+
 
 ---
 
