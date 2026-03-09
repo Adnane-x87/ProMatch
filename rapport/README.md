@@ -114,15 +114,40 @@ style: |
 
 ## Sommaire
 
-<div class="sommaire-grid">
-  <div class="sommaire-item"><div class="sommaire-num">1</div><div class="sommaire-text">Contexte du projet</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">2</div><div class="sommaire-text">Méthodologie de travail</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">3</div><div class="sommaire-text">Branche Fonctionnelle</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Branche Technique</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception</div></div>
-    <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Démonstration</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">7</div><div class="sommaire-text">Conclusion</div></div>
+<div class="sommaire-grid" style="grid-template-columns: 1fr 1fr 1fr; font-size: 0.7em; gap: 10px;">
+  <div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">1</div> Liste des figures</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">2</div> Remerciement</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">3</div> Introduction</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">4</div> Contexte de projet</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">5</div> Objectif de Project</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">6</div> Cahier de charge</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">7</div> Méthode de travail</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">8</div> Scrum</div>
+  </div>
+  <div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">9</div> La méthodologie 2TUP</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">10</div> Design Thinking</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">11</div> Branche fonctionnelle</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">12</div> Carte d’empathie</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">13</div> Définition de problème</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">14</div> Use Case Global</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">15</div> Use Case Sprint 1</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">16</div> Use Case Sprint 2</div>
+  </div>
+  <div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">17</div> Branche technique</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">18</div> Choix technologiques</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">19</div> Architecture de projet</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">20</div> Prototype</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">21</div> Conception</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">22</div> Diagramme de classe</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">23</div> Maquettes & Charte</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">24</div> Réalisation & Interfaces</div>
+    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">25</div> Conclusion</div>
+  </div>
 </div>
+
 
 ---
 
@@ -146,13 +171,6 @@ style: |
   <img src="images/scrum.jpg" class="img-methodo" alt="Scrum">
 </div>
 
----
-
-## Méthodologie : Processus 2TUP
-
-<div class="img-container">
-  <img src="images/2TUP.PNG" class="img-methodo" alt="2TUP">
-</div>
 
 ---
 

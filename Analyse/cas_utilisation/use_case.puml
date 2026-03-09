@@ -57,4 +57,8 @@ UC9 ..> UC11 : <<include>>
 Staff --> UC14
 Staff --> UC15
 
+' Mobile actor and use case both outside the rectangle
+actor "Mobile\n(Application)" as Mobile
+usecase "Consommer l'API" as UC16
+Mobile --> UC16
 @enduml
