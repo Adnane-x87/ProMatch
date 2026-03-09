@@ -1,97 +1,104 @@
 classDiagram
-    class Utilisateur {
-        <<abstract>>
-        -String id
-        -String nom
-        -String prenom
-        -String email
-        -String motDePasse
-        -String telephone
-        +seConnecter()
-        +seDeconnecter()
-    }
+class Utilisateur {
+    <<abstract>>
+    -id: String
+    -nom: String
+    -prenom: String
+    -email: String
+    -motDePasse: String
+    -telephone: String
+    +seConnecter()
+    +seDeconnecter()
+}
 
-    class Proprietaire {
-        +validerReservation(Reservation r)
-        +verifierCNI(String cniUrl)
-    }
+class Proprietaire {
+    -siret: String
+    -dateInscription: Date
+    +validerReservation(r: Reservation)
+    +verifierCNI(cniUrl: String)
+}
 
-    class Locataire {
-        +rechercherTerrain()
-        +reserver(Creneau c,ReservationPayload payload)
-        +annulerReservation(Reservation r)
-    }
+class Locataire {
+    -cin: String
+    -dateNaissance: Date
+    +rechercherTerrain()
+    +reserver(c: Creneau, payload: ReservationPayload)
+    +annulerReservation(r: Reservation)
+}
 
-    class Employe {
-        +verifierArriveeClient(Reservation r)
-        +consulterPlanning()
-    }
+class Employe {
+    -poste: String
+    -dateEmbauche: Date
+    +verifierArriveeClient(r: Reservation)
+    +consulterPlanning()
+}
 
-    Utilisateur <|-- Proprietaire
-    Utilisateur <|-- Locataire
-    Utilisateur <|-- Employe
+Utilisateur <|-- Proprietaire
+Utilisateur <|-- Locataire
+Utilisateur <|-- Employe
 
-    class Terrain {
-        -String id
-        -String nom
-        -String description
-        -String adresse
-        -Float prixHeure
-        +getCreneauxDisponibles() List~Creneau~
-    }
+class Terrain {
+    -id: String
+    -nom: String
+    -description: String
+    -adresse: String
+    -prixHeure: Float
+    +getCreneauxDisponibles()
+}
 
-    class Creneau {
-        -String id
-        -Date date
-        -Time heureDebut
-        -Time heureFin
-        -StatutCreneau statut
-    }
+class Creneau {
+    -id: String
+    -date: Date
+    -heureDebut: Time
+    -heureFin: Time
+    -statut: StatutCreneau
+}
 
-    class StatutCreneau {
-        <<enumeration>>
-        DISPONIBLE
-        RESERVE
-        INDISPONIBLE
-    }
+class StatutCreneau {
+    <<enumeration>>
+    DISPONIBLE
+    RESERVE
+    INDISPONIBLE
+}
 
-    class Reservation {
-        -String id
-        -String nom
-        -String prenom
-        -String email
-        -String telephone
-        -DateTime dateDepot
-        -Float prix
-        -String cniUrl
-        -StatutReservation statut
-        +confirmer()
-        +annuler()
-    }
+class Reservation {
+    -id: String
+    -nom: String
+    -prenom: String
+    -email: String
+    -telephone: String
+    -dateDepot: DateTime
+    -prix: Float
+    -cniUrl: String
+    -statut: StatutReservation
+    +confirmer()
+    +annuler()
+}
 
-    class StatutReservation {
-        <<enumeration>>
-        EN_ATTENTE
-        VALIDEE
-        REFUSEE
-        ANNULEE
-    }
+class StatutReservation {
+    <<enumeration>>
+    EN_ATTENTE
+    VALIDEE
+    REFUSEE
+    ANNULEE
+}
 
-    class Role {
-        -String name
-        -String guard_name
-    }
+class Role {
+    -name: String
+    -guard_name: String
+}
 
-    class Permission {
-        -String name
-        -String guard_name
-    }
+class Permission {
+    -name: String
+    -guard_name: String
+}
 
-    Utilisateur "*" -- "*" Role : has
-    Role "*" -- "*" Permission : has
-    Utilisateur "*" -- "*" Permission : has_primary
+Utilisateur "*" -- "*" Role : has
+Role "*" -- "*" Permission : has
+Utilisateur "*" -- "*" Permission : has_primary
 
-    Proprietaire "1" --> "*" Terrain : gere
-    Terrain "1" *-- "*" Creneau : contient
-    Locataire "1" --> "*" Reservation : effectue
-    Reservation "1" --> "*" Creneau : reserve
+Proprietaire "1" --> "*" Terrain : gere
+Terrain "1" *-- "*" Creneau : contient
+Locataire "1" --> "*" Reservation : effectue
+Reservation "1" --> "*" Creneau : reserve
+Employe "1" --> "*" Reservation : verifie arrivee

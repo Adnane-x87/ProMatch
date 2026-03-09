@@ -150,21 +150,59 @@ style: |
 
 ---
 
-## 3. Branche Fonctionnelle : Carte Empathie
-
-
-
-
-### 1. carte empathie
+### 1. DESIGN THINKING : Empathie
 
 <div class="img-container">
-  <img src="./images/Image-carte-empatie.png" class="img-methodo" alt="Scrum">
+  <img src="./images/Image-carte-empatie.png" class="img-methodo" alt="Carte d'empathie">
 </div>
 
+---
 
+### 2. DESIGN THINKING : Définition
 
+<div class="sommaire-grid">
+  <div class="dt-card">
+    <h3 style="color: #e74c3c; margin-bottom: 20px;">Le Constat (Frictions)</h3>
+    <ul style="list-style-type: none; padding-left: 0;">
+      <li style="margin-bottom: 15px;">❌ <strong>Gestion Archaïque :</strong> 100% manuelle, risques de doublons et erreurs.</li>
+      <li style="margin-bottom: 15px;">❌ <strong>Communication Lente :</strong> Dépendance totale à l'intermédiaire téléphonique.</li>
+      <li style="margin-bottom: 15px;">❌ <strong>Zéro Visibilité :</strong> Aucune vue en temps réel sur les disponibilités.</li>
+      <li style="margin-bottom: 15px;">❌ <strong>Insécurité :</strong> Pas de preuve d'achat et risque élevé d'absentéisme.</li>
+    </ul>
+  </div>
+  <div class="dt-card" style="border-top-color: #27ae60;">
+    <h3 style="color: #27ae60; margin-bottom: 20px;">Notre Solution</h3>
+    <ul style="list-style-type: none; padding-left: 0;">
+      <li style="margin-bottom: 15px;">✅ <strong>Digitalisation :</strong> Centralisation de l'offre et de la demande.</li>
+      <li style="margin-bottom: 15px;">✅ <strong>Self-Service :</strong> Réservation instantanée sans intervention humaine.</li>
+      <li style="margin-bottom: 15px;">✅ <strong>Fiabilité :</strong> Vérification de CNI et confirmations numériques.</li>
+      <li style="margin-bottom: 15px;">✅ <strong>Suivi :</strong> Tableau de bord pour les revenus et l'historique.</li>
+    </ul>
+  </div>
+</div>
 
 ---
+
+### 3. DESIGN THINKING : Idéation
+
+<div class="sommaire-grid">
+  <div class="dt-card" style="border-top-color: #f39c12;">
+    <h3 style="color: #f39c12; margin-bottom: 20px;">Stratégie Digitale</h3>
+    <ul style="list-style-type: none; padding-left: 0;">
+      <li style="margin-bottom: 15px;">💡 <strong>Disponibilité 24/7 :</strong> Plateforme en ligne pour éliminer les barrières temporelles.</li>
+      <li style="margin-bottom: 15px;">💡 <strong>Validation CNI :</strong> Processus sécurisé avec approbation administrateur.</li>
+      <li style="margin-bottom: 15px;">💡 <strong>Gestion Mobile :</strong> Interface optimisée pour les réservations sur le terrain.</li>
+      <li style="margin-bottom: 15px;">💡 <strong>Analyse Métier :</strong> Dashboard pour optimiser l'occupation des terrains.</li>
+    </ul>
+  </div>
+  <div class="dt-card" style="border-top-color: #088dc7;">
+     <h3 style="color: #088dc7; margin-bottom: 20px;">Expérience Utilisateur</h3>
+    <p>Transformation d'un processus verbal et incertain en une expérience numérique fluide, sécurisée et valorisante pour le complexe sportif.</p>
+  </div>
+</div>
+
+---
+
 
 ## Branche Fonctionnelle : Cas d'utilisation
 

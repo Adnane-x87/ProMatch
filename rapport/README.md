@@ -153,6 +153,10 @@ style: |
 
 ## 1. Contexte du projet
 
+- Dans un secteur sportif en pleine transformation digitale, les propriétaires de complexes sportifs doivent gérer de nombreuses tâches administratives complexes : gestion des réservations, organisation des créneaux d'utilisation, suivi des clients, vérification des identités et gestion des paiements.
+
+
+- M. Karim B., propriétaire expérimenté de complexe sportif, gère 4 terrains de football et doit garantir une expérience de qualité à ses clients. Malgré ses compétences opérationnelles et son expertise métier, ces tâches manuelles prennent beaucoup de temps et limitent son efficacité professionnelle
 
 
 ---
