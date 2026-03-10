@@ -1,109 +1,109 @@
 classDiagram
-%% Classes Utilisateur et ses sous-classes
-class Utilisateur {
+
+class User {
     <<abstract>>
-    - id : String
-    - nom : String
-    - prenom : String
-    - email : String
-    - motDePasse : String
-    - telephone : String
-    + seConnecter()
-    + seDeconnecter()
+    id : String
+    firstName : String
+    lastName : String
+    email : String
+    password : String
+    phone : String
+    login()
+    logout()
 }
 
-class Proprietaire {
-    - siret : String
-    - dateInscription : Date
-    + validerReservation(r : Reservation)
-    + verifierCNI(cniUrl : String)
+class Owner {
+    siret : String
+    registrationDate : Date
+    validateReservation(r : Reservation)
+    verifyCNI(cniUrl : String)
 }
 
-class Locataire {
-    - cin : String
-    - dateNaissance : Date
-    + rechercherTerrain()
-    + reserver(c : Creneau, payload : ReservationPayload)
-    + annulerReservation(r : Reservation)
+class Tenant {
+    cin : String
+    birthDate : Date
+    searchField()
+    reserve(c : TimeSlot, payload : ReservationPayload)
+    cancelReservation(r : Reservation)
 }
 
-class Employe {
-    - poste : String
-    - dateEmbauche : Date
-    + verifierArriveeClient(r : Reservation)
-    + consulterPlanning()
+class Employee {
+    position : String
+    hireDate : Date
+    verifyClientArrival(r : Reservation)
+    viewSchedule()
 }
 
-Utilisateur <|-- Proprietaire
-Utilisateur <|-- Locataire
-Utilisateur <|-- Employe
+User <|-- Owner
+User <|-- Tenant
+User <|-- Employee
 
-%% Classe Terrain et Creneau
-class Terrain {
-    - id : String
-    - nom : String
-    - description : String
-    - adresse : String
-    - prixHeure : Float
-    + getCreneauxDisponibles()
+
+class Field {
+    id : String
+    name : String
+    description : String
+    address : String
+    pricePerHour : Float
+    getAvailableTimeSlots()
 }
 
-class Creneau {
-    - id : String
-    - date : Date
-    - heureDebut : Time
-    - heureFin : Time
-    - statut : StatutCreneau
+class TimeSlot {
+    id : String
+    date : Date
+    startTime : Time
+    endTime : Time
+    status : TimeSlotStatus
 }
 
-class StatutCreneau {
-    DISPONIBLE
-    RESERVE
-    INDISPONIBLE
+class TimeSlotStatus {
+    AVAILABLE
+    RESERVED
+    UNAVAILABLE
 }
 
-Terrain "1" *-- "*" Creneau : contient
+Field "1" *-- "*" TimeSlot
 
-%% Classe Reservation
+
 class Reservation {
-    - id : String
-    - nom : String
-    - prenom : String
-    - email : String
-    - telephone : String
-    - dateDepot : DateTime
-    - prix : Float
-    - cniUrl : String
-    - statut : StatutReservation
-    + confirmer()
-    + annuler()
+    id : String
+    firstName : String
+    lastName : String
+    email : String
+    phone : String
+    requestDate : DateTime
+    price : Float
+    cniUrl : String
+    status : ReservationStatus
+    confirm()
+    cancel()
 }
 
-class StatutReservation {
-    EN_ATTENTE
-    VALIDEE
-    REFUSEE
-    ANNULEE
+class ReservationStatus {
+    PENDING
+    APPROVED
+    REJECTED
+    CANCELED
 }
 
-Locataire "1" --> "*" Reservation : effectue
-Reservation "1" --> "*" Creneau : reserve
-Employe "1" --> "*" Reservation : verifie_arrivee
+Tenant "1" --> "*" Reservation
+Reservation "1" --> "*" TimeSlot
+Employee "1" --> "*" Reservation
 
-%% Classes Role et Permission
+
 class Role {
-    - name : String
-    - guard_name : String
+    name : String
+    guard_name : String
 }
 
 class Permission {
-    - name : String
-    - guard_name : String
+    name : String
+    guard_name : String
 }
 
-Utilisateur "*" -- "*" Role : has
-Role "*" -- "*" Permission : has
-Utilisateur "*" -- "*" Permission : has_primary
+User "*" -- "*" Role
+Role "*" -- "*" Permission
+User "*" -- "*" Permission
 
-%% Proprietaire gère les terrains
-Proprietaire "1" --> "*" Terrain : gere
+
+Owner "1" --> "*" Field
