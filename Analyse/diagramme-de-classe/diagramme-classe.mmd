@@ -13,10 +13,9 @@ class User {
 }
 
 class Owner {
-    siret : String
     registrationDate : Date
     validateReservation(r : Reservation)
-    verifyCNI(cniUrl : String)
+    verifyCNI(cniImage : String)
 }
 
 class Tenant {
@@ -37,7 +36,6 @@ class Employee {
 User <|-- Owner
 User <|-- Tenant
 User <|-- Employee
-
 
 class Field {
     id : String
@@ -64,7 +62,6 @@ class TimeSlotStatus {
 
 Field "1" *-- "*" TimeSlot
 
-
 class Reservation {
     id : String
     firstName : String
@@ -73,7 +70,7 @@ class Reservation {
     phone : String
     requestDate : DateTime
     price : Float
-    cniUrl : String
+    cniImage : String
     status : ReservationStatus
     confirm()
     cancel()
@@ -90,7 +87,6 @@ Tenant "1" --> "*" Reservation
 Reservation "1" --> "1" TimeSlot
 Employee "1" --> "*" Reservation
 
-
 class Role {
     name : String
     guard_name : String
@@ -104,6 +100,5 @@ class Permission {
 User "*" -- "*" Role
 Role "*" -- "*" Permission
 User "*" -- "*" Permission
-
 
 Owner "1" --> "*" Field

@@ -1,0 +1,4 @@
+id,owner_id,name,description,address,price_per_hour
+1,1,Stade Municipal,Terrain de foot 5v5 gazon synthetique,Tangier-castilla,200.00
+2,1,Complexe Sportif,Terrain de foot 7v7,Tangier-castilla,350.00
+ 

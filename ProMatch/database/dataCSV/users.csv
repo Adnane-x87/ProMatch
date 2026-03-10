@@ -1,0 +1,5 @@
+id,first_name,last_name,email,password,phone,type
+1,Ahmed,Benali,ahmed@example.com,password,0600000001,owner
+2,said,Mansour,said@example.com,password,0600000002,tenant
+3,Karim,Naciri,karim@example.com,password,0600000003,employee
+4,Youssef,Tazi,youssef@example.com,password,0600000004,tenant
