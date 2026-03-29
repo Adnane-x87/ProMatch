@@ -4,26 +4,36 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Tenant extends Model {
-    protected $fillable = ['user_id', 'cin', 'birth_date'];
+class Tenant extends Model
+{
+    protected $fillable = ['user_id', 'cin', 'birth_date', 'cni_image', 'is_cni_valid'];
 
-    public function user() { return $this->belongsTo(User::class); }
-    public function reservations() { return $this->hasMany(Reservation::class); }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
 
-    public function searchField() {
+    public function searchField()
+    {
         return Field::with('timeSlots')->get();
     }
 
-    public function reserve(TimeSlot $slot, array $payload): Reservation {
+    public function reserve(TimeSlot $slot, array $payload): Reservation
+    {
         return Reservation::create([
-            'tenant_id'    => $this->id,
+            'tenant_id' => $this->id,
             'time_slot_id' => $slot->id,
             'request_date' => now(),
             ...$payload
         ]);
     }
 
-    public function cancelReservation(Reservation $r) {
+    public function cancelReservation(Reservation $r)
+    {
         $r->cancel();
     }
 }

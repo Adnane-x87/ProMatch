@@ -32,6 +32,8 @@ class PublicReservationServiceTest extends TestCase
 
     public function test_can_make_reservation()
     {
+        \Illuminate\Support\Facades\Storage::fake('public');
+
         $owner = $this->createOwner();
         $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant1@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
         $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1', 'birth_date' => '1990-01-01']);
@@ -45,7 +47,7 @@ class PublicReservationServiceTest extends TestCase
             'start_time' => '2024-06-01 10:00:00',
             'end_time' => '2024-06-01 11:00:00',
             'price' => 50,
-            'cni_url' => 'cni.jpg'
+            'cni_image' => \Illuminate\Http\UploadedFile::fake()->image('cni.jpg')
         ];
 
         $reservation = $this->reservationService->reserve($tenant->id, $field->id, $data);

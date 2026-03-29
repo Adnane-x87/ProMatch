@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class CniService
 {
@@ -18,12 +19,15 @@ class CniService
     {
         $tenant = Tenant::findOrFail($tenantId);
         $tenant->update(['is_cni_valid' => $isApproved]);
-        
-        // Optionally, if rejected, clean up the URL
+
+        // Optionally, if rejected, clean up the image file
         if (!$isApproved) {
-            $tenant->update(['cni_document_url' => null]);
+            if ($tenant->cni_image) {
+                Storage::disk('public')->delete($tenant->cni_image);
+            }
+            $tenant->update(['cni_image' => null]);
         }
-        
+
         return true;
     }
 
@@ -35,7 +39,7 @@ class CniService
     public function getPendingCNIs(): Collection
     {
         return Tenant::with('user')
-            ->whereNotNull('cni_document_url')
+            ->whereNotNull('cni_image')
             ->where('is_cni_valid', false)
             ->get();
     }
