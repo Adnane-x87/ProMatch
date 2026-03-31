@@ -18,7 +18,7 @@ class PublicFieldController extends Controller
     public function index(Request $request)
     {
         // Pass query parameters (like city, date) to the service for searching
-        $fields = $this->publicFieldService->searchFields($request->query());
+        $fields = $this->publicFieldService->searchFields($request->query('query'));
         return response()->json(['success' => true, 'data' => $fields]);
     }
 
