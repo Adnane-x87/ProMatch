@@ -27,7 +27,7 @@ class ReservationServiceTest extends TestCase
     public function test_can_get_all_reservations()
     {
         $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
-        $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now(), 'siret' => 's2']);
+        $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
         
         $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't@t.com', 'password' => '1', 'phone' => '2', 'type' => 'tenant']);
@@ -55,7 +55,7 @@ class ReservationServiceTest extends TestCase
     public function test_can_cancel_reservation()
     {
         $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
-        $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now(), 'siret' => 's3']);
+        $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
         $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't_cancel@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
@@ -86,7 +86,7 @@ class ReservationServiceTest extends TestCase
     public function test_can_reject_reservation()
     {
         $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
-        $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now(), 'siret' => 's4']);
+        $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
         $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't_reject@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);

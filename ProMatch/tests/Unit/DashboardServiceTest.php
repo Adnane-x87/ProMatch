@@ -27,7 +27,7 @@ class DashboardServiceTest extends TestCase
     public function test_can_get_dashboard_stats()
     {
         $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
-        $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now(), 'siret' => 's5']);
+        $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
         $tenantUser1 = User::create(['first_name' => 'T1', 'last_name' => 'U1', 'email' => 't1@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);

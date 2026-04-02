@@ -27,7 +27,7 @@ class StaffServiceTest extends TestCase
     private function createOwner()
     {
         $u = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'owner' . uniqid() . '@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
-        return Owner::create(['user_id' => $u->id, 'registration_date' => now(), 'siret' => 'siret' . uniqid()]);
+        return Owner::create(['user_id' => $u->id, 'registration_date' => now()]);
     }
 
     public function test_can_get_daily_schedule()

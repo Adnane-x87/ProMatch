@@ -13,11 +13,23 @@ use App\Models\Reservation;
 
 class CsvSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+        // Disable FK checks so we can truncate freely
+        \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        // Truncate in reverse dependency order
+        Reservation::truncate();
+        TimeSlot::truncate();
+        Field::truncate();
+        Employee::truncate();
+        Tenant::truncate();
+        Owner::truncate();
+        User::truncate();
+
+        \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        // Seed in dependency order
         $this->seedCsv(User::class, 'users.csv');
         $this->seedCsv(Owner::class, 'owners.csv');
         $this->seedCsv(Tenant::class, 'tenants.csv');

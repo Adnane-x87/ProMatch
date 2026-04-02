@@ -26,7 +26,7 @@ class PublicFieldServiceTest extends TestCase
     public function test_can_search_fields()
     {
         $u = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o1@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
-        $o = Owner::create(['user_id' => $u->id, 'registration_date' => now(), 'siret' => 'S1']);
+        $o = Owner::create(['user_id' => $u->id, 'registration_date' => now()]);
 
         Field::create(['owner_id' => $o->id, 'name' => 'Stade de France', 'address' => 'Saint-Denis', 'price_per_hour' => 100]);
         Field::create(['owner_id' => $o->id, 'name' => 'Parc des Princes', 'address' => 'Paris', 'price_per_hour' => 120]);
@@ -43,7 +43,7 @@ class PublicFieldServiceTest extends TestCase
     public function test_can_get_field_details()
     {
         $u = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o2@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
-        $o = Owner::create(['user_id' => $u->id, 'registration_date' => now(), 'siret' => 'S2']);
+        $o = Owner::create(['user_id' => $u->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $o->id, 'name' => 'Field 1', 'address' => 'Address 1', 'price_per_hour' => 50]);
         
         $details = $this->fieldService->getFieldDetails($field->id);
@@ -53,7 +53,7 @@ class PublicFieldServiceTest extends TestCase
     public function test_can_get_available_slots()
     {
         $u = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o3@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
-        $o = Owner::create(['user_id' => $u->id, 'registration_date' => now(), 'siret' => 'S3']);
+        $o = Owner::create(['user_id' => $u->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $o->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
         TimeSlot::create([
             'field_id' => $field->id,
