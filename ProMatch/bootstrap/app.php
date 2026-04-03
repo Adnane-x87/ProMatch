@@ -12,8 +12,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->statefulApi();
-    })
+    // 🚀 NEW: Exempting all API routes from CSRF protection
+    // This allows the NativePHP app to send POST/PUT requests without a token
+    $middleware->validateCsrfTokens(except: [
+        'api/*'
+    ]);
+
+    $middleware->statefulApi();
+})
+
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

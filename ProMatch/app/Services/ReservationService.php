@@ -14,16 +14,16 @@ class ReservationService
     {
         // Map frontend field names to DB columns
         $reservation = Reservation::create([
-            'field_id'     => $data['field_id'],
+            'field_id' => $data['field_id'],
             'time_slot_id' => $data['time_slot_id'] ?? null,
-            'tenant_id'    => $user?->tenant?->id ?? null,
-            'first_name'   => $data['first_name'],
-            'last_name'    => $data['last_name'],
-            'phone'        => $data['phone'],
+            'tenant_id' => $user?->tenant?->id ?? null,
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'phone' => $data['phone'],
             'request_date' => $data['date'],
-            'start_time'   => $data['selected_time'] ?? null,
-            'cni_image'    => $data['cni_image_base64'] ?? null,
-            'status'       => 'PENDING',
+            'start_time' => $data['selected_time'] ?? null,
+            'cni_image' => $data['cni_image_base64'] ?? null,
+            'status' => 'PENDING',
         ]);
 
         return $reservation;
