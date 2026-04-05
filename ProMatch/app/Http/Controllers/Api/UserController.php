@@ -23,13 +23,29 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        $data = $this->userService->login($request->all());
-        
-        if (!$data) {
-            return response()->json(['success' => false, 'message' => 'Invalid credentials'], 401);
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $user = \App\Models\User::where('email', $request->email)->first();
+
+        if (!$user || !\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Identifiants invalides'
+            ], 401);
         }
 
-        return response()->json(['success' => true, 'data' => $data]);
+        // If using Sanctum, we could create a token here:
+        // $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Connexion réussie',
+            'data' => $user,
+            // 'token' => $token
+        ]);
     }
 
     public function logout(Request $request)
