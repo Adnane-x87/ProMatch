@@ -1,7 +1,5 @@
 classDiagram
-
 class User {
-    <<abstract>>
     id : String
     firstName : String
     lastName : String
@@ -11,13 +9,11 @@ class User {
     login()
     logout()
 }
-
 class Owner {
     registrationDate : Date
     validateReservation(r : Reservation)
     verifyCNI(cniImage : String)
 }
-
 class Tenant {
     cin : String
     birthDate : Date
@@ -25,18 +21,15 @@ class Tenant {
     reserve(c : TimeSlot, payload : ReservationPayload)
     cancelReservation(r : Reservation)
 }
-
 class Employee {
     position : String
     hireDate : Date
     verifyClientArrival(r : Reservation)
     viewSchedule()
 }
-
 User <|-- Owner
 User <|-- Tenant
 User <|-- Employee
-
 class Field {
     id : String
     name : String
@@ -45,7 +38,6 @@ class Field {
     pricePerHour : Float
     getAvailableTimeSlots()
 }
-
 class TimeSlot {
     id : String
     date : Date
@@ -53,15 +45,13 @@ class TimeSlot {
     endTime : Time
     status : TimeSlotStatus
 }
-
 class TimeSlotStatus {
     AVAILABLE
     RESERVED
     UNAVAILABLE
 }
-
 Field "1" *-- "*" TimeSlot
-
+TimeSlot --> TimeSlotStatus
 class Reservation {
     id : String
     firstName : String
@@ -75,30 +65,25 @@ class Reservation {
     confirm()
     cancel()
 }
-
 class ReservationStatus {
     PENDING
     APPROVED
     REJECTED
     CANCELED
 }
-
+Reservation --> ReservationStatus
 Tenant "1" --> "*" Reservation
 Reservation "1" --> "1" TimeSlot
 Employee "1" --> "*" Reservation
-
 class Role {
     name : String
     guard_name : String
 }
-
 class Permission {
     name : String
     guard_name : String
 }
-
 User "*" -- "*" Role
 Role "*" -- "*" Permission
 User "*" -- "*" Permission
-
 Owner "1" --> "*" Field
