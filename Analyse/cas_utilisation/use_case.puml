@@ -1,38 +1,50 @@
 @startuml
-title Diagramme de Cas d'Utilisation — Système de Gestion des Terrains de Sport
-
+top to bottom direction
 skinparam actorStyle awesome
 skinparam usecase {
-    BackgroundColor #E8F4FD
-    BorderColor #2980B9
+  BackgroundColor #E8F4FD
+  BorderColor #2980B9
+  FontSize 13
+}
+skinparam ArrowColor #555555
+skinparam ArrowFontSize 11
+
+title Système de Gestion des Terrains de Sport
+
+actor "Admin (Propriétaire)" as Admin #lightyellow
+actor "User (Locataire)"     as User  #lightgreen
+actor "Staff (Employé)"      as Staff #lightblue
+actor "Mobile (Application)" as Mobile #lightgray
+
+package "Authentification" {
+  usecase "S'inscrire / Se connecter" as UC1
 }
 
-actor "Admin\n(Propriétaire)" as Admin
-actor "User\n(Locataire)" as User
-actor "Staff\n(Employé)" as Staff
+package "Gestion des Terrains (Admin)" {
+  usecase "Gérer les terrains\n(CRUD)" as UC2
+  usecase "Gérer les créneaux\nde réservation" as UC3
+  usecase "Valider une réservation" as UC4
+  usecase "Vérifier la CNI\n(Accepter / Refuser)" as UC5
+  usecase "Voir le tableau de bord\n(Statistiques / Revenus)" as UC6
+  usecase "Gérer les utilisateurs\n(Consulter / Bloquer)" as UC7
+}
 
-rectangle "Système de Gestion des Terrains de Sport" {
+package "Réservation (Utilisateur)" {
+  usecase "Rechercher un terrain" as UC8
+  usecase "Réserver un créneau" as UC9
+  usecase "Uploader sa CNI" as UC10
+  usecase "Recevoir une confirmation" as UC11
+  usecase "Annuler une réservation" as UC12
+  usecase "Consulter l'historique\ndes réservations" as UC13
+}
 
-    ' --- Admin use cases ---
-    usecase "S'inscrire / Se connecter" as UC1
-    usecase "Gérer les terrains\n(CRUD)" as UC2
-    usecase "Gérer les créneaux\nde réservation" as UC3
-    usecase "Valider une réservation" as UC4
-    usecase "Vérifier la CNI\n(Accepter / Refuser)" as UC5
-    usecase "Voir le tableau de bord\n(Statistiques / Revenus)" as UC6
-    usecase "Gérer les utilisateurs\n(Consulter / Bloquer)" as UC7
+package "Planning (Staff)" {
+  usecase "Consulter le planning\ndes réservations" as UC14
+  usecase "Vérifier l'arrivée\ndu client" as UC15
+}
 
-    ' --- User use cases ---
-    usecase "Rechercher un terrain" as UC8
-    usecase "Réserver un créneau" as UC9
-    usecase "Uploader sa CNI" as UC10
-    usecase "Recevoir une confirmation" as UC11
-    usecase "Annuler une réservation" as UC12
-    usecase "Consulter l'historique\ndes réservations" as UC13
-
-    ' --- Staff use cases ---
-    usecase "Consulter le planning\ndes réservations" as UC14
-    usecase "Vérifier l'arrivée\ndu client" as UC15
+package "API Mobile" {
+  usecase "Consommer l'API" as UC16
 }
 
 ' Admin relations
@@ -42,7 +54,6 @@ Admin --> UC3
 Admin --> UC4
 Admin --> UC6
 Admin --> UC7
-UC4 ..> UC5 : <<include>>
 
 ' User relations
 User --> UC1
@@ -50,15 +61,16 @@ User --> UC8
 User --> UC9
 User --> UC12
 User --> UC13
-UC9 ..> UC10 : <<include>>
-UC9 ..> UC11 : <<include>>
 
 ' Staff relations
 Staff --> UC14
 Staff --> UC15
 
-' Mobile actor and use case both outside the rectangle
-actor "Mobile\n(Application)" as Mobile
-usecase "Consommer l'API" as UC16
+' Mobile relations
 Mobile --> UC16
+
+' Includes
+UC4  ..> UC5  : <<include>>
+UC9  ..> UC10 : <<include>>
+UC9  ..> UC11 : <<include>>
 @enduml
