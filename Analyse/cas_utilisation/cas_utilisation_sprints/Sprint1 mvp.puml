@@ -1,44 +1,65 @@
 @startuml
-title Sprint 1 — MVP | Système de Gestion des Terrains de Sport
-
-skinparam packageStyle rectangle
+top to bottom direction
 skinparam actorStyle awesome
 skinparam usecase {
-    BackgroundColor #D5F5E3
-    BorderColor #27AE60
+  BackgroundColor #D5F5E3
+  BorderColor #27AE60
+  FontSize 13
+}
+skinparam ArrowColor #555555
+skinparam ArrowFontSize 11
+
+title Sprint 1 — MVP | Système de Gestion des Terrains de Sport
+
+actor "Admin (Propriétaire)" as Admin #lightyellow
+actor "User (Locataire)"     as User  #lightgreen
+actor "Staff (Employé)"      as Staff #lightblue
+actor "Mobile (Application)" as Mobile #lightgray
+
+package "Authentification" {
+  usecase "S'inscrire / Se connecter" as UC1
 }
 
-actor "Admin\n(Propriétaire)" as Admin
-actor "User\n(Locataire)" as User
-actor "Staff\n(Employé)" as Staff
-
-rectangle "Sprint 1 — MVP" {
-    usecase "S'inscrire / Se connecter" as UC1
-    usecase "Gérer les terrains\n(CRUD)" as UC2
-    usecase "Gérer les créneaux\nde réservation" as UC3
-    usecase "Valider une réservation" as UC4
-    usecase "Rechercher un terrain" as UC5
-    usecase "Réserver un créneau" as UC6
-    usecase "Uploader sa CNI" as UC7
-    usecase "Recevoir une confirmation" as UC8
-    usecase "Consulter le planning\ndes réservations" as UC9
+package "Gestion des Terrains (Admin)" {
+  usecase "Gérer les terrains\n(CRUD)" as UC2
+  usecase "Gérer les créneaux\nde réservation" as UC3
+  usecase "Valider une réservation" as UC4
 }
 
+package "Réservation (Utilisateur)" {
+  usecase "Rechercher un terrain" as UC5
+  usecase "Réserver un créneau" as UC6
+  usecase "Uploader sa CNI" as UC7
+  usecase "Recevoir une confirmation" as UC8
+}
+
+package "Planning (Staff)" {
+  usecase "Consulter le planning\ndes réservations" as UC9
+}
+
+package "API Mobile" {
+  usecase "Consommer l'API" as UC10
+}
+
+' Admin relations
 Admin --> UC1
 Admin --> UC2
 Admin --> UC3
 Admin --> UC4
 
+' User relations
 User --> UC1
 User --> UC5
 User --> UC6
-UC6 ..> UC7 : <<include>>
-UC6 ..> UC8 : <<include>>
 
+
+' Staff relations
 Staff --> UC9
 
-' Mobile actor and use case both outside the rectangle
-actor "Mobile\n(Application)" as Mobile
-usecase "Consommer l'API\" as UC10
+' Mobile relations
 Mobile --> UC10
+
+' Includes
+UC6 ..> UC7 : <<include>>
+UC6 ..> UC8 : <<include>>
 @enduml
