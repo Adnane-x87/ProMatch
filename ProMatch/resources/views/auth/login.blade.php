@@ -16,7 +16,7 @@
         </div>
 
         <!-- Form -->
-        <form method="POST" action="{{ route('login') }}" class="space-y-5">
+        <form method="POST" action="{{ route('login') }}" class="space-y-5" onsubmit="handleLogin(event)">
             @csrf
             <div>
                 <label class="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
@@ -104,4 +104,12 @@
             <a href="{{ route('register') }}" class="font-bold text-brand-600 hover:text-brand-700">Créer un compte</a>
         </p>
     </div>
+
+    <script>
+        function handleLogin(e) {
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg> Connexion...`;
+        }
+    </script>
 @endsection

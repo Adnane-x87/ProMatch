@@ -305,25 +305,54 @@
         }
 
         /* ── Form submit ─────────────────────────────────────── */
-        function handleSubmit(e) {
-            // Un-comment to allow real form submission, for now it simulates success locally if you want
-            // e.preventDefault();
+        async function handleSubmit(e) {
+            e.preventDefault();
 
             const pwd = document.getElementById('password').value;
             const cpwd = document.getElementById('password_confirmation').value;
             const err = document.getElementById('match-error');
 
             if (pwd !== cpwd) {
-                e.preventDefault();
                 err.classList.remove('hidden');
                 document.getElementById('password_confirmation').classList.add('border-red-400');
                 return;
             }
             err.classList.add('hidden');
 
+            const form = e.target;
+            const formData = new FormData(form);
             const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg> Création en cours...`;
+            const originalText = btn.innerHTML;
+
+            try {
+                btn.disabled = true;
+                btn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg> Création en cours...`;
+
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    form.classList.add('hidden');
+                    document.getElementById('successState').classList.remove('hidden');
+                } else {
+                    alert('Erreur: ' + (result.message || 'Une erreur est survenue.'));
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Une erreur de connexion est survenue.');
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
         }
     </script>
 @endpush
