@@ -84,7 +84,7 @@
                     <!-- Date -->
                     <div class="p-6 border-b border-slate-100">
                         <label class="block text-sm font-medium text-slate-700 mb-2" for="date">Date</label>
-                        <input type="date" id="date" name="reservation_date"
+                        <input type="date" id="date" name="date"
                             class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none">
                     </div>
 
@@ -106,7 +106,7 @@
                                 class="time-slot py-2.5 px-3 rounded-lg border border-slate-200 text-sm font-medium text-slate-400 bg-slate-50 cursor-not-allowed text-center"
                                 disabled>21:00</button>
                         </div>
-                        <input type="hidden" id="selectedTime" name="reservation_time">
+                        <input type="hidden" id="selectedTime" name="selected_time">
                     </div>
 
                     <!-- User Info -->
@@ -202,13 +202,58 @@
             });
         });
 
-        // Uncomment to intercept form submission and show modal
-        /*
-        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        // Intercept form submission and show modal using AJAX
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            document.getElementById('successModal').classList.remove('hidden');
+            
+            const form = e.target;
+            const formData = new FormData(form);
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            
+            // Basic validation
+            if (!formData.get('selected_time')) {
+                alert('Veuillez sélectionner une heure.');
+                return;
+            }
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="inline-flex items-center gap-2"><svg class="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Envoi en cours...</span>';
+
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Update confirmation modal info
+                    const terrainSelect = document.getElementById('terrain');
+                    document.getElementById('confirmTerrain').textContent = terrainSelect.options[terrainSelect.selectedIndex].text;
+                    document.getElementById('confirmDate').textContent = formData.get('date');
+                    document.getElementById('confirmTime').textContent = formData.get('selected_time') + ':00';
+                    
+                    // Show modal
+                    document.getElementById('successModal').classList.remove('hidden');
+                    document.getElementById('successModal').classList.add('flex');
+                    form.reset();
+                } else {
+                    alert('Erreur: ' + (result.message || 'Une erreur est survenue lors de la réservation.'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Une erreur de connexion est survenue. Veuillez réessayer.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
         });
-        */
     </script>
 </body>
 </html>

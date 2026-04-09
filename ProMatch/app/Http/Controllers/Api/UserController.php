@@ -38,13 +38,13 @@ class UserController extends Controller
         }
 
         // If using Sanctum, we could create a token here:
-        // $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'success' => true,
             'message' => 'Connexion réussie',
             'data' => $user,
-            // 'token' => $token
+            'token' => $token
         ]);
     }
 
