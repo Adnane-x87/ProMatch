@@ -26,27 +26,23 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
             <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Total Clients</p>
-            {{-- TODO: wire up $totalClients --}}
-            <p class="text-3xl font-bold text-slate-900">{{ $totalClients ?? 142 }}</p>
-            <p class="text-xs text-brand-600 font-medium mt-1">↑ +8 ce mois</p>
+            <p class="text-3xl font-bold text-slate-900">{{ $totalClients }}</p>
+            <p class="text-xs text-brand-600 font-medium mt-1">Base totale</p>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
             <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Actifs (30j)</p>
-            {{-- TODO: wire up $activeClients --}}
-            <p class="text-3xl font-bold text-slate-900">{{ $activeClients ?? 58 }}</p>
-            <p class="text-xs text-slate-400 font-medium mt-1">40.9% du total</p>
+            <p class="text-3xl font-bold text-slate-900">{{ $activeClients }}</p>
+            <p class="text-xs text-slate-400 font-medium mt-1">Utilisateurs récents</p>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
             <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">CNI Validée</p>
-            {{-- TODO: wire up $validatedCniCount --}}
-            <p class="text-3xl font-bold text-slate-900">{{ $validatedCniCount ?? 120 }}</p>
-            <p class="text-xs text-emerald-600 font-medium mt-1">84.5% validés</p>
+            <p class="text-3xl font-bold text-slate-900">{{ $validatedCniCount }}</p>
+            <p class="text-xs text-emerald-600 font-medium mt-1">Identités vérifiées</p>
         </div>
         <div class="bg-rose-50 rounded-xl border border-rose-100 p-5">
             <p class="text-xs font-semibold text-rose-500 uppercase tracking-wider mb-1">En attente CNI</p>
-            {{-- TODO: wire up $pendingValidationsCount --}}
-            <p class="text-3xl font-bold text-rose-700">{{ $pendingValidationsCount ?? 22 }}</p>
-            <p class="text-xs text-rose-500 font-medium mt-1">À valider</p>
+            <p class="text-3xl font-bold text-rose-700">{{ $pendingValidationsCount }}</p>
+            <p class="text-xs text-rose-500 font-medium mt-1">À vérifier</p>
         </div>
     </div>
 
@@ -84,64 +80,48 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
-                    {{-- TODO: loop through $clients --}}
-                    
-                    <!-- Row 1 -->
+                    @foreach($clients as $client)
                     <tr class="hover:bg-slate-50/60 transition-colors">
                         <td class="px-5 py-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">YM</div>
-                                <span class="font-semibold text-slate-800">Yassine Moussaoui</span>
+                                <div class="w-9 h-9 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">
+                                    {{ strtoupper(substr($client->user->first_name ?? '?', 0, 1) . substr($client->user->last_name ?? '?', 0, 1)) }}
+                                </div>
+                                <span class="font-semibold text-slate-800">{{ $client->user->first_name ?? '' }} {{ $client->user->last_name ?? '' }}</span>
                             </div>
                         </td>
                         <td class="px-5 py-4">
-                            <p class="text-slate-600 text-xs">yassine.m@gmail.com</p>
-                            <p class="text-slate-400 text-xs mt-0.5">+212 6 12 34 56 78</p>
+                            <p class="text-slate-600 text-xs">{{ $client->user->email ?? '' }}</p>
+                            <p class="text-slate-400 text-xs mt-0.5">{{ $client->phone ?? 'N/A' }}</p>
                         </td>
                         <td class="px-5 py-4">
-                            <span class="text-slate-700 font-semibold">12</span>
+                            <span class="text-slate-700 font-semibold">{{ $client->reservations_count ?? $client->reservations()->count() }}</span>
                             <span class="text-slate-400 text-xs"> séances</span>
                         </td>
-                        <td class="px-5 py-4 font-semibold text-slate-700">3,600 MAD</td>
+                        <td class="px-5 py-4 font-semibold text-slate-700">{{ number_format($client->reservations()->sum('price'), 0) }} MAD</td>
                         <td class="px-5 py-4">
+                            @if($client->is_cni_valid)
                             <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-100">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                                 Validée
                             </span>
-                        </td>
-                        <td class="px-5 py-4 text-right">
-                            <button type="button" class="text-xs text-brand-600 hover:text-brand-700 font-semibold" data-hs-overlay="#hs-client-details-modal">Voir</button>
-                        </td>
-                    </tr>
-                    
-                    <!-- Add other dynamic rows here based on $clients data... -->
-                    <!-- Hardcoded for example -->
-                    <tr class="hover:bg-slate-50/60 transition-colors">
-                        <td class="px-5 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center text-xs font-bold">OB</div>
-                                <span class="font-semibold text-slate-800">Omar Benali</span>
-                            </div>
-                        </td>
-                        <td class="px-5 py-4">
-                            <p class="text-slate-600 text-xs">omar.b@outlook.com</p>
-                            <p class="text-slate-400 text-xs mt-0.5">+212 6 98 76 54 32</p>
-                        </td>
-                        <td class="px-5 py-4">
-                            <span class="text-slate-700 font-semibold">8</span>
-                            <span class="text-slate-400 text-xs"> séances</span>
-                        </td>
-                        <td class="px-5 py-4 font-semibold text-slate-700">2,400 MAD</td>
-                        <td class="px-5 py-4">
+                            @elseif($client->cni_image)
                             <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-xs font-semibold border border-amber-100">
                                 <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
                                 En attente
                             </span>
+                            @else
+                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-50 text-slate-500 text-xs font-semibold border border-slate-100">
+                                <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                                Manquant
+                            </span>
+                            @endif
                         </td>
                         <td class="px-5 py-4 text-right">
                             <button type="button" class="text-xs text-brand-600 hover:text-brand-700 font-semibold" data-hs-overlay="#hs-client-details-modal">Voir</button>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

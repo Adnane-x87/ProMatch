@@ -58,208 +58,62 @@
                 <p class="text-base text-slate-500">
                     Gazon synthétique dernière génération, éclairage LED homologué et vestiaires premium.
                 </p>
+                     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+
+                @foreach($fields as $field)
+                <!-- Terrain Card -->
+                <article class="group bg-white rounded-2xl border border-slate-200 overflow-hidden hover-lift">
+                    <div
+                        class="h-44 bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center relative">
+                        <span
+                            class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold border border-emerald-100">
+                            Disponible
+                        </span>
+                        <svg class="w-16 h-16 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-base font-bold text-slate-900">{{ $field->name }}</h3>
+                            <span class="text-xs font-bold text-slate-400 uppercase">Pro</span>
+                        </div>
+                        <ul class="space-y-1.5 mb-4 text-sm text-slate-600">
+                            <li class="flex items-center gap-2">
+                                <svg class="w-3.5 h-3.5 text-brand-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                Gazon synthétique Pro
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <svg class="w-3.5 h-3.5 text-brand-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                {{ $field->address }}
+                            </li>
+                        </ul>
+                        <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                            <div>
+                                <span class="text-xs text-slate-400 font-bold uppercase block">À partir de</span>
+                                <span class="text-lg font-bold text-slate-900">300 Dh<span
+                                        class="text-xs text-slate-400">/h</span></span>
+                            </div>
+                            <a href="{{ url('/booking') }}"
+                                class="px-4 py-2 bg-slate-900 text-white text-sm font-bold rounded-lg hover:bg-brand-600 transition-colors">
+                                Réserver
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                @endforeach
+
             </div>
-
-            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-
-                <!-- Terrain 1 -->
-                <article class="group bg-white rounded-2xl border border-slate-200 overflow-hidden hover-lift">
-                    <div
-                        class="h-44 bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center relative">
-                        <span
-                            class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold border border-emerald-100">
-                            Disponible
-                        </span>
-                        <svg class="w-16 h-16 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-base font-bold text-slate-900">Terrain N°1</h3>
-                            <span class="text-xs font-bold text-slate-400 uppercase">5vs5</span>
-                        </div>
-                        <ul class="space-y-1.5 mb-4 text-sm text-slate-600">
-                            <li class="flex items-center gap-2">
-                                <svg class="w-3.5 h-3.5 text-brand-500" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7" />
-                                </svg>
-                                Gazon synthétique Pro
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <svg class="w-3.5 h-3.5 text-brand-500" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7" />
-                                </svg>
-                                Éclairage LED 500 Lux
-                            </li>
-                        </ul>
-                        <div class="flex items-center justify-between pt-3 border-t border-slate-100">
-                            <div>
-                                <span class="text-xs text-slate-400 font-bold uppercase block">À partir de</span>
-                                <span class="text-lg font-bold text-slate-900">300 Dh<span
-                                        class="text-xs text-slate-400">/h</span></span>
-                            </div>
-                            <a href="{{ url('/booking') }}"
-                                class="px-4 py-2 bg-slate-900 text-white text-sm font-bold rounded-lg hover:bg-brand-600 transition-colors">
-                                Réserver
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Terrain 2 -->
-                <article class="group bg-white rounded-2xl border border-slate-200 overflow-hidden hover-lift">
-                    <div
-                        class="h-44 bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center relative">
-                        <span
-                            class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-amber-50 text-amber-600 text-xs font-bold border border-amber-100">
-                            Derniers créneaux
-                        </span>
-                        <svg class="w-16 h-16 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-base font-bold text-slate-900">Terrain N°2</h3>
-                            <span class="text-xs font-bold text-slate-400 uppercase">7vs7</span>
-                        </div>
-                        <ul class="space-y-1.5 mb-4 text-sm text-slate-600">
-                            <li class="flex items-center gap-2">
-                                <svg class="w-3.5 h-3.5 text-brand-500" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7" />
-                                </svg>
-                                Gazon synthétique Pro
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <svg class="w-3.5 h-3.5 text-brand-500" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7" />
-                                </svg>
-                                Éclairage LED 500 Lux
-                            </li>
-                        </ul>
-                        <div class="flex items-center justify-between pt-3 border-t border-slate-100">
-                            <div>
-                                <span class="text-xs text-slate-400 font-bold uppercase block">À partir de</span>
-                                <span class="text-lg font-bold text-slate-900">450 Dh<span
-                                        class="text-xs text-slate-400">/h</span></span>
-                            </div>
-                            <a href="{{ url('/booking') }}"
-                                class="px-4 py-2 bg-slate-900 text-white text-sm font-bold rounded-lg hover:bg-brand-600 transition-colors">
-                                Réserver
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Terrain 3 -->
-                <article class="group bg-white rounded-2xl border border-slate-200 overflow-hidden hover-lift">
-                    <div
-                        class="h-44 bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center relative">
-                        <span
-                            class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold border border-emerald-100">
-                            Disponible
-                        </span>
-                        <svg class="w-16 h-16 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-base font-bold text-slate-900">Terrain N°3</h3>
-                            <span class="text-xs font-bold text-slate-400 uppercase">5vs5</span>
-                        </div>
-                        <ul class="space-y-1.5 mb-4 text-sm text-slate-600">
-                            <li class="flex items-center gap-2">
-                                <svg class="w-3.5 h-3.5 text-brand-500" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7" />
-                                </svg>
-                                Gazon synthétique Pro
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <svg class="w-3.5 h-3.5 text-brand-500" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7" />
-                                </svg>
-                                Éclairage LED 500 Lux
-                            </li>
-                        </ul>
-                        <div class="flex items-center justify-between pt-3 border-t border-slate-100">
-                            <div>
-                                <span class="text-xs text-slate-400 font-bold uppercase block">À partir de</span>
-                                <span class="text-lg font-bold text-slate-900">300 Dh<span
-                                        class="text-xs text-slate-400">/h</span></span>
-                            </div>
-                            <a href="{{ url('/booking') }}"
-                                class="px-4 py-2 bg-slate-900 text-white text-sm font-bold rounded-lg hover:bg-brand-600 transition-colors">
-                                Réserver
-                            </a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Terrain 4 - Unavailable -->
-                <article class="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden opacity-60">
-                    <div class="h-44 bg-slate-100 flex items-center justify-center relative">
-                        <span
-                            class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-slate-200 text-slate-500 text-xs font-bold">
-                            Complet
-                        </span>
-                        <svg class="w-16 h-16 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                    </div>
-                    <div class="p-5">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-base font-bold text-slate-500">Terrain N°4</h3>
-                            <span class="text-xs font-bold text-slate-400 uppercase">5vs5</span>
-                        </div>
-                        <ul class="space-y-1.5 mb-4 text-sm text-slate-400">
-                            <li class="flex items-center gap-2">
-                                <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7" />
-                                </svg>
-                                Gazon synthétique Pro
-                            </li>
-                            <li class="flex items-center gap-2">
-                                <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7" />
-                                </svg>
-                                Éclairage LED 500 Lux
-                            </li>
-                        </ul>
-                        <div class="flex items-center justify-between pt-3 border-t border-slate-200">
-                            <div>
-                                <span class="text-xs text-slate-400 font-bold uppercase block">À partir de</span>
-                                <span class="text-lg font-bold text-slate-400">300 Dh<span
-                                        class="text-xs text-slate-400">/h</span></span>
-                            </div>
-                            <button disabled
-                                class="px-4 py-2 bg-slate-200 text-slate-400 text-sm font-bold rounded-lg cursor-not-allowed">
-                                Complet
-                            </button>
-                        </div>
-                    </div>
-                </article>
+</article>
 
             </div>
         </div>
