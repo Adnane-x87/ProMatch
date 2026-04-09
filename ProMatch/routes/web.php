@@ -1,24 +1,22 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ReservationController;
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ReservationController as ApiReservationController;
+use App\Http\Controllers\Api\UserController as ApiUserController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ReservationController;
+use App\Http\Controllers\Admin\ValidationController;
+use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Public\PageController;
 use Illuminate\Http\Request;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PageController::class, 'home'])->name('home');
 
-// GET Routes for pages
-Route::get('/booking', function () {
-    return view('booking');
-})->name('booking');
+// Public Page Routes
+Route::get('/booking', [PageController::class, 'booking'])->name('booking');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
-
-// Authentication Routes
+// Authentication Routes (UI)
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
@@ -33,14 +31,10 @@ Route::get('/forgot-password', function () {
 })->name('password.request');
 
 // POST Routes for form submissions
-Route::post('/booking', [ReservationController::class, 'store']);
-Route::post('/login', [UserController::class, 'login']);
-Route::post('/register', [UserController::class, 'register']);
-
-Route::post('/contact', function (Request $request) {
-    // Simple placeholder for contact form submission
-    return back()->with('success', 'Votre message a été envoyé avec succès !');
-});
+Route::post('/booking', [ApiReservationController::class, 'store']);
+Route::post('/login', [ApiUserController::class, 'login']);
+Route::post('/register', [ApiUserController::class, 'register']);
+Route::post('/contact', [PageController::class, 'submitContact']);
 
 // Admin Routes (Authenticated)
 Route::get('/admin/quick-login', function () {
@@ -53,18 +47,16 @@ Route::get('/admin/quick-login', function () {
 })->name('admin.quick-login');
 
 Route::middleware('auth')->prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    });
-    Route::get('/reservations', function () {
-        return view('admin.reservations');
-    });
-    Route::get('/validations', function () {
-        return view('admin.validations');
-    });
-    Route::get('/clients', function () {
-        return view('admin.clients');
-    });
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('admin.reservations');
+    Route::get('/validations', [ValidationController::class, 'index'])->name('admin.validations');
+    Route::get('/clients', [ClientController::class, 'index'])->name('admin.clients');
+
+    // Action Routes
+    Route::post('/reservations/{id}/confirm', [ReservationController::class, 'confirm']);
+    Route::post('/reservations/{id}/cancel', [ReservationController::class, 'cancel']);
+    Route::post('/validations/{id}/approve', [ValidationController::class, 'approve']);
+    Route::post('/validations/{id}/reject', [ValidationController::class, 'reject']);
 
     // Dashboard Data APIs (Session Authenticated)
     Route::get('/api/stats', [App\Http\Controllers\Api\DashboardController::class, 'stats']);

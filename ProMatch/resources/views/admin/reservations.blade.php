@@ -43,89 +43,74 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">
-                    {{-- TODO: loop through $reservations --}}
-                    
+                    @foreach($reservations as $reservation)
                     <tr class="hover:bg-slate-50/50">
-                        <td class="px-6 py-4 font-mono text-slate-500">#RES-2451</td>
+                        <td class="px-6 py-4 font-mono text-slate-500">#RES-{{ $reservation->id }}</td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-semibold text-slate-600">YM</div>
+                                <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-semibold text-slate-600">
+                                    {{ strtoupper(substr($reservation->first_name, 0, 1) . substr($reservation->last_name, 0, 1)) }}
+                                </div>
                                 <div>
-                                    <p class="font-medium text-slate-900">Yassine Moukrim</p>
-                                    <p class="text-xs text-slate-500">06 12 34 56 78</p>
+                                    <p class="font-medium text-slate-900">{{ $reservation->first_name }} {{ $reservation->last_name }}</p>
+                                    <p class="text-xs text-slate-500">{{ $reservation->phone }}</p>
                                 </div>
                             </div>
                         </td>
                         <td class="px-6 py-4">
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">
-                                Terrain 1
+                                {{ $reservation->field->name ?? 'Terrain' }}
                             </span>
                         </td>
                         <td class="px-6 py-4 text-slate-600">
-                            Aujourd'hui, 18:00
+                            {{ $reservation->request_date }} {{ $reservation->start_time ? substr($reservation->start_time, 0, 5) : '' }}
                         </td>
                         <td class="px-6 py-4 font-medium text-slate-900">
-                            300 DH
+                            {{ $reservation->price ?? '300' }} DH
                         </td>
                         <td class="px-6 py-4">
+                            @if($reservation->status === 'PENDING')
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-xs font-medium border border-amber-100">
                                 <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                                 En attente
                             </span>
+                            @elseif($reservation->status === 'APPROVED' || $reservation->status === 'CONFIRMED')
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-medium border border-emerald-100">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                Confirmé
+                            </span>
+                            @else
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-xs font-medium border border-rose-100">
+                                <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                                {{ $reservation->status }}
+                            </span>
+                            @endif
                         </td>
                         <td class="px-6 py-4 text-right">
                             <div class="flex items-center justify-end gap-2">
-                                <form method="POST" action="{{ url('/admin/reservations/2451/confirm') }}" class="inline-block">
+                                @if($reservation->status === 'PENDING')
+                                <form method="POST" action="{{ url('/admin/reservations/'.$reservation->id.'/confirm') }}" class="inline-block">
                                     @csrf
                                     <button type="submit" class="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors" title="Confirmer">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                     </button>
                                 </form>
-                                <form method="POST" action="{{ url('/admin/reservations/2451/cancel') }}" class="inline-block">
+                                <form method="POST" action="{{ url('/admin/reservations/'.$reservation->id.'/cancel') }}" class="inline-block">
                                     @csrf
                                     <button type="submit" class="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors" title="Annuler">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                                     </button>
                                 </form>
+                                @else
+                                <button class="text-slate-400 hover:text-slate-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg>
+                                </button>
+                                @endif
                             </div>
                         </td>
                     </tr>
+                    @endforeach
 
-                    <!-- Additional rows omitted for brevity, but will dynamically generate from $reservations -->
-                    <tr class="hover:bg-slate-50/50">
-                        <td class="px-6 py-4 font-mono text-slate-500">#RES-2450</td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center text-xs font-semibold text-brand-600">OB</div>
-                                <div>
-                                    <p class="font-medium text-slate-900">Omar Benali</p>
-                                    <p class="text-xs text-slate-500">06 98 76 54 32</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">
-                                Terrain 2
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-slate-600">
-                            Aujourd'hui, 20:00
-                        </td>
-                        <td class="px-6 py-4 font-medium text-slate-900">
-                            450 DH
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-medium border border-emerald-100">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                Confirmé
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <button class="text-slate-400 hover:text-slate-600">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg>
-                            </button>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>

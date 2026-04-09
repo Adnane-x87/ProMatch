@@ -156,14 +156,8 @@
 <script>
     function dashboard() {
         return {
-            stats: {
-                total_clients: 0,
-                active_users: 0,
-                validated_cnis: 0,
-                pending_cnis: 0,
-                todays_income: 0,
-                todays_reservations: 0
-            },
+            stats: @json($stats),
+
             planning: [],
             pendingTasks: [],
 
