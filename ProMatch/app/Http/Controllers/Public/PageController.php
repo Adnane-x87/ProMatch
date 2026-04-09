@@ -3,16 +3,25 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Services\PublicFieldService;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
+    protected $fieldService;
+
+    public function __construct(PublicFieldService $fieldService)
+    {
+        $this->fieldService = $fieldService;
+    }
+
     /**
      * Display the landing page.
      */
     public function home()
     {
-        return view('welcome');
+        $fields = $this->fieldService->searchFields();
+        return view('welcome', compact('fields'));
     }
 
     /**
@@ -20,7 +29,8 @@ class PageController extends Controller
      */
     public function booking()
     {
-        return view('booking');
+        $fields = $this->fieldService->searchFields();
+        return view('booking', compact('fields'));
     }
 
     /**

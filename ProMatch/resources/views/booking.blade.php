@@ -75,9 +75,9 @@
                         <label class="block text-sm font-medium text-slate-700 mb-2" for="terrain">Terrain</label>
                         <select id="terrain" name="terrain_id"
                             class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none">
-                            <option value="1">Terrain 1 — 5vs5 (300 DH/h)</option>
-                            <option value="2">Terrain 2 — 7vs7 (450 DH/h)</option>
-                            <option value="3">Terrain 3 — 5vs5 (300 DH/h)</option>
+                            @foreach($fields as $field)
+                                <option value="{{ $field->id }}">{{ $field->name }} — (300 DH/h)</option>
+                            @endforeach
                         </select>
                     </div>
 
