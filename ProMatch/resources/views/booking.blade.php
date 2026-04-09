@@ -76,7 +76,7 @@
                         <select id="terrain" name="terrain_id"
                             class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none">
                             @foreach($fields as $field)
-                                <option value="{{ $field->id }}">{{ $field->name }} — (300 DH/h)</option>
+                                <option value="{{ $field->id }}" data-price="{{ $field->price_per_hour ?? 300 }}">{{ $field->name }} — ({{ $field->price_per_hour ?? 300 }} DH/h)</option>
                             @endforeach
                         </select>
                     </div>
@@ -93,33 +93,30 @@
                         <label class="block text-sm font-medium text-slate-700 mb-3">Heure disponible <span
                                 class="text-xs font-normal text-slate-400">(créneau 1h)</span></label>
                         <div class="grid grid-cols-4 gap-3" id="timeSlots">
-                            <button type="button"
-                                class="time-slot py-2.5 px-3 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:border-brand-500 hover:text-brand-600 transition-colors text-center"
-                                data-time="18:00">18:00</button>
-                            <button type="button"
-                                class="time-slot py-2.5 px-3 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:border-brand-500 hover:text-brand-600 transition-colors text-center"
-                                data-time="19:00">19:00</button>
-                            <button type="button"
-                                class="time-slot py-2.5 px-3 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:border-brand-500 hover:text-brand-600 transition-colors text-center"
-                                data-time="20:00">20:00</button>
-                            <button type="button"
-                                class="time-slot py-2.5 px-3 rounded-lg border border-slate-200 text-sm font-medium text-slate-400 bg-slate-50 cursor-not-allowed text-center"
-                                disabled>21:00</button>
+                            <!-- Slots will be loaded dynamically -->
+                            <div class="col-span-4 text-center text-sm text-slate-500 py-2">
+                                Veuillez sélectionner une date pour voir les créneaux disponibles.
+                            </div>
                         </div>
                         <input type="hidden" id="selectedTime" name="selected_time">
+                        <input type="hidden" id="timeSlotId" name="time_slot_id">
                     </div>
 
                     <!-- User Info -->
                     <div class="p-6 border-b border-slate-100">
                         <label class="block text-sm font-medium text-slate-700 mb-2">Vos informations</label>
                         <div class="grid grid-cols-2 gap-3 mb-3">
-                            <input type="text" placeholder="Prénom" name="first_name"
+                            <input type="text" placeholder="Prénom" name="first_name" required
                                 class="rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none">
-                            <input type="text" placeholder="Nom" name="last_name"
+                            <input type="text" placeholder="Nom" name="last_name" required
                                 class="rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none">
                         </div>
-                        <input type="tel" placeholder="Téléphone" name="phone"
-                            class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none mb-3">
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <input type="tel" placeholder="Téléphone" name="phone" required
+                                class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none">
+                            <input type="email" placeholder="Email" name="email" required
+                                class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none">
+                        </div>
 
                         <!-- CNI Upload -->
                         <div
@@ -129,7 +126,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            <p class="text-xs text-slate-500">Glissez votre CNI ou <span
+                            <p class="text-xs text-slate-500" id="cniText">Glissez votre CNI ou <span
                                     class="text-brand-600 font-medium">cliquez</span></p>
                             <input type="file" id="cni_image" name="cni_image" accept="image/jpeg, image/png, image/jpg" class="hidden">
                         </div>
@@ -143,6 +140,7 @@
                                     heure)</span></span>
                             <span id="totalPrice" class="text-2xl font-bold text-slate-900">300 DH</span>
                         </div>
+                        <input type="hidden" id="priceInput" name="price" value="300">
                         <button type="submit"
                             class="w-full py-3 bg-brand-600 text-white font-semibold rounded-lg hover:bg-brand-700 transition-colors shadow-lg shadow-brand-200">
                             Envoyer la demande
@@ -191,16 +189,87 @@
     </div>
 
     <script>
-        // Simple script to handle time slot selection visually for the form
-        document.querySelectorAll('.time-slot:not([disabled])').forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('.time-slot').forEach(b => {
-                    b.classList.remove('border-brand-500', 'text-brand-600', 'bg-brand-50');
-                });
-                button.classList.add('border-brand-500', 'text-brand-600', 'bg-brand-50');
-                document.getElementById('selectedTime').value = button.getAttribute('data-time');
-            });
+        const terrainSelect = document.getElementById('terrain');
+        const dateInput = document.getElementById('date');
+        const timeSlotsContainer = document.getElementById('timeSlots');
+        const priceDisplay = document.getElementById('totalPrice');
+
+        // Update price when terrain changes
+        function updatePrice() {
+            const selectedOption = terrainSelect.options[terrainSelect.selectedIndex];
+            const price = selectedOption.getAttribute('data-price') || 300;
+            priceDisplay.textContent = price + ' DH';
+            const priceInput = document.getElementById('priceInput');
+            if (priceInput) priceInput.value = price;
+        }
+        
+        terrainSelect.addEventListener('change', () => {
+            updatePrice();
+            fetchSlots();
         });
+        
+        dateInput.addEventListener('change', fetchSlots);
+
+        // Fetch slots asynchronously
+        async function fetchSlots() {
+            const terrainId = terrainSelect.value;
+            const date = dateInput.value;
+
+            if (!terrainId || !date) {
+                return;
+            }
+
+            timeSlotsContainer.innerHTML = '<div class="col-span-4 text-center text-sm text-slate-500 py-2">Chargement...</div>';
+
+            try {
+                const response = await fetch(`/api/available-slots?field_id=${terrainId}&date=${date}`);
+                const result = await response.json();
+
+                if (result.success && result.data.length > 0) {
+                    timeSlotsContainer.innerHTML = '';
+                    result.data.forEach(slot => {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'time-slot py-2.5 px-3 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:border-brand-500 hover:text-brand-600 transition-colors text-center';
+                        // Extract just HH:mm if needed, assuming slot.start_time is HH:mm:00
+                        const displayTime = slot.start_time.substring(0, 5); 
+                        btn.textContent = displayTime;
+                        btn.setAttribute('data-time', displayTime);
+                        btn.setAttribute('data-id', slot.id || '');
+                        
+                        btn.addEventListener('click', () => {
+                            document.querySelectorAll('.time-slot').forEach(b => {
+                                b.classList.remove('border-brand-500', 'text-brand-600', 'bg-brand-50');
+                            });
+                            btn.classList.add('border-brand-500', 'text-brand-600', 'bg-brand-50');
+                            document.getElementById('selectedTime').value = displayTime;
+                            document.getElementById('timeSlotId').value = slot.id || '';
+                        });
+                        
+                        timeSlotsContainer.appendChild(btn);
+                    });
+                } else {
+                    timeSlotsContainer.innerHTML = '<div class="col-span-4 text-center text-sm text-slate-500 py-2">Aucun créneau disponible pour cette date.</div>';
+                }
+            } catch (error) {
+                console.error("Error fetching slots:", error);
+                timeSlotsContainer.innerHTML = '<div class="col-span-4 text-center text-sm text-red-500 py-2">Erreur lors du chargement des créneaux.</div>';
+            }
+        }
+        
+        // CNI file selection visual feedback
+        const cniInput = document.getElementById('cni_image');
+        const cniText = document.getElementById('cniText');
+        cniInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                cniText.innerHTML = '<span class="text-brand-600 font-medium">' + this.files[0].name + '</span> sélectionné';
+            } else {
+                cniText.innerHTML = 'Glissez votre CNI ou <span class="text-brand-600 font-medium">cliquez</span>';
+            }
+        });
+
+        // Initial price update
+        updatePrice();
 
         // Intercept form submission and show modal using AJAX
         document.getElementById('bookingForm').addEventListener('submit', async function(e) {

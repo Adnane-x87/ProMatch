@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ReservationController as ApiReservationController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\ValidationController;
@@ -32,21 +33,13 @@ Route::get('/forgot-password', function () {
 
 // POST Routes for form submissions
 Route::post('/booking', [ApiReservationController::class, 'store']);
-Route::post('/login', [ApiUserController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/register', [ApiUserController::class, 'register']);
 Route::post('/contact', [PageController::class, 'submitContact']);
 
 // Admin Routes (Authenticated)
-Route::get('/admin/quick-login', function () {
-    $user = \App\Models\User::where('email', 'admin@promatch.ma')->first();
-    if ($user) {
-        \Illuminate\Support\Facades\Auth::login($user);
-        return redirect('/admin/dashboard');
-    }
-    return redirect('/login')->with('error', 'Compte admin introuvable.');
-})->name('admin.quick-login');
-
-Route::middleware('auth')->prefix('admin')->group(function () {
+Route::middleware(['auth', \App\Http\Middleware\OwnerMiddleware::class])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/reservations', [ReservationController::class, 'index'])->name('admin.reservations');
     Route::get('/validations', [ValidationController::class, 'index'])->name('admin.validations');

@@ -16,12 +16,19 @@
         </div>
 
         <!-- Form -->
-        <form method="POST" action="{{ route('login') }}" class="space-y-5" onsubmit="handleLogin(event)">
+        <form method="POST" action="{{ route('login') }}" class="space-y-5">
             @csrf
+
+            @if ($errors->any())
+                <div class="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
+                    {{ $errors->first() }}
+                </div>
+            @endif
+
             <div>
                 <label class="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
                 <div class="relative">
-                    <input type="email" name="email"
+                    <input type="email" name="email" value="{{ old('email') }}"
                         class="w-full rounded-xl border border-slate-300 pl-10 pr-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all"
                         placeholder="exemple@email.com" required autofocus>
                     <div class="absolute left-3 top-2.5 text-slate-400">
@@ -58,7 +65,8 @@
                     passe oublié ?</a>
             </div>
 
-            <button type="submit"
+            <button id="login-btn" type="submit"
+                onclick="this.disabled=true; this.innerHTML='<svg class=\'w-4 h-4 animate-spin\' fill=\'none\' viewBox=\'0 0 24 24\'><circle class=\'opacity-25\' cx=\'12\' cy=\'12\' r=\'10\' stroke=\'currentColor\' stroke-width=\'4\'/><path class=\'opacity-75\' fill=\'currentColor\' d=\'M4 12a8 8 0 018-8v8H4z\'/></svg> Connexion...'; this.form.submit();"
                 class="w-full rounded-xl bg-brand-500 px-6 py-3 text-sm font-bold text-white hover:bg-brand-600 transition-colors shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2">
                 Se connecter
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,11 +114,4 @@
         </p>
     </div>
 
-    <script>
-        function handleLogin(e) {
-            const btn = e.target.querySelector('button[type="submit"]');
-            btn.disabled = true;
-            btn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg> Connexion...`;
-        }
-    </script>
 @endsection
