@@ -50,18 +50,19 @@
 
             <div class="flex items-center justify-between text-sm">
                 <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" name="remember" class="rounded border-slate-300 text-brand-600 focus:ring-brand-500">
+                    <input type="checkbox" name="remember"
+                        class="rounded border-slate-300 text-brand-600 focus:ring-brand-500">
                     <span class="text-slate-600">Se souvenir de moi</span>
                 </label>
-                <a href="{{ route('password.request') }}" class="font-medium text-brand-600 hover:text-brand-700">Mot de passe oublié ?</a>
+                <a href="{{ route('password.request') }}" class="font-medium text-brand-600 hover:text-brand-700">Mot de
+                    passe oublié ?</a>
             </div>
 
             <button type="submit"
                 class="w-full rounded-xl bg-brand-500 px-6 py-3 text-sm font-bold text-white hover:bg-brand-600 transition-colors shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2">
                 Se connecter
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
             </button>
         </form>

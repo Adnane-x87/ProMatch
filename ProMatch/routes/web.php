@@ -41,3 +41,32 @@ Route::post('/contact', function (Request $request) {
     // Simple placeholder for contact form submission
     return back()->with('success', 'Votre message a été envoyé avec succès !');
 });
+
+// Admin Routes (Authenticated)
+Route::get('/admin/quick-login', function () {
+    $user = \App\Models\User::where('email', 'admin@promatch.ma')->first();
+    if ($user) {
+        \Illuminate\Support\Facades\Auth::login($user);
+        return redirect('/admin/dashboard');
+    }
+    return redirect('/login')->with('error', 'Compte admin introuvable.');
+})->name('admin.quick-login');
+
+Route::middleware('auth')->prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    });
+    Route::get('/reservations', function () {
+        return view('admin.reservations');
+    });
+    Route::get('/validations', function () {
+        return view('admin.validations');
+    });
+    Route::get('/clients', function () {
+        return view('admin.clients');
+    });
+
+    // Dashboard Data APIs (Session Authenticated)
+    Route::get('/api/stats', [App\Http\Controllers\Api\DashboardController::class, 'stats']);
+    Route::get('/api/planning', [App\Http\Controllers\Api\ReservationController::class, 'planning']);
+});
