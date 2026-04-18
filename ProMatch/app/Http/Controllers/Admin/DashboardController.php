@@ -20,4 +20,10 @@ class DashboardController extends Controller
         $stats = $this->dashboardService->getDashboardStats();
         return view('admin.dashboard', compact('stats'));
     }
+
+    public function stats()
+    {
+        $stats = $this->dashboardService->getDashboardStats();
+        return response()->json(['success' => true, 'data' => $stats]);
+    }
 }

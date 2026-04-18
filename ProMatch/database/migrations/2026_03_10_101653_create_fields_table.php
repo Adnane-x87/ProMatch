@@ -18,6 +18,7 @@ return new class extends Migration
     $table->text('description')->nullable();
     $table->string('address');
     $table->float('price_per_hour');
+    $table->string('image')->nullable();
     $table->timestamps();
 });
     }

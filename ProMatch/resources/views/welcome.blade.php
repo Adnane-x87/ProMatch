@@ -45,12 +45,6 @@
         
         <!-- Section Header -->
         <div class="text-center max-w-3xl mx-auto mb-16">
-            <span class="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold uppercase tracking-wider mb-4 border border-emerald-100">
-                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                Nos Installations
-            </span>
             <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
                 Des terrains professionnels
             </h2>
@@ -64,17 +58,20 @@
             @foreach($fields as $index => $field)
             <!-- Terrain Card -->
             <article class="group relative bg-white rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-100 overflow-hidden hover:shadow-2xl hover:shadow-emerald-100/50 hover:-translate-y-2 transition-all duration-500 flex flex-col">
-                <!-- Image/Visual Header -->
-                <div class="relative h-52 bg-gradient-to-br from-emerald-50 via-slate-50 to-emerald-100/30 flex flex-col items-center justify-center p-6 overflow-hidden">
-                    <!-- Decorative Background Pattern -->
-                    <div class="absolute inset-0 opacity-10">
-                        <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                            <pattern id="grid-{{ $index }}" width="10" height="10" patternUnits="userSpaceOnUse">
-                                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5" class="text-emerald-600"/>
-                            </pattern>
-                            <rect width="100" height="100" fill="url(#grid-{{ $index }})"/>
-                        </svg>
-                    </div>
+                <!-- Image Header -->
+                <div class="relative h-52 overflow-hidden bg-slate-100">
+                    @if($field->image)
+                        <img src="{{ asset('images/fields/' . $field->image) }}" 
+                             alt="{{ $field->name }}" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                    @else
+                        <div class="w-full h-full bg-gradient-to-br from-emerald-50 via-slate-50 to-emerald-100/30 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-emerald-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                        </div>
+                    @endif
                     
                     <!-- Availability Badge -->
                     <div class="absolute top-4 left-4 z-10">
@@ -89,16 +86,6 @@
                         <span class="px-2.5 py-1 rounded-lg bg-slate-900/90 text-white text-[10px] font-black uppercase tracking-widest backdrop-blur-sm">
                             PRO
                         </span>
-                    </div>
-                    
-                    <!-- Icon -->
-                    <div class="relative z-10 transform group-hover:scale-110 transition-transform duration-500">
-                        <div class="w-20 h-20 rounded-2xl bg-white shadow-xl shadow-emerald-200/50 flex items-center justify-center border border-emerald-100">
-                            <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                            </svg>
-                        </div>
                     </div>
                 </div>
                 
@@ -123,8 +110,9 @@
                         </li>
                         <li class="flex items-center gap-3 text-sm text-slate-600 font-medium">
                             <div class="w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0">
-                                <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-emerald-600">
+                                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+                                    <circle cx="12" cy="10" r="3"/>
                                 </svg>
                             </div>
                             <span>{{ $field->address ?? 'Tangier-castilla' }}</span>

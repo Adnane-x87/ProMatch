@@ -32,7 +32,7 @@ Route::get('/forgot-password', function () {
 })->name('password.request');
 
 // POST Routes for form submissions
-Route::post('/booking', [ApiReservationController::class, 'store']);
+Route::post('/booking', [ReservationController::class, 'store']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/register', [ApiUserController::class, 'register']);
@@ -52,6 +52,6 @@ Route::middleware(['auth', \App\Http\Middleware\OwnerMiddleware::class])->prefix
     Route::post('/validations/{id}/reject', [ValidationController::class, 'reject']);
 
     // Dashboard Data APIs (Session Authenticated)
-    Route::get('/api/stats', [App\Http\Controllers\Api\DashboardController::class, 'stats']);
-    Route::get('/api/planning', [App\Http\Controllers\Api\ReservationController::class, 'planning']);
+    Route::get('/api/stats', [DashboardController::class, 'stats']);
+    Route::get('/api/planning', [ReservationController::class, 'planning']);
 });

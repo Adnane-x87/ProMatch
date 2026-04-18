@@ -14,14 +14,17 @@ class DashboardService
      */
     public function getDashboardStats(): array
     {
+        $today = now()->toDateString();
+        
         return [
             'total_clients' => Tenant::count(),
             'active_users' => Reservation::whereDate('request_date', '>=', now()->subDays(30))->distinct('tenant_id')->count('tenant_id'),
             'validated_cnis' => Tenant::where('is_cni_valid', true)->count(),
             'pending_cnis' => Tenant::whereNotNull('cni_image')->where('is_cni_valid', false)->count(),
-            'todays_income' => Reservation::whereDate('start_time', now()->toDateString())
-            ->where('status', 'APPROVED')
-            ->sum('price')
+            'todays_income' => Reservation::whereDate('request_date', $today)
+                ->where('status', 'APPROVED')
+                ->sum('price'),
+            'todays_reservations' => Reservation::whereDate('request_date', $today)->count()
         ];
     }
 }

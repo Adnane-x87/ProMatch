@@ -151,14 +151,6 @@
                             <h1 class="text-xl font-bold text-slate-900">@yield('page-title')</h1>
                             <p class="text-sm text-slate-500">@yield('page-subtitle')</p>
                         </div>
-                    </div>
-                    <a href="{{ url('/booking') }}"
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                        </svg>
-                        Nouvelle réservation
-                    </a>
                 </div>
             </header>
 

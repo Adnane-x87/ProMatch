@@ -37,26 +37,14 @@ class ReservationController extends Controller
         }
 
         // Store the uploaded CNI file
+        // Convert the uploaded CNI file to base64 so the Service handles it cleanly without modification
         if ($request->hasFile('cni_image')) {
             $file = $request->file('cni_image');
-            $path = $file->store('cni_images', 'public');
-            $data['cni_image_base64'] = $path;
+            $data['cni_image_base64'] = 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($file->getPathname()));
         }
 
-        // Default user context if needed
-        $defaultUser = \App\Models\User::whereHas('tenant')->first();
-
-        // Capturing email and price
-        $guestEmail = $request->input('email', 'guest_' . time() . '@example.com');
-        $price = $request->input('price') ?? 300; // Default price if not provided
-
-        \App\Models\Reservation::creating(function ($model) use ($guestEmail, $price) {
-            $model->email = $model->email ?? $guestEmail;
-            $model->price = $model->price ?? $price;
-        });
-
-        // Create reservation via service
-        $reservation = $this->reservationService->createReservation($data, $defaultUser);
+        // Create reservation via service directly from request (user defaults to null inside service)
+        $reservation = $this->reservationService->createReservation($data);
 
         return response()->json(['success' => true, 'data' => $reservation], 201);
     }
