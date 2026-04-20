@@ -13,15 +13,20 @@ class ReservationService
     public function createReservation(array $data, $user = null): Reservation
     {
         // Map frontend field names to DB columns
+        $field = \App\Models\Field::find($data['field_id']);
+        $price = $field ? $field->price_per_hour : 0;
+        
         $reservation = Reservation::create([
             'field_id' => $data['field_id'],
             'time_slot_id' => $data['time_slot_id'] ?? null,
             'tenant_id' => $user?->tenant?->id ?? null,
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
+            'email' => $data['email'] ?? 'guest_' . time() . '@promatch.ma',
             'phone' => $data['phone'],
             'request_date' => $data['date'],
             'start_time' => $data['selected_time'] ?? null,
+            'price' => $price,
             'cni_image' => $data['cni_image_base64'] ?? null,
             'status' => 'PENDING',
         ]);
@@ -67,7 +72,7 @@ class ReservationService
         $query = Reservation::with(['field']);
 
         if ($date) {
-            $query->where('request_date', $date);
+            $query->whereDate('request_date', $date);
         }
 
         return $query->orderBy('start_time')->get();

@@ -20,45 +20,31 @@ class ReservationController extends Controller
     {
         $data = $request->all();
 
+        // Map terrain_id from Blade to field_id for the Service
+        if ($request->has('terrain_id')) {
+            $data['field_id'] = $request->terrain_id;
+        }
+
         // The UI uses mocked time slots with fake IDs (e.g. 9990+) if real slots aren't found.
-        // If the user submits one of these mock IDs, we must clear it to avoid a Foreign Key constraint failure.
         if (isset($data['time_slot_id']) && $data['time_slot_id'] >= 9000) {
             $data['time_slot_id'] = null;
         }
 
-        // Fix time format to avoid MySQL treating '14:00:00' as a malformed YY-MM-DD date.
-        // Convert to a full datetime string "YYYY-MM-DD HH:MM:SS" since the column is a datetime.
+        // Fix time format
         if (isset($data['selected_time']) && isset($data['date'])) {
             $timePart = strlen($data['selected_time']) === 5 ? $data['selected_time'] . ':00' : $data['selected_time'];
             $data['selected_time'] = $data['date'] . ' ' . $timePart;
         }
 
-        // Store the uploaded CNI file on disk instead of converting it to a huge base64 string.
-        // This prevents the "Data too long for column" error because the DB column is likely just a VARCHAR.
+        // Store the uploaded CNI file
+        // Convert the uploaded CNI file to base64 so the Service handles it cleanly without modification
         if ($request->hasFile('cni_image')) {
             $file = $request->file('cni_image');
-            $path = $file->store('cni_images', 'public');
-            // We still use the 'cni_image_base64' key because the service explicitly expects it,
-            // but we are passing the short file path string instead of the massive base64 payload.
-            $data['cni_image_base64'] = $path;
-         }
+            $data['cni_image_base64'] = 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($file->getPathname()));
+        }
 
-        // Fetch a user with a tenant to bypass the DB null constraint
-        // since we are avoiding editing services or database schema directly.
-        $defaultUser = \App\Models\User::whereHas('tenant')->first();
-
-        // Hack: The ReservationService explicitly ignores the 'email' and 'price' fields
-        // when passing data to Reservation::create(), but the database strictly requires them.
-        // We register an Eloquent event on the fly to inject them right before insertion!
-        $guestEmail = $request->input('email', 'guest_' . time() . '@example.com');
-        $price = $request->input('price', 0);
-        \App\Models\Reservation::creating(function ($model) use ($guestEmail, $price) {
-            $model->email = $model->email ?? $guestEmail;
-            $model->price = $model->price ?? $price;
-        });
-
-        // Create reservation via service directly from request
-        $reservation = $this->reservationService->createReservation($data, $defaultUser);
+        // Create reservation via service directly from request (user defaults to null inside service)
+        $reservation = $this->reservationService->createReservation($data);
 
         return response()->json(['success' => true, 'data' => $reservation], 201);
     }

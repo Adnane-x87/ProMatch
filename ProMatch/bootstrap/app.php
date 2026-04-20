@@ -19,6 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ]);
 
     $middleware->statefulApi();
+
+    $middleware->append(\App\Http\Middleware\CorsMiddleware::class);
 })
 
     ->withExceptions(function (Exceptions $exceptions): void {
