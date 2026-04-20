@@ -34,7 +34,7 @@ class StaffServiceTest extends TestCase
     {
         $owner = $this->createOwner();
         $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant1@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
-        $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1', 'birth_date' => '1990-01-01']);
+        $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 
         Reservation::create([
@@ -59,7 +59,7 @@ class StaffServiceTest extends TestCase
     {
         $owner = $this->createOwner();
         $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant2@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
-        $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1', 'birth_date' => '1990-01-01']);
+        $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 
         $reservation = Reservation::create([

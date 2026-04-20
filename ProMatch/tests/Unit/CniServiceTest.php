@@ -24,7 +24,7 @@ class CniServiceTest extends TestCase
     public function test_can_verify_cni()
     {
         $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't_cni@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
-        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'c1', 'birth_date' => '2000-01-01', 'is_cni_valid' => false, 'cni_image' => 'fake_url']);
+        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'c1', 'is_cni_valid' => false, 'cni_image' => 'fake_url']);
 
         $this->cniService->verifyCNI($tenant->id, true);
         $this->assertDatabaseHas('tenants', ['id' => $tenant->id, 'is_cni_valid' => 1]);

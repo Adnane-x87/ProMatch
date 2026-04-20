@@ -1,3 +1,3 @@
-id,user_id,cin,birth_date
-1,2,AB123456,1995-10-20
-2,4,CD789012,1998-05-12
+id,user_id,cin,cni_image,is_cni_valid
+1,2,AB123456,cni_1.jpg,1
+2,4,CD789012,cni_2.jpg,0

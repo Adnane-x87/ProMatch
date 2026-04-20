@@ -1,32 +1,45 @@
 @startuml
-title Sprint 2 — Reste | Système de Gestion des Terrains de Sport
-
-skinparam packageStyle rectangle
+top to bottom direction
 skinparam actorStyle awesome
 skinparam usecase {
-    BackgroundColor #FAD7A0
-    BorderColor #E67E22
+  BackgroundColor #FAD7A0
+  BorderColor #E67E22
+  FontSize 13
+}
+skinparam ArrowColor #555555
+skinparam ArrowFontSize 11
+
+title Sprint 2 — Reste | Système de Gestion des Terrains de Sport
+
+actor "Admin (Propriétaire)" as Admin #lightyellow
+actor "User (Locataire)"     as User  #lightgreen
+actor "Staff (Employé)"      as Staff #lightblue
+
+package "Gestion CNI & Utilisateurs (Admin)" {
+  usecase "Vérifier la CNI\n(Accepter / Refuser)" as UC1
+  usecase "Voir le tableau de bord\n(Statistiques / Revenus)" as UC2
+  usecase "Gérer les utilisateurs\n(Consulter / Bloquer)" as UC3
 }
 
-actor "Admin\n(Propriétaire)" as Admin
-actor "User\n(Locataire)" as User
-actor "Staff\n(Employé)" as Staff
-
-rectangle "Sprint 2 — Système de Gestion des Terrains de Sport" {
-    usecase "Vérifier la CNI\n(Accepter / Refuser)" as UC1
-    usecase "Voir le tableau de bord\n(Statistiques / Revenus)" as UC2
-    usecase "Gérer les utilisateurs\n(Consulter / Bloquer)" as UC3
-    usecase "Annuler une réservation" as UC4
-    usecase "Consulter l'historique\ndes réservations" as UC5
-    usecase "Vérifier l'arrivée\ndu client" as UC6
+package "Réservation (Utilisateur)" {
+  usecase "Annuler une réservation" as UC4
+  usecase "Consulter l'historique\ndes réservations" as UC5
 }
 
+package "Planning (Staff)" {
+  usecase "Vérifier l'arrivée\ndu client" as UC6
+}
+
+' Admin relations
 Admin --> UC1
 Admin --> UC2
 Admin --> UC3
 
+' User relations
 User --> UC4
 User --> UC5
 
+' Staff relations
 Staff --> UC6
+
 @enduml

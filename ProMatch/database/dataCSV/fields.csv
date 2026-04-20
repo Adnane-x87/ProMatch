@@ -1,5 +1,5 @@
-id,owner_id,name,description,address,price_per_hour
-1,1,Stade Municipal,Terrain de foot 5v5 gazon synthetique,Tangier-castilla,200.00
-2,1,Complexe Sportif,Terrain de foot 7v7,Tangier-castilla,350.00
-3,1,Arena Pro,Terrain de Padle,Downtown,150.00
-4,1,City Pitch,Terrain multisport,North Side,120.00
+id,owner_id,name,description,address,price_per_hour,image
+1,1,Atlas - Terrain 1,Terrain de foot 7v7,Tangier-branes,250.00,field1.jpg
+2,1,Atlas - Terrain 2,Terrain de foot 7v7,Tangier-branes,250.00,field2.jpg
+3,1,Atlas - Terrain 3,Terrain de foot 7v7,Tangier-branes,250.00,field3.jpg
+4,1,Atlas - Terrain 4,Terrain de foot 7v7,Tangier-branes,250.00,field4.jpg

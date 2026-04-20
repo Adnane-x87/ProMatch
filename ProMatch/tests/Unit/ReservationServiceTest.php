@@ -31,7 +31,7 @@ class ReservationServiceTest extends TestCase
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
         
         $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't@t.com', 'password' => '1', 'phone' => '2', 'type' => 'tenant']);
-        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'cin1', 'birth_date' => '2000-01-01']);
+        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'cin1']);
 
         Reservation::create([
             'tenant_id' => $tenant->id,
@@ -59,7 +59,7 @@ class ReservationServiceTest extends TestCase
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
         $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't_cancel@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
-        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'c1', 'birth_date' => '2000-01-01']);
+        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'c1']);
 
         $reservation = Reservation::create([
             'tenant_id' => $tenant->id,
@@ -90,7 +90,7 @@ class ReservationServiceTest extends TestCase
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
         $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't_reject@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
-        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'c2', 'birth_date' => '2000-01-01']);
+        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'c2']);
 
         $reservation = Reservation::create([
             'tenant_id' => $tenant->id,

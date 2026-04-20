@@ -31,10 +31,10 @@ class DashboardServiceTest extends TestCase
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
         $tenantUser1 = User::create(['first_name' => 'T1', 'last_name' => 'U1', 'email' => 't1@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
-        Tenant::create(['user_id' => $tenantUser1->id, 'cin' => 'cin1', 'birth_date' => '2000-01-01', 'is_cni_valid' => true, 'cni_image' => 'url1']);
+        Tenant::create(['user_id' => $tenantUser1->id, 'cin' => 'cin1', 'is_cni_valid' => true, 'cni_image' => 'url1']);
 
         $tenantUser2 = User::create(['first_name' => 'T2', 'last_name' => 'U2', 'email' => 't2@t.com', 'password' => '1', 'phone' => '2', 'type' => 'tenant']);
-        Tenant::create(['user_id' => $tenantUser2->id, 'cin' => 'cin2', 'birth_date' => '2000-01-01', 'is_cni_valid' => false, 'cni_image' => 'url2']);
+        Tenant::create(['user_id' => $tenantUser2->id, 'cin' => 'cin2', 'is_cni_valid' => false, 'cni_image' => 'url2']);
 
         Reservation::create([
             'tenant_id' => $tenantUser1->id,
