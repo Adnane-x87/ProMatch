@@ -114,37 +114,17 @@ style: |
 
 ## Sommaire
 
-<div class="sommaire-grid" style="grid-template-columns: 1fr 1fr 1fr; font-size: 0.7em; gap: 10px;">
+<div class="sommaire-grid" style="grid-template-columns: 1fr 1fr; font-size: 0.85em; gap: 20px;">
   <div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">1</div> Liste des figures</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">2</div> Remerciement</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">3</div> Introduction</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">4</div> Contexte de projet</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">5</div> Objectif de Project</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">6</div> Cahier de charge</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">7</div> Méthode de travail</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">8</div> Scrum</div>
+    <div class="sommaire-item" style="padding: 15px;"><div class="sommaire-num" style="width: 35px; height: 35px;">1</div> Contexte du projet</div>
+    <div class="sommaire-item" style="padding: 15px;"><div class="sommaire-num" style="width: 35px; height: 35px;">2</div> Méthodologies</div>
+    <div class="sommaire-item" style="padding: 15px;"><div class="sommaire-num" style="width: 35px; height: 35px;">3</div> Branche fonctionnelle</div>
+    <div class="sommaire-item" style="padding: 15px;"><div class="sommaire-num" style="width: 35px; height: 35px;">4</div> Branche technique</div>
   </div>
   <div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">9</div> La méthodologie 2TUP</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">10</div> Design Thinking</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">11</div> Branche fonctionnelle</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">12</div> Carte d’empathie</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">13</div> Définition de problème</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">14</div> Use Case Global</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">15</div> Use Case Sprint 1</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">16</div> Use Case Sprint 2</div>
-  </div>
-  <div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">17</div> Branche technique</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">18</div> Choix technologiques</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">19</div> Architecture de projet</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">20</div> Prototype</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">21</div> Conception</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">22</div> Diagramme de classe</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">23</div> Maquettes & Charte</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">24</div> Réalisation & Interfaces</div>
-    <div class="sommaire-item" style="padding: 10px;"><div class="sommaire-num" style="width: 25px; height: 25px;">25</div> Conclusion</div>
+    <div class="sommaire-item" style="padding: 15px;"><div class="sommaire-num" style="width: 35px; height: 35px;">5</div> Conception (MLD)</div>
+    <div class="sommaire-item" style="padding: 15px;"><div class="sommaire-num" style="width: 35px; height: 35px;">6</div> Environnement & Outils</div>
+    <div class="sommaire-item" style="padding: 15px;"><div class="sommaire-num" style="width: 35px; height: 35px;">7</div> Conclusion</div>
   </div>
 </div>
 
@@ -163,8 +143,19 @@ style: |
 
 ## 2. Méthodologie : Design Thinking
 
+Le Design Thinking est une approche centrée sur l'humain pour résoudre des problèmes complexes. Nous avons suivi ses 5 étapes clés :
+- **Empathie** : Comprendre les besoins des propriétaires et des joueurs.
+- **Définition** : Identifier les points de friction (perte de temps, erreurs de réservation).
+- **Idéation** : Brainstorming sur les solutions (Validation CNI, Dashboard).
+- **Prototypage** : Création de maquettes haute fidélité.
+- **Test** : Validation des interfaces avec les utilisateurs finaux.
+
+---
+
+## Méthodologie : Design Thinking (Processus)
+
 <div class="img-container">
-  <img src="./images/designThinking.png" class="img-methodo" alt="Design Thinking">
+  <img src="./images/designThinking.png" class="img-methodo" alt="Design Thinking" style="max-height: 480px;">
 </div>
 
 ---
@@ -240,24 +231,42 @@ style: |
 
 ## Branche Fonctionnelle : Cas d'utilisation
 
-### Sprint 1 :
+### Sprint 1 : Objectifs
 
-<div class="maquette-grid">
-  <div style="text-align: center;">
-    <img src="./images/sprint1.png" alt="Use Case Sprint 1" style="max-height: 350px;">
-  </div>
+Ce sprint se concentre sur la mise en place de l'infrastructure de base et des fonctionnalités essentielles de réservation :
+- **Gestion des Authentifications** : Inscription et connexion sécurisées pour les clients et l'administrateur.
+- **Gestion des Terrains** : Interface permettant à l'administrateur d'ajouter, modifier ou supprimer des terrains de sport.
+- **Réservation Initiale** : Possibilité pour les clients de visualiser les créneaux disponibles et de soumettre une demande de réservation.
+
+---
+
+## Branche Fonctionnelle : Cas d'utilisation
+
+### Sprint 1 : Diagramme Use Case
+
+<div class="img-container">
+  <img src="./images/sprint1.png" alt="Use Case Sprint 1" class="img-methodo" style="max-height: 480px;">
 </div>
 
 ---
 
 ## Branche Fonctionnelle : Cas d'utilisation
 
-### sprint 2:
+### Sprint 2 : Objectifs
 
-<div class="maquette-grid">
-  <div style="text-align: center;">
-    <img src="./images/sprint2.png" alt="Use Case Sprint 2" style="max-height: 350px;">
-  </div>
+Ce deuxième sprint vise à renforcer la sécurité et à offrir des outils de pilotage au propriétaire :
+- **Vérification d'Identité (CNI)** : Système permettant à l'admin de valider l'identité du client via l'upload d'une pièce d'identité avant confirmation.
+- **Tableau de Bord Administrateur** : Vue d'ensemble des revenus, du nombre de réservations et du taux d'occupation des terrains.
+- **Gestion Clients** : Base de données centralisée pour le suivi des fidélités et de l'historique des paiements.
+
+---
+
+## Branche Fonctionnelle : Cas d'utilisation
+
+### Sprint 2 : Diagramme Use Case
+
+<div class="img-container">
+  <img src="./images/sprint2.png" alt="Use Case Sprint 2" class="img-methodo" style="max-height: 480px;">
 </div>
 
 
@@ -268,7 +277,7 @@ style: |
 
 <div class="sommaire-grid">
   <div class="dt-card" style="margin-top:0;">
-    <h4>Les technologies à utiliser</h4>
+    <h4>Backend & Core</h4>
     <ul>
       <li><strong>Base de données:</strong> MySQL </li>
       <li><strong>Framework:</strong> Laravel 12</li>
@@ -303,7 +312,7 @@ style: |
 
 ---
 
-## 5. Démonstration : Environnement & Outils
+## 6. Environnement & Outils
 
 <div class="sommaire-grid">
   <div class="dt-card" style="margin-top:0;">
@@ -327,7 +336,7 @@ style: |
 
 ---
 
-## 6. Conclusion
+## 7. Conclusion
 
 - **Objectifs atteints** : Plateforme de réservation fonctionnelle avec gestion des terrains et vérification CNI.
 - **Compétences** : Maîtrise du cycle Agile et de la stack Full-stack Laravel.
