@@ -11,30 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0f9f1',
-                            100: '#dcf1df',
-                            200: '#bbe2c3',
-                            300: '#8dca9e',
-                            400: '#5eac72',
-                            500: '#4da565',
-                            600: '#3d8a54',
-                            700: '#327145',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                    },
-                },
-            },
-        };
-    </script>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-slate-100 text-slate-900 font-sans antialiased min-h-screen">
@@ -64,7 +43,10 @@
                 
                 <!-- Left Side: Image Area -->
                 <div class="relative hidden lg:block bg-slate-900 overflow-hidden">
-                    <img src="{{ asset('images/side-hero.png') }}" alt="Reservation Side Hero" class="absolute inset-0 w-full h-full object-cover">
+                    <img src="{{ asset('images/side-hero.png') }}" alt="Reservation Side Hero" 
+                         loading="lazy" decoding="async"
+                         class="absolute inset-0 w-full h-full object-cover">
+
                     <div class="absolute inset-0 bg-gradient-to-br from-brand-600/40 to-slate-950/80 z-10"></div>
                     
                     <div class="w-full h-full flex flex-col items-center justify-center text-center p-12 text-white z-20 relative">

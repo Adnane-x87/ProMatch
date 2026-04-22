@@ -5,38 +5,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@yield('title', 'ProMatch — Admin Dashboard')</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
-    <!-- Add AlpineJS -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f0f9f1',
-                            100: '#dcf1df',
-                            200: '#bbe2c3',
-                            300: '#8dca9e',
-                            400: '#5eac72',
-                            500: '#4da565',
-                            600: '#3d8a54',
-                            700: '#327145',
-                        }
-                    }
-                },
-            },
-        };
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <style>
         ::-webkit-scrollbar {
             width: 6px;
@@ -56,6 +33,7 @@
             background: #cbd5e1;
         }
     </style>
+
     @stack('styles')
 </head>
 

@@ -73,6 +73,8 @@
                     @if($field->image)
                         <img src="{{ asset('images/fields/' . $field->image) }}" 
                              alt="{{ $field->name }}" 
+                             loading="lazy"
+                             decoding="async"
                              class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 opacity-90 group-hover:opacity-100">
                     @else
                         <div class="w-full h-full bg-slate-800 flex items-center justify-center">
