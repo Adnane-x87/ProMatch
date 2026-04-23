@@ -53,11 +53,8 @@ class ReservationController extends Controller
             $data['cni_image_base64'] = 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($file->getPathname()));
         }
 
-        // Fetch a user with a tenant to bypass the DB null constraint
-        $defaultUser = \App\Models\User::whereHas('tenant')->first();
-
-        // Create reservation via service
-        $reservation = $this->reservationService->createReservation($data, $defaultUser);
+        // Create reservation via service using the authenticated user
+        $reservation = $this->reservationService->createReservation($data, auth()->user());
 
         if ($request->wantsJson()) {
             return response()->json(['success' => true, 'data' => $reservation], 201);

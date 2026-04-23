@@ -106,15 +106,19 @@
                              
                              <div class="grid grid-cols-2 gap-4">
                                 <input type="text" placeholder="Prénom" name="first_name" required
+                                    value="{{ optional(auth()->user())->first_name }}"
                                     class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all">
                                 <input type="text" placeholder="Nom" name="last_name" required
+                                    value="{{ optional(auth()->user())->last_name }}"
                                     class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all">
                              </div>
 
                              <div class="grid grid-cols-2 gap-4">
                                 <input type="tel" placeholder="Téléphone" name="phone" required
+                                    value="{{ optional(auth()->user())->phone }}"
                                     class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all">
                                 <input type="email" placeholder="Email" name="email" required
+                                    value="{{ optional(auth()->user())->email }}"
                                     class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all">
                              </div>
 
@@ -285,6 +289,12 @@
         // Intercept form submission and show modal using AJAX
         document.getElementById('bookingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            // Check authentication
+            @guest
+                window.location.href = "{{ route('login') }}";
+                return;
+            @endguest
             
             const form = e.target;
             const formData = new FormData(form);
