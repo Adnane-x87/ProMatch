@@ -266,6 +266,15 @@
 
 @push('scripts')
     <script>
+        async function parseJsonResponse(response) {
+            const contentType = response.headers.get('content-type') || '';
+
+            if (!contentType.includes('application/json')) {
+                throw new Error('Le serveur a renvoye une reponse inattendue.');
+            }
+
+            return response.json();
+        }
         /* ── Password visibility toggle ─────────────────────── */
         function togglePassword(inputId, btn) {
             const input = document.getElementById(inputId);
@@ -332,12 +341,13 @@
                     method: 'POST',
                     body: formData,
                     headers: {
+                        'Accept': 'application/json',
                         'X-Requested-With': 'XMLHttpRequest',
                         'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
                     }
                 });
 
-                const result = await response.json();
+                const result = await parseJsonResponse(response);
 
                 if (result.success) {
                     form.classList.add('hidden');

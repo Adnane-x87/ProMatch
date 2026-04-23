@@ -29,18 +29,18 @@ class ValidationController extends Controller
     /**
      * Approve a CNI validation.
      */
-    public function approve($tenantId)
+    public function approve($reservationId)
     {
-        $this->cniService->verifyCNI($tenantId, true);
+        $this->cniService->verifyCNI($reservationId, true);
         return back()->with('success', 'CNI validé avec succès.');
     }
 
     /**
      * Reject a CNI validation.
      */
-    public function reject($tenantId)
+    public function reject($reservationId)
     {
-        $this->cniService->verifyCNI($tenantId, false);
+        $this->cniService->verifyCNI($reservationId, false);
         return back()->with('success', 'CNI rejeté.');
     }
 }

@@ -78,7 +78,7 @@
                     </svg>
                     Validations CNI
                     {{-- TODO: wire up $pendingValidationsCount --}}
-                    <span
+                    <span data-testid="pending-validations-badge"
                         class="ml-auto w-5 h-5 flex items-center justify-center rounded-full bg-rose-100 text-rose-600 text-xs font-bold">{{ $pendingValidationsCount ?? 0 }}</span>
                 </a>
                 <a href="{{ url('/admin/clients') }}"

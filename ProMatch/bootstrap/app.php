@@ -15,7 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
     // 🚀 NEW: Exempting all API routes from CSRF protection
     // This allows the NativePHP app to send POST/PUT requests without a token
     $middleware->validateCsrfTokens(except: [
-        'api/*'
+        'api/*',
+        'logout',
     ]);
 
     $middleware->statefulApi();

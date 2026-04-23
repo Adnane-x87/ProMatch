@@ -98,7 +98,7 @@
                                 x-transition:leave-start="opacity-100"
                                 x-transition:leave-end="opacity-0"
                                 class="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-50">
-                                <form method="POST" action="{{ route('logout') }}">
+                                <form method="POST" action="/logout">
                                     @csrf
                                     <button type="submit"
                                         class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors rounded-b-2xl">

@@ -36,17 +36,23 @@ class ReservationController extends Controller
             $data['selected_time'] = $data['date'] . ' ' . $timePart;
         }
 
-        // Store the uploaded CNI file
-        // Convert the uploaded CNI file to base64 so the Service handles it cleanly without modification
         if ($request->hasFile('cni_image')) {
-            $file = $request->file('cni_image');
-            $data['cni_image_base64'] = 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($file->getPathname()));
+            $data['cni_image'] = $request->file('cni_image');
         }
 
         // Create reservation via service directly from request (user defaults to null inside service)
         $reservation = $this->reservationService->createReservation($data);
 
-        return response()->json(['success' => true, 'data' => $reservation], 201);
+        return response()->json([
+            'success' => true,
+            'message' => 'Reservation created successfully',
+            'data' => [
+                'id' => $reservation->id,
+                'status' => $reservation->status,
+                'request_date' => $reservation->request_date,
+                'start_time' => $reservation->start_time,
+            ],
+        ], 201);
     }
 
 
@@ -89,7 +95,13 @@ class ReservationController extends Controller
     public function validateReservation(Request $request, $id)
     {
         $reservation = $this->reservationService->updateStatus($id, $request->status);
-        return response()->json(['success' => true, 'data' => $reservation]);
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'id' => $reservation->id,
+                'status' => $reservation->status,
+            ],
+        ]);
     }
 
     // UC9: Staff/Admin views the schedule

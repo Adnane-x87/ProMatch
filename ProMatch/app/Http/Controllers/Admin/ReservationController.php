@@ -47,17 +47,24 @@ class ReservationController extends Controller
             $data['selected_time'] = $data['date'] . ' ' . $timePart;
         }
 
-        // Convert the uploaded CNI file to base64 so the Service handles it cleanly
         if ($request->hasFile('cni_image')) {
-            $file = $request->file('cni_image');
-            $data['cni_image_base64'] = 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($file->getPathname()));
+            $data['cni_image'] = $request->file('cni_image');
         }
 
         // Create reservation via service using the authenticated user
         $reservation = $this->reservationService->createReservation($data, auth()->user());
 
-        if ($request->wantsJson()) {
-            return response()->json(['success' => true, 'data' => $reservation], 201);
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Reservation created successfully',
+                'data' => [
+                    'id' => $reservation->id,
+                    'status' => $reservation->status,
+                    'request_date' => $reservation->request_date,
+                    'start_time' => $reservation->start_time,
+                ],
+            ], 201);
         }
 
         return back()->with('success', 'Réservation créée avec succès.');

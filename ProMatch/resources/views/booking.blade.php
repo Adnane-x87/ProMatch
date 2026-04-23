@@ -209,6 +209,16 @@
         const timeSlotsContainer = document.getElementById('timeSlots');
         const priceDisplay = document.getElementById('totalPrice');
 
+        async function parseJsonResponse(response) {
+            const contentType = response.headers.get('content-type') || '';
+
+            if (!contentType.includes('application/json')) {
+                throw new Error('Le serveur a renvoye une reponse inattendue.');
+            }
+
+            return response.json();
+        }
+
         // Update price when terrain changes
         function updatePrice() {
             const selectedOption = terrainSelect.options[terrainSelect.selectedIndex];
@@ -237,8 +247,13 @@
             timeSlotsContainer.innerHTML = '<div class="col-span-4 text-center text-sm text-slate-500 py-2">Chargement...</div>';
 
             try {
-                const response = await fetch(`/api/available-slots?field_id=${terrainId}&date=${date}`);
-                const result = await response.json();
+                const response = await fetch(`/api/available-slots?field_id=${terrainId}&date=${date}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                const result = await parseJsonResponse(response);
 
                 if (result.success && result.data.length > 0) {
                     timeSlotsContainer.innerHTML = '';
@@ -315,14 +330,15 @@
                     method: 'POST',
                     body: formData,
                     headers: {
+                        'Accept': 'application/json',
                         'X-Requested-With': 'XMLHttpRequest',
                         'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
                     }
                 });
 
-                const result = await response.json();
+                const result = await parseJsonResponse(response);
 
-                if (result.success) {
+                if (response.ok && result.success) {
                     // Update confirmation modal info
                     const terrainSelect = document.getElementById('terrain');
                     document.getElementById('confirmTerrain').textContent = terrainSelect.options[terrainSelect.selectedIndex].text;
