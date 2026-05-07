@@ -146,7 +146,7 @@
     </main>
 
     <!-- PROFESSIONAL FOOTER -->
-    <footer class="relative bg-neutral-900 text-white border-t border-slate-800 overflow-hidden">
+    <footer class="relative text-white border-t border-slate-800 overflow-hidden" style="background-color: #314158;">
         <!-- Geometric Background Pattern Overlay (Neutral Style) -->
         <div class="absolute inset-0 opacity-[0.05] pointer-events-none">
             <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">

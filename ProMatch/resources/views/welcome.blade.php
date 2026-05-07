@@ -67,69 +67,76 @@
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             @foreach($fields as $index => $field)
             <!-- Terrain Card -->
-            <article class="group relative bg-slate-900 rounded-[2.5rem] overflow-hidden hover:-translate-y-4 transition-all duration-700 flex flex-col shadow-2xl shadow-slate-950/40">
-                <!-- Image Header -->
-                <div class="relative h-60 overflow-hidden">
+            <!-- Terrain Card — clean white style -->
+            <article class="group relative bg-white rounded-[2rem] overflow-hidden hover:-translate-y-2 transition-all duration-500 flex flex-col shadow-xl shadow-slate-200/80 border border-slate-100">
+
+                <!-- Image Section -->
+                <div class="relative h-56 overflow-hidden rounded-[1.75rem] m-3">
                     @if($field->image)
-                        <img src="{{ asset('images/fields/' . $field->image) }}" 
-                             alt="{{ $field->name }}" 
+                        <img src="{{ asset('images/fields/' . $field->image) }}"
+                             alt="{{ $field->name }}"
                              loading="lazy"
                              decoding="async"
-                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 opacity-90 group-hover:opacity-100">
+                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
                     @else
-                        <div class="w-full h-full bg-slate-800 flex items-center justify-center">
-                            <x-lucide-layout class="w-12 h-12 text-slate-700" />
+                        <div class="w-full h-full bg-slate-100 flex items-center justify-center">
+                            <x-lucide-layout class="w-12 h-12 text-slate-300" />
                         </div>
                     @endif
-                    
-                    <!-- Gradient Overlay for Image -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-60"></div>
-                    
-                    <!-- Location Badge -->
-                    <div class="absolute top-6 right-6 z-10">
-                        <div class="px-4 py-2 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center gap-2 text-white shadow-xl">
-                            <x-lucide-map-pin class="w-4 h-4 text-brand-400" />
-                            <span class="text-[10px] font-black uppercase tracking-widest">Tangier</span>
-                        </div>
+
+                    <!-- Top-left: Availability badge -->
+                    <div class="absolute top-3 left-3">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm text-[11px] font-bold text-slate-800 shadow-md">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Disponible
+                        </span>
                     </div>
+
+
                 </div>
-                
+
                 <!-- Content -->
-                <div class="p-6 -mt-12 bg-slate-800/95 backdrop-blur-sm relative z-20 rounded-t-[2.5rem] flex flex-col flex-1">
-                    <!-- Title & Price Badge -->
-                    <div class="flex items-start justify-between mb-4">
-                        <h3 class="text-xl font-black text-white leading-tight pr-4">
-                            {{ $field->name }}
-                        </h3>
-                        <div class="px-4 py-2 bg-slate-700/80 rounded-2xl border border-white/10 flex items-center gap-1 shadow-lg">
-                            <span class="text-lg font-black text-white">{{ $field->price_per_hour ?? 300 }}</span>
-                            <span class="text-[10px] font-bold text-slate-400">DH</span>
-                        </div>
-                    </div>
-                    
+                <div class="flex flex-col flex-1 px-5 pb-5 pt-2">
+
+                    <!-- Title -->
+                    <h3 class="text-lg font-black text-slate-900 leading-tight mb-1">
+                        {{ $field->name }}
+                    </h3>
+
+                    <!-- Subtitle -->
+                    <p class="text-[13px] font-semibold text-slate-400 mb-2">Terrain de Football</p>
+
                     <!-- Description -->
-                    <p class="text-sm text-slate-300 leading-relaxed mb-6 line-clamp-2">
+                    <p class="text-[13px] text-slate-500 leading-relaxed mb-5 line-clamp-2">
                         Vivez une expérience de jeu exceptionnelle sur ce terrain de gazon synthétique premium avec éclairage professionnel.
                     </p>
 
                     <!-- Tags -->
-                    <div class="flex flex-wrap gap-2 mb-8">
-
-                        <div class="px-3 py-1.5 bg-slate-700/50 rounded-2xl border border-white/5 text-[11px] font-bold text-white">
-                            Gazon Pro
-                        </div>
-                        <div class="px-3 py-1.5 bg-slate-700/50 rounded-2xl border border-white/5 text-[11px] font-bold text-white">
-                            Match 1h
-                        </div>
+                    <div class="flex flex-wrap gap-2 mb-5">
+                        <span class="px-3 py-1 bg-slate-100 rounded-full text-[11px] font-bold text-slate-600">Gazon Pro</span>
+                        <span class="px-3 py-1 bg-slate-100 rounded-full text-[11px] font-bold text-slate-600">Match 1h</span>
                     </div>
-                    
-                    <!-- CTA Button -->
-                    <div class="mt-auto">
-                        <a href="{{ url('/booking') }}" class="w-full flex items-center justify-center py-4 bg-white text-slate-950 text-sm font-black rounded-3xl hover:bg-emerald-400 hover:text-white transition-all duration-500 shadow-xl shadow-white/5 active:scale-95 group/btn">
+
+                    <!-- Bottom Row: Price + CTA -->
+                    <div class="mt-auto flex items-center justify-between gap-3">
+                        <!-- Price Pill -->
+                        <div class="flex items-baseline gap-1 px-4 py-2.5 bg-slate-100 rounded-full">
+                            <span class="text-base font-black text-slate-900">{{ $field->price_per_hour ?? 300 }}</span>
+                            <span class="text-[11px] font-bold text-slate-400">DH</span>
+                        </div>
+
+                        <!-- CTA Button -->
+                        <a href="{{ url('/booking') }}"
+                           class="flex-1 flex items-center justify-center gap-2 py-2.5 bg-slate-900 text-white text-sm font-black rounded-full hover:bg-slate-700 active:scale-95 transition-all duration-300 shadow-lg shadow-slate-900/20 group/btn">
                             Réserver
-                            <x-lucide-arrow-right class="w-4 h-4 ml-2 transform group-hover/btn:translate-x-1 transition-transform" />
+                            <span class="w-6 h-6 rounded-full bg-white/15 flex items-center justify-center transform group-hover/btn:translate-x-0.5 transition-transform">
+                                <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                                </svg>
+                            </span>
                         </a>
                     </div>
+
                 </div>
             </article>
             @endforeach
