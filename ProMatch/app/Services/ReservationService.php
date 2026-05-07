@@ -2,8 +2,15 @@
 
 namespace App\Services;
 
+use App\Models\Field;
 use App\Models\Reservation;
+use App\Models\Tenant;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ReservationService
 {
@@ -12,26 +19,78 @@ class ReservationService
      */
     public function createReservation(array $data, $user = null): Reservation
     {
-        // Map frontend field names to DB columns
-        $field = \App\Models\Field::find($data['field_id']);
-        $price = $field ? $field->price_per_hour : 0;
-        
-        $reservation = Reservation::create([
-            'field_id' => $data['field_id'],
-            'time_slot_id' => $data['time_slot_id'] ?? null,
-            'tenant_id' => $user?->tenant?->id ?? null,
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'email' => $data['email'] ?? 'guest_' . time() . '@promatch.ma',
-            'phone' => $data['phone'],
-            'request_date' => $data['date'],
-            'start_time' => $data['selected_time'] ?? null,
-            'price' => $price,
-            'cni_image' => $data['cni_image_base64'] ?? null,
-            'status' => 'PENDING',
-        ]);
+        return DB::transaction(function () use ($data, $user) {
+            $tenant = $this->resolveTenant($data, $user);
+            $field = Field::find($data['field_id']);
+            $price = $field ? $field->price_per_hour : ($data['price'] ?? 0);
+            $cniImagePath = $this->storeCniImage($data, $tenant);
 
-        return $reservation;
+            return Reservation::create([
+                'field_id' => $data['field_id'],
+                'time_slot_id' => $data['time_slot_id'] ?? null,
+                'tenant_id' => $tenant->id,
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'email' => $data['email'] ?? 'guest_' . time() . '@promatch.ma',
+                'phone' => $data['phone'],
+                'request_date' => $data['date'],
+                'start_time' => $data['selected_time'] ?? null,
+                'price' => $price,
+                'cni_image' => $cniImagePath,
+                'status' => 'PENDING',
+            ]);
+        });
+    }
+
+    private function storeCniImage(array $data, ?Tenant $tenant = null): ?string
+    {
+        $cniImage = $data['cni_image'] ?? null;
+
+        if ($cniImage instanceof UploadedFile) {
+            $path = $cniImage->store('reservations/cnis', 'public');
+
+            if ($tenant && !$tenant->cni_image) {
+                $tenant->update(['cni_image' => $path]);
+            }
+
+            return $path;
+        }
+
+        return is_string($cniImage) ? $cniImage : null;
+    }
+
+    private function resolveTenant(array $data, $user = null): Tenant
+    {
+        if ($user?->tenant) {
+            return $user->tenant;
+        }
+
+        $account = $user;
+
+        if (!$account && !empty($data['email'])) {
+            $account = User::where('email', $data['email'])->first();
+        }
+
+        if (!$account) {
+            $account = User::create([
+                'first_name' => $data['first_name'],
+                'last_name' => $data['last_name'],
+                'email' => $data['email'] ?? ('guest_' . Str::lower(Str::random(12)) . '@promatch.local'),
+                'password' => Hash::make(Str::random(32)),
+                'phone' => $data['phone'] ?? '',
+                'type' => 'tenant',
+            ]);
+        }
+
+        return Tenant::firstOrCreate(
+            ['user_id' => $account->id],
+            ['cin' => $data['cin'] ?? $data['tenant_cin'] ?? $this->generatePlaceholderCin($account)]
+        );
+    }
+
+    private function generatePlaceholderCin(User $user): string
+    {
+        return 'TMP-' . $user->id . '-' . Str::upper(Str::random(8));
     }
 
     /**

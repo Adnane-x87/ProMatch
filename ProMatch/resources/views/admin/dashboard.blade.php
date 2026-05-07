@@ -21,10 +21,9 @@
             </div>
 
             <div class="bg-white p-5 rounded-xl border border-slate-200">
-                <p class="text-sm font-medium text-slate-500 mb-3">Réservations</p>
+                <p class="text-sm font-medium text-slate-500 mb-3">Réservations actives</p>
                 <p class="text-2xl font-bold text-slate-900">
-                    <span x-text="stats.todays_reservations || 0">0</span>
-                    <span class="text-sm font-medium text-slate-400">/ 12</span>
+                    <span x-text="stats.active_reservations || 0">0</span>
                 </p>
             </div>
 
@@ -85,14 +84,15 @@
                                 <tr>
                                     <th class="px-5 py-3">Client</th>
                                     <th class="px-5 py-3">Terrain</th>
+                                    <th class="px-5 py-3">Date</th>
                                     <th class="px-5 py-3">Heure</th>
                                     <th class="px-5 py-3">Statut</th>
                                     <th class="px-5 py-3 text-right"></th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
-                                <template x-for="res in planning.slice(0, 5)" :key="res.id">
-                                    <tr class="hover:bg-slate-50/50" x-show="res.status === 'APPROVED' || res.status === 'PENDING'">
+                                <template x-for="res in recentReservations" :key="res.id">
+                                    <tr class="hover:bg-slate-50/50">
                                         <td class="px-5 py-3">
                                             <div class="flex items-center gap-3">
                                                 <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-semibold text-slate-600" x-text="getInitials(res.first_name, res.last_name)"></div>
@@ -100,21 +100,23 @@
                                             </div>
                                         </td>
                                         <td class="px-5 py-3 text-slate-500" x-text="res.field ? res.field.name : 'N/A'"></td>
+                                        <td class="px-5 py-3 text-slate-500" x-text="formatDate(res.request_date)"></td>
                                         <td class="px-5 py-3 font-medium text-slate-900" x-text="formatTime(res.start_time)"></td>
                                         <td class="px-5 py-3">
                                             <span :class="{
                                                 'bg-amber-50 text-amber-700': res.status === 'PENDING',
                                                 'bg-emerald-50 text-emerald-700': res.status === 'APPROVED',
-                                                'bg-rose-50 text-rose-700': res.status === 'REJECTED'
-                                            }" class="px-2 py-1 rounded-full text-xs font-medium" x-text="res.status === 'APPROVED' ? 'Confirmé' : 'En attente'"></span>
+                                                'bg-rose-50 text-rose-700': res.status === 'REJECTED' || res.status === 'CANCELED'
+                                            }" class="px-2 py-1 rounded-full text-xs font-medium" x-text="statusLabel(res.status)"></span>
                                         </td>
                                         <td class="px-5 py-3 text-right">
-                                            <button class="text-slate-400 hover:text-slate-600">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg>
-                                            </button>
+                                            <a href="{{ url('admin/reservations') }}" class="text-sm font-medium text-brand-600 hover:text-brand-700">Voir</a>
                                         </td>
                                     </tr>
                                 </template>
+                                <tr x-show="recentReservations.length === 0">
+                                    <td colspan="6" class="px-5 py-6 text-center text-slate-400">Aucune reservation recente.</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -129,16 +131,19 @@
                     <div class="space-y-3">
                         <template x-for="task in pendingTasks" :key="task.id">
                             <div class="p-4 border border-slate-200 rounded-lg">
-                                <div class="flex items-center gap-3 mb-3">
-                                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-sm font-semibold text-slate-600" x-text="getInitials(task.first_name, task.last_name)"></div>
-                                    <div>
+                                <div class="flex items-start gap-3 mb-3">
+                                    <a :href="task.cni_image_url" target="_blank" class="w-16 h-16 rounded-lg overflow-hidden border border-slate-200 bg-slate-100 flex-shrink-0">
+                                        <img :src="task.cni_image_url" alt="CNI" class="w-full h-full object-cover">
+                                    </a>
+                                    <div class="min-w-0">
                                         <p class="text-sm font-semibold text-slate-900" x-text="(task.first_name || '') + ' ' + (task.last_name || '')"></p>
-                                        <p class="text-xs text-slate-500">CNI en attente</p>
+                                        <p class="text-xs text-slate-500" x-text="task.field_name ? 'Terrain: ' + task.field_name : 'CNI en attente'"></p>
+                                        <p class="text-xs text-slate-400 mt-1" x-text="'Reservation du ' + formatDate(task.request_date)"></p>
                                     </div>
                                 </div>
                                 <div class="flex gap-2">
-                                    <button class="flex-1 py-2 text-xs font-semibold text-white bg-slate-900 rounded-lg hover:bg-slate-800">Vérifier</button>
-                                    <button class="px-3 py-2 text-xs font-semibold text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200">Ignorer</button>
+                                    <a :href="task.cni_image_url" target="_blank" class="flex-1 py-2 text-center text-xs font-semibold text-white bg-slate-900 rounded-lg hover:bg-slate-800">Voir CNI</a>
+                                    <a href="{{ url('admin/reservations') }}" class="px-3 py-2 text-xs font-semibold text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200">Reservations</a>
                                 </div>
                             </div>
                         </template>
@@ -157,9 +162,9 @@
     function dashboard() {
         return {
             stats: @json($stats),
-
+            recentReservations: @json($recentReservations),
             planning: [],
-            pendingTasks: [],
+            pendingTasks: @json($pendingCniTasks),
 
             async init() {
                 await this.fetchStats();
@@ -201,8 +206,6 @@
                     const result = await response.json();
                     if (result.success) {
                         this.planning = result.data;
-                        this.stats.todays_reservations = this.planning.filter(p => p.status === 'APPROVED').length;
-                        this.pendingTasks = this.planning.slice(0, 2); // Mocking tasks from planning for UI
                     }
                 } catch (error) {
                     console.error('Error fetching planning:', error);
@@ -222,8 +225,34 @@
                 return timeStr.substring(0, 5);
             },
 
+            formatDate(dateStr) {
+                if (!dateStr) return '';
+
+                const date = new Date(dateStr);
+                if (Number.isNaN(date.getTime())) {
+                    return dateStr;
+                }
+
+                return date.toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            },
+
             getInitials(first, last) {
                 return ((first ? first[0] : '') + (last ? last[0] : '')).toUpperCase();
+            },
+
+            statusLabel(status) {
+                const labels = {
+                    PENDING: 'En attente',
+                    APPROVED: 'Confirme',
+                    REJECTED: 'Rejetee',
+                    CANCELED: 'Annulee',
+                };
+
+                return labels[status] || status || '';
             },
 
             todayDate() {

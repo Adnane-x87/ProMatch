@@ -13,6 +13,10 @@ class Reservation extends Model
         'cni_image', 'status'
     ];
 
+    protected $hidden = [
+        'cni_image',
+    ];
+
     public function tenant()
     {
         return $this->belongsTo(Tenant::class);

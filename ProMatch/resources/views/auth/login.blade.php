@@ -8,8 +8,8 @@
 
         <!-- Header -->
         <div class="text-center mb-8">
-            <a href="{{ url('/') }}" class="inline-block mb-6">
-                <img src="{{ asset('images/logo.png') }}" alt="ProMatch Logo" class="h-20 w-auto">
+            <a href="{{ url('/') }}" class="inline-block mb-8">
+                <img src="{{ asset('images/logo.png') }}" alt="ProMatch Logo" class="h-32 w-auto mx-auto">
             </a>
             <h1 class="text-2xl font-bold text-slate-900">Bon retour !</h1>
             <p class="text-slate-500 mt-2">Connectez-vous pour gérer vos réservations</p>

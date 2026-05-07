@@ -18,7 +18,10 @@ class DashboardController extends Controller
     public function index()
     {
         $stats = $this->dashboardService->getDashboardStats();
-        return view('admin.dashboard', compact('stats'));
+        $recentReservations = $this->dashboardService->getRecentReservations();
+        $pendingCniTasks = $this->dashboardService->getPendingCniTasks();
+
+        return view('admin.dashboard', compact('stats', 'recentReservations', 'pendingCniTasks'));
     }
 
     public function stats()

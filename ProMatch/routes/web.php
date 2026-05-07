@@ -32,7 +32,7 @@ Route::get('/forgot-password', function () {
 })->name('password.request');
 
 // POST Routes for form submissions
-Route::post('/booking', [ReservationController::class, 'store']);
+Route::post('/booking', [ReservationController::class, 'store'])->middleware('auth');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/register', [ApiUserController::class, 'register']);

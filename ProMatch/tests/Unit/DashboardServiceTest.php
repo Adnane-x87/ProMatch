@@ -31,13 +31,13 @@ class DashboardServiceTest extends TestCase
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
         $tenantUser1 = User::create(['first_name' => 'T1', 'last_name' => 'U1', 'email' => 't1@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
-        Tenant::create(['user_id' => $tenantUser1->id, 'cin' => 'cin1', 'is_cni_valid' => true, 'cni_image' => 'url1']);
+        $tenant1 = Tenant::create(['user_id' => $tenantUser1->id, 'cin' => 'cin1', 'is_cni_valid' => true, 'cni_image' => 'url1']);
 
         $tenantUser2 = User::create(['first_name' => 'T2', 'last_name' => 'U2', 'email' => 't2@t.com', 'password' => '1', 'phone' => '2', 'type' => 'tenant']);
-        Tenant::create(['user_id' => $tenantUser2->id, 'cin' => 'cin2', 'is_cni_valid' => false, 'cni_image' => 'url2']);
+        $tenant2 = Tenant::create(['user_id' => $tenantUser2->id, 'cin' => 'cin2', 'is_cni_valid' => false, 'cni_image' => 'url2']);
 
         Reservation::create([
-            'tenant_id' => $tenantUser1->id,
+            'tenant_id' => $tenant1->id,
             'field_id' => $field->id,
             'first_name' => 'T',
             'last_name' => '1',
@@ -50,9 +50,25 @@ class DashboardServiceTest extends TestCase
             'status' => 'APPROVED'
         ]);
 
+        Reservation::create([
+            'tenant_id' => $tenant2->id,
+            'field_id' => $field->id,
+            'first_name' => 'T',
+            'last_name' => '2',
+            'email' => 't@2.com',
+            'phone' => '2',
+            'request_date' => now()->toDateString(),
+            'start_time' => now(),
+            'end_time' => now()->addHour(),
+            'price' => 100,
+            'cni_image' => 'reservations/cnis/test.png',
+            'status' => 'PENDING'
+        ]);
+
         $stats = $this->dashboardService->getDashboardStats();
 
         $this->assertEquals(2, $stats['total_clients']);
+        $this->assertEquals(2, $stats['active_reservations']);
         $this->assertEquals(1, $stats['validated_cnis']);
         $this->assertEquals(1, $stats['pending_cnis']);
         $this->assertEquals(200, $stats['todays_income']);

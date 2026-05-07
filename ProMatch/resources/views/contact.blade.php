@@ -38,8 +38,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="font-bold text-white">Complexe SportPlex</p>
-                                        <p class="text-slate-400 mt-1">123 Boulevard de la Corniche<br>Casablanca, Maroc</p>
+                                        <p class="font-bold text-white">Atlass Sport</p>
+                                        <p class="text-slate-400 mt-1">Braness<br>Tanger, Maroc</p>
                                     </div>
                                 </li>
                                 <li class="flex items-start gap-4">
