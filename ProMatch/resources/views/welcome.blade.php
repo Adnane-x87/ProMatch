@@ -200,7 +200,7 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="py-20 bg-neutral-900">
+    <section class="py-20" style="background-color: rgb(15, 23, 43);">
         <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl font-extrabold text-white tracking-tight mb-4">
                 Prêt à jouer ?
