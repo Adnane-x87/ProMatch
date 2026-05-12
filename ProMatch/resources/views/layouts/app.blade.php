@@ -73,40 +73,82 @@
                     @endguest
 
                     @auth
-                        {{-- Profile dropdown --}}
-                        <div class="relative" x-data="{ open: false }" @click.away="open = false">
-                            <button @click="open = !open"
-                                class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 hover:border-brand-400 hover:bg-brand-50 transition-all group">
-                                {{-- Avatar circle with initials --}}
-                                <span class="w-8 h-8 rounded-full bg-brand-600 text-white text-xs font-bold flex items-center justify-center select-none">
-                                    {{ strtoupper(substr(Auth::user()->first_name ?? Auth::user()->email, 0, 1)) }}
-                                </span>
-                                <span class="text-sm font-semibold text-slate-700 group-hover:text-brand-600 transition-colors max-w-[100px] truncate">
-                                    {{ Auth::user()->first_name ?? Auth::user()->email }}
-                                </span>
-                                {{-- Chevron --}}
-                                <svg class="w-4 h-4 text-slate-400 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
+                        {{-- Modern Avatar trigger --}}
+                        @php($accountUser = Auth::user())
+                        @php($isAdminAccount = $accountUser->type === 'owner' || strtolower($accountUser->first_name ?? '') === 'adnane')
+                        <div id="accountMenuRoot" class="relative flex items-center">
+                            <button id="avatarBtn" onclick="toggleAccountPanel(event)"
+                                type="button"
+                                aria-haspopup="menu"
+                                aria-expanded="false"
+                                aria-controls="accountPanel"
+                                class="group relative w-11 h-11 rounded-full bg-brand-600 text-white text-sm font-extrabold flex items-center justify-center select-none shadow-lg shadow-brand-600/25 ring-4 ring-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-700 hover:ring-brand-50 focus:outline-none focus:ring-brand-100">
+                                <span class="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-transparent opacity-80"></span>
+                                <span class="relative">{{ strtoupper(substr($accountUser->first_name ?? $accountUser->email, 0, 1)) }}</span>
                             </button>
 
-                            {{-- Dropdown menu --}}
-                            <div x-show="open" x-transition:enter="transition ease-out duration-150"
-                                x-transition:enter-start="opacity-0 -translate-y-1"
-                                x-transition:enter-end="opacity-100 translate-y-0"
-                                x-transition:leave="transition ease-in duration-100"
-                                x-transition:leave-start="opacity-100"
-                                x-transition:leave-end="opacity-0"
-                                class="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-50">
-                                <form method="POST" action="/logout">
+                            <div id="accountPanel"
+                                role="menu"
+                                aria-labelledby="avatarBtn"
+                                class="invisible pointer-events-none absolute right-0 top-full z-[80] mt-4 w-80 origin-top-right translate-y-2 scale-95 rounded-3xl border border-white/80 bg-white/95 p-2 opacity-0 shadow-[0_24px_70px_rgba(15,23,42,0.18)] ring-1 ring-slate-900/5 backdrop-blur-xl transition-all duration-200 ease-out">
+                                <div class="absolute -top-2 right-5 h-4 w-4 rotate-45 border-l border-t border-white/80 bg-white/95"></div>
+
+                                <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand-600 to-brand-900 px-4 py-4 text-white">
+                                    <div class="absolute -right-8 -top-10 h-28 w-28 rounded-full bg-white/10"></div>
+                                    <div class="absolute -bottom-12 left-8 h-24 w-24 rounded-full bg-white/10"></div>
+                                    <div class="relative flex items-center gap-3">
+                                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-base font-extrabold ring-1 ring-white/20">
+                                            {{ strtoupper(substr($accountUser->first_name ?? $accountUser->email, 0, 1)) }}
+                                        </div>
+                                        <div class="min-w-0">
+                                            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-100">Compte connect&eacute;</p>
+                                            <p class="mt-1 truncate text-sm font-bold">{{ trim(($accountUser->first_name ?? '') . ' ' . ($accountUser->last_name ?? '')) ?: 'Mon compte' }}</p>
+                                            <p class="truncate text-xs text-emerald-50/80">{{ $accountUser->email }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-2 space-y-1">
+                                    @unless($isAdminAccount)
+                                        <a href="{{ url('/booking') }}"
+                                            role="menuitem"
+                                            class="group flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-700 transition-all hover:bg-brand-50 hover:text-brand-700">
+                                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition-all group-hover:bg-white group-hover:text-brand-600 group-hover:shadow-sm">
+                                                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                                </svg>
+                                            </span>
+                                            <span>Mon compte</span>
+                                        </a>
+                                    @endunless
+
+                                    @if($isAdminAccount)
+                                        <a href="{{ url('/admin/dashboard') }}"
+                                            role="menuitem"
+                                            class="group flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-700 transition-all hover:bg-brand-50 hover:text-brand-700">
+                                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition-all group-hover:bg-white group-hover:text-brand-600 group-hover:shadow-sm">
+                                                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                                                </svg>
+                                            </span>
+                                            <span>Tableau de bord</span>
+                                        </a>
+                                    @endif
+                                </div>
+
+                                <div class="my-2 border-t border-slate-100"></div>
+
+                                <form method="POST" action="{{ route('logout') }}" class="block">
                                     @csrf
                                     <button type="submit"
-                                        class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors rounded-b-2xl">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                                        </svg>
-                                        Se déconnecter
+                                        role="menuitem"
+                                        class="group flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm font-bold text-red-500 transition-all hover:bg-red-50">
+                                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-50 text-red-500 transition-all group-hover:bg-white group-hover:shadow-sm">
+                                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                            </svg>
+                                        </span>
+                                        <span>Se d&eacute;connecter</span>
                                     </button>
                                 </form>
                             </div>
@@ -234,6 +276,50 @@
             const menu = document.getElementById('mobileMenu');
             menu.classList.toggle('hidden');
         }
+
+        function closeAccountPanel() {
+            const panel = document.getElementById('accountPanel');
+            const btn = document.getElementById('avatarBtn');
+            if (!panel) return;
+
+            panel.classList.add('invisible', 'opacity-0', 'translate-y-2', 'scale-95', 'pointer-events-none');
+            panel.classList.remove('visible', 'opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+        }
+
+        function toggleAccountPanel(event) {
+            if (event) event.stopPropagation();
+            
+            const panel = document.getElementById('accountPanel');
+            const btn   = document.getElementById('avatarBtn');
+            if (!panel || !btn) return;
+
+            const isOpen = btn.getAttribute('aria-expanded') === 'true';
+            if (isOpen) {
+                closeAccountPanel();
+                return;
+            }
+
+            panel.classList.remove('invisible', 'opacity-0', 'translate-y-2', 'scale-95', 'pointer-events-none');
+            panel.classList.add('visible', 'opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+            btn.setAttribute('aria-expanded', 'true');
+        }
+
+        // Close when clicking outside
+        document.addEventListener('click', function(e) {
+            const root = document.getElementById('accountMenuRoot');
+            const btn = document.getElementById('avatarBtn');
+            if (!root || !btn || btn.getAttribute('aria-expanded') !== 'true') return;
+            
+            if (!root.contains(e.target)) {
+                closeAccountPanel();
+            }
+        });
+
+        // Close on Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeAccountPanel();
+        });
     </script>
 </body>
 </html>
