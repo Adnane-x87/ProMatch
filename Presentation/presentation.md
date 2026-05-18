@@ -59,7 +59,7 @@ style: |
     position: absolute;
     top: 40px;
   }
-  .logo-header img { height: 55px; }
+  .logo-header img { height: 120px; }
 
   /* Summary Grid */
   .sommaire-grid {
@@ -123,8 +123,8 @@ style: |
   <img src="images/logo-solicode.png" alt="Solicode">
 </div>
 
-# ProMatch
-### Système Intelligent de Gestion de Terrains
+# Projet de Fin de Formation
+### Système Intelligent de Gestion de Terrains <h3 style="color: #4da565;">- ProMatch</h3>
 
 **Réalisé par :** Adnane Kesksu
 **Encadré par :** M. ESSARRAJ Fouad  
