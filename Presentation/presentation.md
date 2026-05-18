@@ -119,8 +119,8 @@ style: |
 
 <!-- _class: lead -->
 <div class="logo-header">
-  <img src="images/ofppt-logo.png" alt="OFPPT">
-  <img src="images/logo-solicode.png" alt="Solicode">
+  <img src="/rapport/images/ofppt-logo.png" alt="OFPPT">
+  <img src="/rapport/images/logo-solicode.png" alt="Solicode">
 </div>
 
 # Projet de Fin de Formation
