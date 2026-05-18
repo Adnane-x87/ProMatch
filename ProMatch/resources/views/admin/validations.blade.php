@@ -21,7 +21,7 @@
                 $firstName = $user->first_name ?? $validation->first_name;
                 $lastName = $user->last_name ?? $validation->last_name;
                 $initials = strtoupper(substr($firstName ?: '?', 0, 1) . substr($lastName ?: '?', 0, 1));
-                $cniUrl = $validation->cni_image ? asset('storage/' . $validation->cni_image) : null;
+                $cniUrl = $validation->cni_image ? '/storage/' . $validation->cni_image : null;
             @endphp
 
             <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">

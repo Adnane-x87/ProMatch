@@ -183,4 +183,64 @@ class ReservationServiceTest extends TestCase
             'status' => 'REJECTED'
         ]);
     }
+
+    public function test_blocked_user_cannot_make_reservation()
+    {
+        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
+        $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
+        $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
+
+        $blockedUser = User::create([
+            'first_name' => 'Blocked',
+            'last_name' => 'User',
+            'email' => 'blocked@t.com',
+            'password' => '1',
+            'phone' => '0600000010',
+            'type' => 'tenant',
+            'is_blocked' => true,
+        ]);
+
+        $this->expectException(\Illuminate\Validation\ValidationException::class);
+
+        // Attempting to create reservation using a blocked user instance
+        $this->reservationService->createReservation([
+            'field_id' => $field->id,
+            'date' => '2026-04-21',
+            'selected_time' => '2026-04-21 20:00:00',
+            'first_name' => 'Blocked',
+            'last_name' => 'User',
+            'email' => 'blocked@t.com',
+            'phone' => '0600000010',
+        ], $blockedUser);
+    }
+
+    public function test_guest_with_blocked_user_email_cannot_make_reservation()
+    {
+        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
+        $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
+        $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
+
+        User::create([
+            'first_name' => 'Blocked',
+            'last_name' => 'User',
+            'email' => 'blocked_guest@t.com',
+            'password' => '1',
+            'phone' => '0600000011',
+            'type' => 'tenant',
+            'is_blocked' => true,
+        ]);
+
+        $this->expectException(\Illuminate\Validation\ValidationException::class);
+
+        // Attempting to create reservation using the email of a blocked user (as a guest)
+        $this->reservationService->createReservation([
+            'field_id' => $field->id,
+            'date' => '2026-04-21',
+            'selected_time' => '2026-04-21 20:00:00',
+            'first_name' => 'Blocked',
+            'last_name' => 'User',
+            'email' => 'blocked_guest@t.com',
+            'phone' => '0600000011',
+        ]);
+    }
 }

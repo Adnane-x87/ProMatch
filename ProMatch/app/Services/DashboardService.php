@@ -53,7 +53,7 @@ class DashboardService
                     'field_name' => $reservation->field?->name,
                     'request_date' => $reservation->request_date,
                     'status' => $reservation->status,
-                    'cni_image_url' => $reservation->cni_image ? Storage::url($reservation->cni_image) : null,
+                    'cni_image_url' => $reservation->cni_image ? '/storage/' . $reservation->cni_image : null,
                 ];
             })
             ->values()
