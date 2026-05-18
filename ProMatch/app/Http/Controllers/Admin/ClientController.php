@@ -21,7 +21,11 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Tenant::with('user')->get();
+        // Eager load relationships, counts, and sums to prevent N+1 queries and massively speed up the page
+        $clients = Tenant::with('user')
+            ->withCount('reservations')
+            ->withSum('reservations', 'price')
+            ->get();
         
         // Get stats for the top cards
         $stats = $this->dashboardService->getDashboardStats();
@@ -38,5 +42,43 @@ class ClientController extends Controller
             'validatedCniCount', 
             'pendingValidationsCount'
         ));
+    }
+
+    public function block($id, Request $request)
+    {
+        $tenant = Tenant::with('user')->findOrFail($id);
+        $user = $tenant->user;
+        $owner = \App\Models\Owner::first(); // Assuming first owner or authenticated owner
+        
+        if ($owner) {
+            $owner->blockUser($user);
+        } else {
+            $user->is_blocked = true;
+            $user->save();
+        }
+
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true, 'is_blocked' => true]);
+        }
+        return redirect()->back()->with('success', 'Utilisateur bloqué avec succès.');
+    }
+
+    public function unblock($id, Request $request)
+    {
+        $tenant = Tenant::with('user')->findOrFail($id);
+        $user = $tenant->user;
+        $owner = \App\Models\Owner::first(); // Assuming first owner or authenticated owner
+        
+        if ($owner) {
+            $owner->unblockUser($user);
+        } else {
+            $user->is_blocked = false;
+            $user->save();
+        }
+
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true, 'is_blocked' => false]);
+        }
+        return redirect()->back()->with('success', 'Utilisateur débloqué avec succès.');
     }
 }

@@ -72,7 +72,31 @@
                             x-data="{
                                 name: '{{ strtolower(addslashes(($client->user->first_name ?? '') . ' ' . ($client->user->last_name ?? ''))) }}',
                                 phone: '{{ $client->phone ?? '' }}',
-                                cniStatus: '{{ $client->is_cni_valid ? 'VALID' : ($client->cni_image ? 'PENDING' : 'MISSING') }}'
+                                cniStatus: '{{ $client->is_cni_valid ? 'VALID' : ($client->cni_image ? 'PENDING' : 'MISSING') }}',
+                                isBlocked: {{ $client->user && $client->user->is_blocked ? 'true' : 'false' }},
+                                isLoading: false,
+                                toggleBlock() {
+                                    if(this.isLoading) return;
+                                    this.isLoading = true;
+                                    let url = this.isBlocked ? '{{ url('/admin/clients') }}/{{ $client->id }}/unblock' : '{{ url('/admin/clients') }}/{{ $client->id }}/block';
+                                    fetch(url, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Accept': 'application/json'
+                                        }
+                                    })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            this.isBlocked = data.is_blocked;
+                                        }
+                                    })
+                                    .finally(() => {
+                                        this.isLoading = false;
+                                    });
+                                }
                             }"
                             x-show="(search === '' || name.includes(search.toLowerCase()) || phone.includes(search)) && 
                                     (status === '' || cniStatus === status)"
@@ -83,6 +107,7 @@
                                         {{ strtoupper(substr($client->user->first_name ?? '?', 0, 1) . substr($client->user->last_name ?? '?', 0, 1)) }}
                                     </div>
                                     <span class="font-semibold text-slate-800">{{ $client->user->first_name ?? '' }} {{ $client->user->last_name ?? '' }}</span>
+                                    <span x-cloak x-show="isBlocked" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 text-[10px] font-semibold border border-rose-100 ml-1">Bloqué</span>
                                 </div>
                             </td>
                             <td class="px-5 py-4">
@@ -93,7 +118,7 @@
                                 <span class="text-slate-700 font-semibold">{{ $client->reservations_count ?? $client->reservations()->count() }}</span>
                                 <span class="text-slate-400 text-xs"> séances</span>
                             </td>
-                            <td class="px-5 py-4 font-semibold text-slate-700">{{ number_format($client->reservations()->sum('price'), 0) }} MAD</td>
+                            <td class="px-5 py-4 font-semibold text-slate-700">{{ number_format($client->reservations_sum_price ?? 0, 0) }} MAD</td>
                             <td class="px-5 py-4">
                                 @if($client->is_cni_valid)
                                 <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-100">
@@ -113,7 +138,21 @@
                                 @endif
                             </td>
                             <td class="px-5 py-4 text-right">
-                                <button type="button" class="text-xs text-brand-600 hover:text-brand-700 font-semibold" data-hs-overlay="#hs-client-details-modal">Voir</button>
+                                <div class="flex items-center justify-end gap-2">
+                                    <button type="button" class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200 transition-colors shadow-sm" data-hs-overlay="#hs-client-details-modal">Voir</button>
+                                    @if($client->user)
+                                        <button type="button" 
+                                                @click="toggleBlock()" 
+                                                :disabled="isLoading"
+                                                :class="isBlocked ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100 border-emerald-200' : 'bg-rose-50 text-rose-600 hover:bg-rose-100 border-rose-200'"
+                                                class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-lg border transition-colors shadow-sm disabled:opacity-50 min-w-[85px]">
+                                            <span x-show="isLoading" class="mr-1">
+                                                <svg class="animate-spin h-3 w-3" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                            </span>
+                                            <span x-text="isBlocked ? 'Débloquer' : 'Bloquer'"></span>
+                                        </button>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                         @endforeach

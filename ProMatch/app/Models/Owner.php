@@ -24,4 +24,14 @@ class Owner extends Model {
         // CNI verification logic
         return true;
     }
+
+    public function blockUser(User $u): bool {
+        $u->is_blocked = true;
+        return $u->save();
+    }
+
+    public function unblockUser(User $u): bool {
+        $u->is_blocked = false;
+        return $u->save();
+    }
 }
