@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div x-data="{ search: '', status: '' }">
+    <div x-data="{ search: '', status: '', blockStatus: '' }">
         <!-- Filters & Search -->
         <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm mt-6">
             <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
@@ -42,8 +42,13 @@
                 </div>
                 <!-- Select -->
                 <div class="flex gap-2">
+                    <select x-model="blockStatus" class="py-2 px-3 block bg-white border border-slate-200 rounded-lg text-sm focus:border-brand-500 focus:ring-brand-500 outline-none">
+                        <option value="">Tous (Compte)</option>
+                        <option value="BLOCKED">Bloqués</option>
+                        <option value="UNBLOCKED">Actifs</option>
+                    </select>
                     <select x-model="status" class="py-2 px-3 block bg-white border border-slate-200 rounded-lg text-sm focus:border-brand-500 focus:ring-brand-500 outline-none">
-                        <option value="">Tous les clients</option>
+                        <option value="">Tous (CNI)</option>
                         <option value="VALID">CNI Validée</option>
                         <option value="PENDING">En attente</option>
                         <option value="MISSING">Manquant</option>
@@ -99,7 +104,8 @@
                                 }
                             }"
                             x-show="(search === '' || name.includes(search.toLowerCase()) || phone.includes(search)) && 
-                                    (status === '' || cniStatus === status)"
+                                    (status === '' || cniStatus === status) &&
+                                    (blockStatus === '' || (blockStatus === 'BLOCKED' && isBlocked) || (blockStatus === 'UNBLOCKED' && !isBlocked))"
                         >
                             <td class="px-5 py-4">
                                 <div class="flex items-center gap-3">
