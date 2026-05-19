@@ -52,6 +52,8 @@ Route::middleware(['auth', \App\Http\Middleware\OwnerMiddleware::class])->prefix
     Route::post('/validations/{id}/reject', [ValidationController::class, 'reject']);
     Route::post('/clients/{id}/block', [ClientController::class, 'block'])->name('admin.clients.block');
     Route::post('/clients/{id}/unblock', [ClientController::class, 'unblock'])->name('admin.clients.unblock');
+    Route::post('/clients/{id}/validate-cni', [ClientController::class, 'validateCni'])->name('admin.clients.validate_cni');
+
 
     // Dashboard Data APIs (Session Authenticated)
     Route::get('/api/stats', [DashboardController::class, 'stats']);

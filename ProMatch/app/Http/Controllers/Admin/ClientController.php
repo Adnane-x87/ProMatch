@@ -81,4 +81,13 @@ class ClientController extends Controller
         }
         return redirect()->back()->with('success', 'Utilisateur débloqué avec succès.');
     }
+
+    public function validateCni($id)
+    {
+        $tenant = Tenant::findOrFail($id);
+        $tenant->is_cni_valid = true;
+        $tenant->save();
+
+        return redirect()->back()->with('success', 'CNI du client validé avec succès.');
+    }
 }
