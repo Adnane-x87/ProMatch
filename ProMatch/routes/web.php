@@ -38,6 +38,12 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/register', [ApiUserController::class, 'register']);
 Route::post('/contact', [PageController::class, 'submitContact']);
 
+// User Profile & Reservations Routes (Authenticated)
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [PageController::class, 'profile'])->name('profile');
+    Route::post('/profile/reservations/{id}/cancel', [PageController::class, 'cancelReservation'])->name('profile.reservations.cancel');
+});
+
 // Admin Routes (Authenticated)
 Route::middleware(['auth', \App\Http\Middleware\OwnerMiddleware::class])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
