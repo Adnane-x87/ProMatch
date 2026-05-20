@@ -66,7 +66,15 @@
 
                     <form method="POST" action="{{ url('/booking') }}" enctype="multipart/form-data" id="bookingForm" class="space-y-6 flex-1">
                         @csrf
-                        
+
+                        <!-- Error Banner -->
+                        <div id="errorBanner" class="hidden items-center gap-3 p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl mb-6 transition-all duration-300">
+                            <div class="w-8 h-8 rounded-xl bg-rose-100 flex items-center justify-center text-rose-600 shrink-0">
+                                <x-lucide-x-circle class="w-4 h-4" />
+                            </div>
+                            <div class="text-sm font-semibold" id="errorBannerText"></div>
+                        </div>
+
                         <!-- Selection Area -->
                         <div class="grid md:grid-cols-2 gap-4">
                             <!-- Terrain -->
@@ -123,6 +131,11 @@
                              </div>
 
                              <!-- CNI Area -->
+                             @php
+                                 $isCniValid = auth()->check() && auth()->user()->tenant && auth()->user()->tenant->is_cni_valid;
+                             @endphp
+
+                             @if(!$isCniValid)
                              <div class="relative group" onclick="document.getElementById('cni_image').click()">
                                 <div class="flex items-center gap-4 p-4 border-2 border-dashed border-slate-200 rounded-2xl group-hover:border-brand-500 group-hover:bg-brand-50 transition-all cursor-pointer">
                                     <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center group-hover:bg-brand-100 group-hover:text-brand-600 transition-colors">
@@ -135,6 +148,7 @@
                                 </div>
                                 <input type="file" id="cni_image" name="cni_image" accept="image/jpeg, image/png, image/jpg" class="hidden">
                              </div>
+                             @endif
                         </div>
 
                         <!-- Pricing & Action -->
@@ -290,13 +304,15 @@
         // CNI file selection visual feedback
         const cniInput = document.getElementById('cni_image');
         const cniText = document.getElementById('cniText');
-        cniInput.addEventListener('change', function() {
-            if (this.files && this.files.length > 0) {
-                cniText.innerHTML = '<span class="text-brand-600 font-medium">' + this.files[0].name + '</span> sélectionné';
-            } else {
-                cniText.innerHTML = 'Glissez votre CNI ou <span class="text-brand-600 font-medium">cliquez</span>';
-            }
-        });
+        if (cniInput && cniText) {
+            cniInput.addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    cniText.innerHTML = '<span class="text-brand-600 font-medium">' + this.files[0].name + '</span> sélectionné';
+                } else {
+                    cniText.innerHTML = 'Glissez votre CNI ou <span class="text-brand-600 font-medium">cliquez</span>';
+                }
+            });
+        }
 
         // Initial price update
         updatePrice();
@@ -315,6 +331,13 @@
             const formData = new FormData(form);
             const submitBtn = form.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn.innerHTML;
+
+            const errorBanner = document.getElementById('errorBanner');
+            const errorBannerText = document.getElementById('errorBannerText');
+            if (errorBanner) {
+                errorBanner.classList.add('hidden');
+                errorBanner.classList.remove('flex');
+            }
             
             // Basic validation
             if (!formData.get('selected_time')) {
@@ -350,11 +373,33 @@
                     document.getElementById('successModal').classList.add('flex');
                     form.reset();
                 } else {
-                    alert('Erreur: ' + (result.message || 'Une erreur est survenue lors de la réservation.'));
+                    let errorMsg = result.message || 'Une erreur est survenue lors de la réservation.';
+                    if (result.errors) {
+                        const firstKey = Object.keys(result.errors)[0];
+                        if (firstKey && result.errors[firstKey].length > 0) {
+                            errorMsg = result.errors[firstKey][0];
+                        }
+                    }
+                    if (errorBanner && errorBannerText) {
+                        errorBannerText.textContent = errorMsg;
+                        errorBanner.classList.remove('hidden');
+                        errorBanner.classList.add('flex');
+                        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        alert('Erreur: ' + errorMsg);
+                    }
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Une erreur de connexion est survenue. Veuillez réessayer.');
+                const connErrorMsg = 'Une erreur de connexion est survenue. Veuillez réessayer.';
+                if (errorBanner && errorBannerText) {
+                    errorBannerText.textContent = connErrorMsg;
+                    errorBanner.classList.remove('hidden');
+                    errorBanner.classList.add('flex');
+                    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    alert(connErrorMsg);
+                }
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnText;

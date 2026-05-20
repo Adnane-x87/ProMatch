@@ -19,6 +19,21 @@ class ReservationService
      */
     public function createReservation(array $data, $user = null): Reservation
     {
+        if ($user && $user->is_blocked) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'email' => ['Votre compte est bloqué. Vous ne pouvez pas effectuer de réservation.'],
+            ]);
+        }
+
+        if (!empty($data['email'])) {
+            $existingUser = User::where('email', $data['email'])->first();
+            if ($existingUser && $existingUser->is_blocked) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'email' => ['Votre compte est bloqué. Vous ne pouvez pas effectuer de réservation.'],
+                ]);
+            }
+        }
+
         return DB::transaction(function () use ($data, $user) {
             $tenant = $this->resolveTenant($data, $user);
             $field = Field::find($data['field_id']);

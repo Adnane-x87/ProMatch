@@ -53,4 +53,51 @@ class UserController extends Controller
         $this->userService->logout($request->user());
         return response()->json(['success' => true, 'message' => 'Logged out successfully']);
     }
+
+    public function index()
+    {
+        $users = $this->userService->getAllUsers();
+        return response()->json([
+            'success' => true,
+            'data' => $users
+        ]);
+    }
+
+    public function block($id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+        $owner = \App\Models\Owner::first(); // Current admin/owner
+        
+        if ($owner) {
+            $owner->blockUser($user);
+        } else {
+            $user->is_blocked = true;
+            $user->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Utilisateur bloqué avec succès.',
+            'data' => $user->fresh()
+        ]);
+    }
+
+    public function unblock($id)
+    {
+        $user = \App\Models\User::findOrFail($id);
+        $owner = \App\Models\Owner::first(); // Current admin/owner
+        
+        if ($owner) {
+            $owner->unblockUser($user);
+        } else {
+            $user->is_blocked = false;
+            $user->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Utilisateur débloqué avec succès.',
+            'data' => $user->fresh()
+        ]);
+    }
 }

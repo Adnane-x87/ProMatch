@@ -1,4 +1,5 @@
 ---
+
 marp: true
 theme: default
 _class: lead
@@ -59,7 +60,7 @@ style: |
     position: absolute;
     top: 40px;
   }
-  .logo-header img { height: 55px; }
+  .logo-header img { height: 120px; }
 
   /* Summary Grid */
   .sommaire-grid {
@@ -119,19 +120,20 @@ style: |
 
 <!-- _class: lead -->
 <div class="logo-header">
-  <img src="images/ofppt-logo.png" alt="OFPPT">
-  <img src="images/logo-solicode.png" alt="Solicode">
+  <img src="./images/ofppt-logo.png" alt="OFPPT">
+  <img src="./images/logo-solicode.png" alt="Solicode">
 </div>
 
-# ProMatch
-### Système Intelligent de Gestion de Terrains
+# Projet de Fin de Formation
+### Système Intelligent de Gestion de Terrains <h3 style="color: #4da565;">- ProMatch</h3>
 
-**Réalisé par :** Adnane Kesksu
+**Réalisé par :** Adnane Kesksu  
 **Encadré par :** M. ESSARRAJ Fouad  
-**Filière :** Développement Mobile et Web
+**Filière :** Développement Mobile et Web  
+
+**Date :** 12 juin 2026  
 
 ---
-
 ## 📋 Sommaire
 
 <div class="sommaire-grid">
@@ -139,8 +141,8 @@ style: |
   <div class="sommaire-item"><div class="sommaire-num">2</div><div class="sommaire-text">Méthodologie</div></div>
   <div class="sommaire-item"><div class="sommaire-num">3</div><div class="sommaire-text">Branche Fonctionnelle</div></div>
   <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Branche Technique</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception (UML)</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Démonstration Live</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Conception</div></div>
 </div>
 
 
@@ -158,7 +160,7 @@ style: |
 ## 2. Méthodologie : Design Thinking
 
 <div class="img-container">
-  <img src="images/designThinking.png" class="img-methodo" alt="Design Thinking">
+  <img src="./images/designThinking.png" class="img-methodo" alt="Design Thinking">
 </div>
 
 
@@ -167,90 +169,63 @@ style: |
 ## Méthodologie : Scrum (Agile)
 
 <div class="img-container">
-  <img src="images/scrum.jpg" class="img-methodo" alt="Scrum">
+  <img src="./images/scrum.jpg" class="img-methodo" alt="Scrum">
 </div>
 
 
----
-
-### 1. DESIGN THINKING : Empathie
-
-<div class="img-container">
-  <img src="./images/Image-carte-empatie.png" class="img-methodo" alt="Carte d'empathie">
-</div>
-
-
----
-
-### 2. DESIGN THINKING : Définition
-
-<div class="sommaire-grid">
-  <div class="dt-card">
-    <h3 style="color: #ef4444; margin-bottom: 20px;">Le Constat (Frictions)</h3>
-    <ul style="list-style-type: none; padding-left: 0; font-size: 0.85em;">
-      <li style="margin-bottom: 12px;">❌ <strong>Gestion Archaïque :</strong> 100% manuelle, risques de doublons.</li>
-      <li style="margin-bottom: 12px;">❌ <strong>Communication Lente :</strong> Dépendance au téléphone.</li>
-      <li style="margin-bottom: 12px;">❌ <strong>Zéro Visibilité :</strong> Pas de vue en temps réel.</li>
-      <li style="margin-bottom: 12px;">❌ <strong>Insécurité :</strong> Pas de preuve d'achat/CNI.</li>
-    </ul>
-  </div>
-  <div class="dt-card" style="border-top-color: #10b981;">
-    <h3 style="color: #10b981; margin-bottom: 20px;">Notre Solution</h3>
-    <ul style="list-style-type: none; padding-left: 0; font-size: 0.85em;">
-      <li style="margin-bottom: 12px;">✅ <strong>Digitalisation :</strong> Centralisation de l'offre.</li>
-      <li style="margin-bottom: 12px;">✅ <strong>Self-Service :</strong> Réservation instantanée 24/7.</li>
-      <li style="margin-bottom: 12px;">✅ <strong>Fiabilité :</strong> Vérification CNI obligatoire.</li>
-      <li style="margin-bottom: 12px;">✅ <strong>Suivi :</strong> Dashboard complet pour l'Admin.</li>
-    </ul>
-  </div>
-</div>
-
-
----
-
-### 3. DESIGN THINKING : Idéation
-
-<div class="sommaire-grid">
-  <div class="dt-card" style="border-top-color: #f59e0b;">
-    <h3 style="color: #f59e0b; margin-bottom: 20px;">Stratégie Digitale</h3>
-    <ul style="list-style-type: none; padding-left: 0; font-size: 0.85em;">
-      <li style="margin-bottom: 12px;">💡 <strong>Interface Web/Mobile :</strong> Accessibilité universelle.</li>
-      <li style="margin-bottom: 12px;">💡 <strong>Validation CNI :</strong> Sécurisation du processus.</li>
-      <li style="margin-bottom: 12px;">💡 <strong>Optimisation :</strong> Gestion intelligente des créneaux.</li>
-    </ul>
-  </div>
-  <div class="dt-card" style="border-top-color: #3b82f6;">
-     <h3 style="color: #3b82f6; margin-bottom: 20px;">Expérience Utilisateur</h3>
-    <p style="font-size: 0.9em; line-height: 1.6;">Transformation d'un processus verbal en une expérience numérique fluide, sécurisée et valorisante pour le complexe sportif.</p>
-  </div>
-</div>
 
 
 ---
 
 ## 3. Branche Fonctionnelle
 
-### Architecture des Cas d'utilisation
+### Cadrage de problème
+
+<div class="img-container">
+  <div class="dt-card" style="border-top-color: #ef4444; width: 85%;">
+    <h3 style="color: #ef4444; margin-bottom: 15px;">Problématique</h3>
+    <blockquote style="font-style: italic; background: #f8fafc; padding: 20px; border-radius: 12px; border-left: 5px solid #ef4444; font-size: 0.9em; line-height: 1.6; margin: 0;">
+      "Comment digitaliser la gestion des terrains pour éliminer les pertes de réservations, les conflits de créneaux et la dépendance au téléphone ?"
+    </blockquote>
+    <p style="margin-top: 20px; font-size: 0.85em; font-weight: 600; color: #475569; margin-bottom: 0;">
+      🎯 <strong>Focus :</strong> L'automatisation, la vérification d'identité (CNI) et le contrôle en temps réel.
+    </p>
+  </div>
+</div>
+
+---
+
+##  Branche Fonctionnelle
+
+### Global use case :  
 <div class="img-container">
   <img src="./images/use-case.png" class="img-methodo" alt="Use Case">
 </div>
 
+--- 
 
----
+##  Branche Fonctionnelle
 
-## Maquettes Haute Fidélité (UI/UX)
-
-<div class="sommaire-grid">
-  <div class="img-container">
-    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface Public (Desktop)</h3>
-    <img src="./images/maquete.png" class="img-methodo" alt="Desktop Mockup">
-  </div>
-  <div class="img-container">
-    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface Mobile (Terrain)</h3>
-    <img src="./images/mobile.png" class="img-methodo" alt="Mobile Mockup">
-  </div>
+### Global use case :Espace Admin
+<div class="img-container">
+  <img src="./images/use-case.ecpace.Admin.png" class="img-methodo" alt="Use Case">
 </div>
 
+---
+##  Branche Fonctionnelle
+
+### Global use case :Espace Admin
+<div class="img-container">
+  <img src="./images/use-case.user.ecpace.png" class="img-methodo" alt="Use Case">
+</div>
+
+---
+##  Branche Fonctionnelle
+
+### Global use case : Mobile
+<div class="img-container">
+  <img src="./images/usecase.mobile.png" class="img-methodo" alt="Use Case">
+</div>
 
 ---
 
@@ -278,32 +253,39 @@ style: |
 
 ---
 
-## 5. Conception : Modélisation (UML)
+## 5. Conception : Diagramme de classe
 
 <div class="img-container">
   <img src="./images/diagramme-class.png" class="img-methodo" alt="Diagramme de classe">
+</div>
 
 ---
 
-## 6. Démonstration & Outils
+## Interfaces Réalisées : Web
 
 <div class="sommaire-grid">
-  <div class="dt-card">
-    <h3>Workflow de Dev</h3>
-    <ul style="font-size: 0.8em;">
-      <li><strong>IDE :</strong> VS Code & Antigravity.</li>
-      <li><strong>Git :</strong> Gestion de version (GitHub).</li>
-    </ul>
+  <div class="img-container">
+    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface Public</h3>
+    <img src="./images/interface.home.png" class="img-methodo" alt="Desktop Mockup">
   </div>
-  <div class="dt-card" style="border-top-color: #3d8a54;">
-    <h3>Outils Analyse</h3>
-    <ul style="font-size: 0.8em;">
-      <li><strong>UML :</strong> Mermaid / PlantUML.</li>
-      <li><strong>DB :</strong> MySQL Workbench.</li>
-    </ul>
+  <div class="img-container">
+    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface admin</h3>
+    <img src="./images/interface.dashboard.png" class="img-methodo" alt="Mobile Mockup">
   </div>
-</div>
+</div>  
+ 
+---
 
+<div class="sommaire-grid">
+  <div class="img-container">
+    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface mobile Public</h3>
+    <img src="./images/interface.mobile.home.png" class="img-methodo" alt="Desktop Mockup">
+  </div>
+  <div class="img-container">
+    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface mobile admin</h3>
+    <img src="./images/interface.mobile.dashboard.png" class="img-methodo" alt="Mobile Mockup">
+  </div>
+</div>  
 
 ---
 
@@ -311,4 +293,3 @@ style: |
 
 # Merci pour votre attention !
 ### Des questions ?
-

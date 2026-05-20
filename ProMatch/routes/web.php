@@ -38,6 +38,12 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/register', [ApiUserController::class, 'register']);
 Route::post('/contact', [PageController::class, 'submitContact']);
 
+// User Profile & Reservations Routes (Authenticated)
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [PageController::class, 'profile'])->name('profile');
+    Route::post('/profile/reservations/{id}/cancel', [PageController::class, 'cancelReservation'])->name('profile.reservations.cancel');
+});
+
 // Admin Routes (Authenticated)
 Route::middleware(['auth', \App\Http\Middleware\OwnerMiddleware::class])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
@@ -50,6 +56,10 @@ Route::middleware(['auth', \App\Http\Middleware\OwnerMiddleware::class])->prefix
     Route::post('/reservations/{id}/cancel', [ReservationController::class, 'cancel']);
     Route::post('/validations/{id}/approve', [ValidationController::class, 'approve']);
     Route::post('/validations/{id}/reject', [ValidationController::class, 'reject']);
+    Route::post('/clients/{id}/block', [ClientController::class, 'block'])->name('admin.clients.block');
+    Route::post('/clients/{id}/unblock', [ClientController::class, 'unblock'])->name('admin.clients.unblock');
+    Route::post('/clients/{id}/validate-cni', [ClientController::class, 'validateCni'])->name('admin.clients.validate_cni');
+
 
     // Dashboard Data APIs (Session Authenticated)
     Route::get('/api/stats', [DashboardController::class, 'stats']);

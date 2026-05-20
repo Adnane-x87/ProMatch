@@ -18,11 +18,20 @@ class User extends Authenticatable
         'password',
         'phone',
         'type', // 'owner' | 'tenant' | 'employee'
+        'is_blocked',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+    protected $casts = [
+        'is_blocked' => 'boolean',
+    ];
+
+    protected $attributes = [
+        'is_blocked' => false,
     ];
 
     public function owner() { return $this->hasOne(Owner::class); }

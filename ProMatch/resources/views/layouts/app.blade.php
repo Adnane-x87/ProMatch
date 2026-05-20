@@ -110,7 +110,7 @@
 
                                 <div class="mt-2 space-y-1">
                                     @unless($isAdminAccount)
-                                        <a href="{{ url('/booking') }}"
+                                        <a href="{{ route('profile') }}"
                                             role="menuitem"
                                             class="group flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-700 transition-all hover:bg-brand-50 hover:text-brand-700">
                                             <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition-all group-hover:bg-white group-hover:text-brand-600 group-hover:shadow-sm">
