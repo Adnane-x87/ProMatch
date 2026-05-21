@@ -119,8 +119,8 @@ style: |
 
 <!-- _class: lead -->
 <div class="logo-header">
-  <img src="/Presentation/images/ofppt-logo.png" alt="OFPPT">
-  <img src="/rapport/images/logo-solicode.png" alt="Solicode">
+  <img src="./images/ofppt-logo.png" alt="OFPPT">
+  <img src="./images/logo-solicode.png" alt="Solicode">
 </div>
 
 # Projet de Fin de Formation
@@ -140,8 +140,8 @@ style: |
   <div class="sommaire-item"><div class="sommaire-num">2</div><div class="sommaire-text">Méthodologie</div></div>
   <div class="sommaire-item"><div class="sommaire-num">3</div><div class="sommaire-text">Branche Fonctionnelle</div></div>
   <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Branche Technique</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception (UML)</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Démonstration Live</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Conception</div></div>
 </div>
 
 
@@ -159,7 +159,7 @@ style: |
 ## 2. Méthodologie : Design Thinking
 
 <div class="img-container">
-  <img src="images/designThinking.png" class="img-methodo" alt="Design Thinking">
+  <img src="./images/designThinking.png" class="img-methodo" alt="Design Thinking">
 </div>
 
 
@@ -168,7 +168,7 @@ style: |
 ## Méthodologie : Scrum (Agile)
 
 <div class="img-container">
-  <img src="images/scrum.jpg" class="img-methodo" alt="Scrum">
+  <img src="./images/scrum.jpg" class="img-methodo" alt="Scrum">
 </div>
 
 
@@ -194,7 +194,7 @@ style: |
 
 ---
 
-## 3. Branche Fonctionnelle
+##  Branche Fonctionnelle
 
 ### Global use case :  
 <div class="img-container">
@@ -203,7 +203,7 @@ style: |
 
 --- 
 
-## 3. Branche Fonctionnelle
+##  Branche Fonctionnelle
 
 ### Global use case :Espace Admin
 <div class="img-container">
@@ -211,7 +211,7 @@ style: |
 </div>
 
 ---
-## 3. Branche Fonctionnelle
+##  Branche Fonctionnelle
 
 ### Global use case :Espace Admin
 <div class="img-container">
@@ -219,7 +219,7 @@ style: |
 </div>
 
 ---
-## 3. Branche Fonctionnelle
+##  Branche Fonctionnelle
 
 ### Global use case : Mobile
 <div class="img-container">
@@ -270,6 +270,19 @@ style: |
   <div class="img-container">
     <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface admin</h3>
     <img src="./images/interface.dashboard.png" class="img-methodo" alt="Mobile Mockup">
+  </div>
+</div>  
+ 
+---
+
+<div class="sommaire-grid">
+  <div class="img-container">
+    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface mobile Public</h3>
+    <img src="./images/interface.mobile.home.png" class="img-methodo" alt="Desktop Mockup">
+  </div>
+  <div class="img-container">
+    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface mobile admin</h3>
+    <img src="./images/interface.mobile.dashboard.png" class="img-methodo" alt="Mobile Mockup">
   </div>
 </div>  
 
