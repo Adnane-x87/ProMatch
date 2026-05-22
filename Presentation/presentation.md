@@ -223,6 +223,68 @@ style: |
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   }
 
+  /* Stack technique slide */
+  section.stack-slide {
+    padding: 36px 50px 28px 50px;
+  }
+  section.stack-slide h2 {
+    font-size: 1.55em;
+    margin-bottom: 26px;
+  }
+  .stack-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    margin: 0 auto;
+    max-width: 620px;
+  }
+  .stack-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-top: 7px solid var(--accent);
+    border-radius: 12px;
+    box-shadow: 0 12px 22px rgba(15, 23, 42, 0.08);
+    min-height: 360px;
+    padding: 22px 22px 18px;
+  }
+  .stack-title {
+    align-items: center;
+    color: var(--accent);
+    display: flex;
+    font-size: 1em;
+    font-weight: 800;
+    gap: 10px;
+    margin: 0 0 18px;
+  }
+  .stack-icon {
+    align-items: center;
+    background: var(--soft);
+    border-radius: 999px;
+    color: var(--accent);
+    display: inline-flex;
+    font-size: 0.8em;
+    height: 36px;
+    justify-content: center;
+    width: 36px;
+  }
+  .stack-list {
+    display: grid;
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .stack-list li {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    color: #334155;
+    font-size: 0.72em;
+    font-weight: 700;
+    line-height: 1.25;
+    padding: 12px 14px;
+  }
+
 ---
 
 <!-- _class: lead -->
@@ -247,11 +309,10 @@ style: |
   <div class="sommaire-item"><div class="sommaire-num">1</div><div class="sommaire-text">Contexte du projet</div></div>
   <div class="sommaire-item"><div class="sommaire-num">2</div><div class="sommaire-text">Méthodologie</div></div>
   <div class="sommaire-item"><div class="sommaire-num">3</div><div class="sommaire-text">Branche Fonctionnelle</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Branche Technique</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Outils Utilisés</div></div>
   <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Réalisation</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">7</div><div class="sommaire-text">Démonstration Live</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">8</div><div class="sommaire-text">Conclusion</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Architecture du projet</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">7</div><div class="sommaire-text">Conclusion</div></div>
 </div>
 
 
@@ -331,24 +392,18 @@ style: |
 </div>
 
 ---
+<!-- _class: stack-slide -->
 
-## 4. Branche Technique : Tech Stack
+## 4. Réalisation : Outils Utilisés
 
-<div class="sommaire-grid">
-  <div class="dt-card" style="margin-top:0;">
-    <h3>Architecture & Backend</h3>
-    <ul style="font-size: 0.8em; line-height: 1.4;">
-      <li><strong>MySQL :</strong> Base de données relationnelle.</li>
-      <li><strong>Laravel 12 :</strong> Framework PHP Moderne.</li>
-      <li><strong>Architecture N-Tiers :</strong> Séparation nette (Model, Service, Controller).</li>
-    </ul>
-  </div>
-  <div class="dt-card" style="margin-top:0; border-top-color: #3d8a54;">
-    <h3>Frontend & Outils</h3>
-    <ul style="font-size: 0.8em; line-height: 1.4;">
-      <li><strong>Tailwind CSS :</strong> UI Utility-First.</li>
-      <li><strong>Alpine.js :</strong> Réactivité légère.</li>
-      <li><strong>AJAX / Vite :</strong> Performance et fluidité.</li>
+<div class="stack-grid">
+  <div class="stack-card" style="--accent:#f59e0b; --soft:#fef3c7;">
+    <div class="stack-title"><span class="stack-icon">O</span>Outils Utilisés</div>
+    <ul class="stack-list">
+      <li>Antigravity</li>
+      <li>MySQL Workbench</li>
+      <li>GitHub</li>
+      <li>PlantUML / Mermaid</li>
     </ul>
   </div>
 </div>
@@ -373,14 +428,7 @@ style: |
 
 ---
 
-<!-- _class: lead -->
-
-#  7. Démonstration Live
-### Présentation interactive en temps réel de l'application ProMatch
-
----
-
-##  8. Conclusion
+##  7. Conclusion
 
 <div class="conclusion-single-card">
   <p>
