@@ -2,7 +2,6 @@
 marp: true
 theme: default
 _class: lead
-_paginate: false
 paginate: true
 backgroundColor: #f8fafc
 style: |
@@ -42,6 +41,7 @@ style: |
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
   }
   
   section.lead h1 {
@@ -62,22 +62,32 @@ style: |
   .logo-header img { height: 120px; }
 
   /* Summary Grid */
-  .sommaire-grid {
+  .sommaire-grid, .sommaire-grid-3 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 20px;
     margin-top: 20px;
+  }
+  .sommaire-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .sommaire-grid-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
   }
   .sommaire-item {
     background: white;
     border: 1px solid #e2e8f0;
     border-left: 6px solid #4da565;
-    padding: 18px 25px;
+    padding: 12px 20px;
     border-radius: 16px;
     display: flex;
     align-items: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease;
+  }
+  .sommaire-grid-3 .sommaire-item {
+    padding: 10px 12px;
+    border-radius: 12px;
   }
   .sommaire-num {
     background: #4da565;
@@ -92,7 +102,14 @@ style: |
     margin-right: 20px;
     flex-shrink: 0;
   }
+  .sommaire-grid-3 .sommaire-num {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    font-size: 0.85em;
+  }
   .sommaire-text { font-weight: 600; color: #1e293b; }
+  .sommaire-grid-3 .sommaire-text { font-size: 0.85em; }
 
   .img-container {
     display: flex;
@@ -100,11 +117,102 @@ style: |
     align-items: center;
     height: 70%;
   }
+  .img-container-large {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 92%;
+    margin-top: -5px;
+  }
   .img-methodo {
     max-width: 90%;
     max-height: 400px;
     border-radius: 12px;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  .img-uml {
+    width: 98%;
+    height: auto;
+    max-height: 580px;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Custom Section Padding for UML slides */
+  section.uml-slide {
+    padding: 20px 40px 10px 40px;
+  }
+  section.uml-slide h2 {
+    font-size: 1.45em;
+    padding-bottom: 5px;
+    margin-bottom: 8px;
+  }
+  section.uml-slide h3 {
+    font-size: 0.95em;
+    margin-bottom: 5px;
+  }
+
+  /* Fullscreen UML slide - maximum image space */
+  section.uml-full {
+    padding: 8px 15px 5px 15px;
+  }
+  section.uml-full h2 {
+    font-size: 1.2em;
+    padding-bottom: 3px;
+    margin-bottom: 3px;
+  }
+  section.uml-full h3 {
+    font-size: 0.85em;
+    margin-bottom: 3px;
+  }
+  .img-uml-full {
+    width: 100%;
+    height: auto;
+    max-height: 660px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+
+  /* Empty Image Placeholder for Architecture slide */
+  .img-placeholder {
+    width: 98%;
+    height: 520px;
+    border: 3px dashed #cbd5e1;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f1f5f9;
+    color: #94a3b8;
+    font-size: 0.9em;
+    font-weight: 600;
+  }
+
+  /* Conclusion slide */
+  .conclusion-single-card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px 35px;
+    border-left: 8px solid #4da565;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    margin-top: 25px;
+  }
+  .conclusion-single-card h3 {
+    color: #3d8a54;
+    font-size: 1.1em;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .conclusion-single-card p {
+    font-size: 0.82em;
+    color: #334155;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .conclusion-single-card p:last-child {
+    margin-bottom: 0;
   }
 
   .dt-card {
@@ -135,13 +243,15 @@ style: |
 ---
 ## 📋 Sommaire
 
-<div class="sommaire-grid">
+<div class="sommaire-grid-3">
   <div class="sommaire-item"><div class="sommaire-num">1</div><div class="sommaire-text">Contexte du projet</div></div>
   <div class="sommaire-item"><div class="sommaire-num">2</div><div class="sommaire-text">Méthodologie</div></div>
   <div class="sommaire-item"><div class="sommaire-num">3</div><div class="sommaire-text">Branche Fonctionnelle</div></div>
   <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Branche Technique</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception (UML)</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Démonstration Live</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Réalisation</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">7</div><div class="sommaire-text">Démonstration Live</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">8</div><div class="sommaire-text">Conclusion</div></div>
 </div>
 
 
@@ -193,37 +303,31 @@ style: |
 </div>
 
 ---
+<!-- _class: uml-slide -->
 
-## 3. Branche Fonctionnelle
+## 3. Branche Fonctionnelle — Global Use Case
 
-### Global use case :  
-<div class="img-container">
-  <img src="./images/use-case.png" class="img-methodo" alt="Use Case">
-</div>
-
---- 
-
-## 3. Branche Fonctionnelle
-
-### Global use case :Espace Admin
-<div class="img-container">
-  <img src="./images/use-case.ecpace.Admin.png" class="img-methodo" alt="Use Case">
+### Espace Admin
+<div class="img-container-large">
+  <img src="./images/use-case.ecpace.Admin.png" class="img-uml" alt="Use Case">
 </div>
 
 ---
+<!-- _class: uml-slide -->
 ## 3. Branche Fonctionnelle
 
-### Global use case :Espace Admin
-<div class="img-container">
-  <img src="./images/use-case.user.ecpace.png" class="img-methodo" alt="Use Case">
+### Global use case : Espace User
+<div class="img-container-large">
+  <img src="./images/use-case.user.ecpace.png" class="img-uml" alt="Use Case">
 </div>
 
 ---
+<!-- _class: uml-slide -->
 ## 3. Branche Fonctionnelle
 
 ### Global use case : Mobile
-<div class="img-container">
-  <img src="./images/usecase.mobile.png" class="img-methodo" alt="Use Case">
+<div class="img-container-large">
+  <img src="./images/usecase.mobile.png" class="img-uml" alt="Use Case">
 </div>
 
 ---
@@ -249,29 +353,40 @@ style: |
   </div>
 </div>
 
-
 ---
+<!-- _class: uml-slide -->
 
 ## 5. Conception : Diagramme de classe
 
-<div class="img-container">
-  <img src="./images/diagramme-class.png" class="img-methodo" alt="Diagramme de classe">
+<div class="img-container-large">
+  <img src="./images/diagramme-class.png" class="img-uml" alt="Diagramme de classe">
+</div>
+
+---
+<!-- _class: uml-slide -->
+
+## 6. Réalisation : L'architecture du projet
+
+<div class="img-container-large">
+  <img src="./images/l’architecture du projet.png" class="img-uml" alt="l’architecture du projet">
 </div>
 
 ---
 
-## Interfaces Réalisées : Web
+<!-- _class: lead -->
 
-<div class="sommaire-grid">
-  <div class="img-container">
-    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface Public</h3>
-    <img src="./images/interface.home.png" class="img-methodo" alt="Desktop Mockup">
-  </div>
-  <div class="img-container">
-    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface admin</h3>
-    <img src="./images/interface.dashboard.png" class="img-methodo" alt="Mobile Mockup">
-  </div>
-</div>  
+#  7. Démonstration Live
+### Présentation interactive en temps réel de l'application ProMatch
+
+---
+
+##  8. Conclusion
+
+<div class="conclusion-single-card">
+  <p>
+    Le projet <strong>ProMatch</strong> répond avec succès aux défis de la gestion de terrains de sport en automatisant les réservations en temps réel et en sécurisant les accès. Cette expérience a permis de concrétiser nos compétences techniques (Laravel 12, MySQL, Alpine, Tailwind) et agiles (Scrum, Design Thinking), tout en ouvrant la voie à des évolutions futures telles que l'intégration du paiement en ligne et la gestion de tournois.
+  </p>
+</div>
 
 ---
 
