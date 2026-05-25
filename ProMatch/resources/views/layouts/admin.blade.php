@@ -62,6 +62,16 @@
                     </svg>
                     Tableau de bord
                 </a>
+                <a href="{{ url('/admin/fields') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-semibold rounded-lg @if(request()->is('admin/fields*')) bg-brand-50 text-brand-700 @else text-slate-600 hover:bg-slate-50 hover:text-slate-900 @endif">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 5a1 1 0 011-1h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4v16m-8-8h16" />
+                    </svg>
+                    Terrains
+                </a>
                 <a href="{{ url('/admin/reservations') }}"
                     class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg @if(request()->is('admin/reservations*')) bg-brand-50 text-brand-700 @else text-slate-600 hover:bg-slate-50 hover:text-slate-900 @endif">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\ValidationController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\FieldController;
 use App\Http\Controllers\Public\PageController;
 use Illuminate\Http\Request;
 
@@ -59,6 +60,12 @@ Route::middleware(['auth', \App\Http\Middleware\OwnerMiddleware::class])->prefix
     Route::post('/clients/{id}/block', [ClientController::class, 'block'])->name('admin.clients.block');
     Route::post('/clients/{id}/unblock', [ClientController::class, 'unblock'])->name('admin.clients.unblock');
     Route::post('/clients/{id}/validate-cni', [ClientController::class, 'validateCni'])->name('admin.clients.validate_cni');
+
+    // Fields CRUD Routes
+    Route::get('/fields', [FieldController::class, 'index'])->name('admin.fields.index');
+    Route::post('/fields', [FieldController::class, 'store'])->name('admin.fields.store');
+    Route::post('/fields/{id}', [FieldController::class, 'update'])->name('admin.fields.update');
+    Route::delete('/fields/{id}', [FieldController::class, 'destroy'])->name('admin.fields.destroy');
 
 
     // Dashboard Data APIs (Session Authenticated)
