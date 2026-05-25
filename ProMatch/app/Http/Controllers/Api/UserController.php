@@ -40,6 +40,9 @@ class UserController extends Controller
         // If using Sanctum, we could create a token here:
         $token = $user->createToken('auth_token')->plainTextToken;
 
+        // Eager-load relations to supply roles and attributes to the client
+        $user->load(['tenant', 'owner', 'employee']);
+
         return response()->json([
             'success' => true,
             'message' => 'Connexion réussie',

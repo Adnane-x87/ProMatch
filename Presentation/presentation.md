@@ -1,9 +1,7 @@
 ---
-
 marp: true
 theme: default
 _class: lead
-_paginate: false
 paginate: true
 backgroundColor: #f8fafc
 style: |
@@ -43,6 +41,7 @@ style: |
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
   }
   
   section.lead h1 {
@@ -63,22 +62,32 @@ style: |
   .logo-header img { height: 120px; }
 
   /* Summary Grid */
-  .sommaire-grid {
+  .sommaire-grid, .sommaire-grid-3 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 20px;
     margin-top: 20px;
+  }
+  .sommaire-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .sommaire-grid-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
   }
   .sommaire-item {
     background: white;
     border: 1px solid #e2e8f0;
     border-left: 6px solid #4da565;
-    padding: 18px 25px;
+    padding: 12px 20px;
     border-radius: 16px;
     display: flex;
     align-items: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease;
+  }
+  .sommaire-grid-3 .sommaire-item {
+    padding: 10px 12px;
+    border-radius: 12px;
   }
   .sommaire-num {
     background: #4da565;
@@ -93,7 +102,14 @@ style: |
     margin-right: 20px;
     flex-shrink: 0;
   }
+  .sommaire-grid-3 .sommaire-num {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    font-size: 0.85em;
+  }
   .sommaire-text { font-weight: 600; color: #1e293b; }
+  .sommaire-grid-3 .sommaire-text { font-size: 0.85em; }
 
   .img-container {
     display: flex;
@@ -101,11 +117,102 @@ style: |
     align-items: center;
     height: 70%;
   }
+  .img-container-large {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 92%;
+    margin-top: -5px;
+  }
   .img-methodo {
     max-width: 90%;
     max-height: 400px;
     border-radius: 12px;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+  .img-uml {
+    width: 98%;
+    height: auto;
+    max-height: 580px;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Custom Section Padding for UML slides */
+  section.uml-slide {
+    padding: 20px 40px 10px 40px;
+  }
+  section.uml-slide h2 {
+    font-size: 1.45em;
+    padding-bottom: 5px;
+    margin-bottom: 8px;
+  }
+  section.uml-slide h3 {
+    font-size: 0.95em;
+    margin-bottom: 5px;
+  }
+
+  /* Fullscreen UML slide - maximum image space */
+  section.uml-full {
+    padding: 8px 15px 5px 15px;
+  }
+  section.uml-full h2 {
+    font-size: 1.2em;
+    padding-bottom: 3px;
+    margin-bottom: 3px;
+  }
+  section.uml-full h3 {
+    font-size: 0.85em;
+    margin-bottom: 3px;
+  }
+  .img-uml-full {
+    width: 100%;
+    height: auto;
+    max-height: 660px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+
+  /* Empty Image Placeholder for Architecture slide */
+  .img-placeholder {
+    width: 98%;
+    height: 520px;
+    border: 3px dashed #cbd5e1;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f1f5f9;
+    color: #94a3b8;
+    font-size: 0.9em;
+    font-weight: 600;
+  }
+
+  /* Conclusion slide */
+  .conclusion-single-card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px 35px;
+    border-left: 8px solid #4da565;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    margin-top: 25px;
+  }
+  .conclusion-single-card h3 {
+    color: #3d8a54;
+    font-size: 1.1em;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .conclusion-single-card p {
+    font-size: 0.82em;
+    color: #334155;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .conclusion-single-card p:last-child {
+    margin-bottom: 0;
   }
 
   .dt-card {
@@ -116,12 +223,74 @@ style: |
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   }
 
+  /* Stack technique slide */
+  section.stack-slide {
+    padding: 36px 50px 28px 50px;
+  }
+  section.stack-slide h2 {
+    font-size: 1.55em;
+    margin-bottom: 26px;
+  }
+  .stack-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    margin: 0 auto;
+    max-width: 620px;
+  }
+  .stack-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-top: 7px solid var(--accent);
+    border-radius: 12px;
+    box-shadow: 0 12px 22px rgba(15, 23, 42, 0.08);
+    min-height: 360px;
+    padding: 22px 22px 18px;
+  }
+  .stack-title {
+    align-items: center;
+    color: var(--accent);
+    display: flex;
+    font-size: 1em;
+    font-weight: 800;
+    gap: 10px;
+    margin: 0 0 18px;
+  }
+  .stack-icon {
+    align-items: center;
+    background: var(--soft);
+    border-radius: 999px;
+    color: var(--accent);
+    display: inline-flex;
+    font-size: 0.8em;
+    height: 36px;
+    justify-content: center;
+    width: 36px;
+  }
+  .stack-list {
+    display: grid;
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .stack-list li {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    color: #334155;
+    font-size: 0.72em;
+    font-weight: 700;
+    line-height: 1.25;
+    padding: 12px 14px;
+  }
+
 ---
 
 <!-- _class: lead -->
 <div class="logo-header">
-  <img src="./images/ofppt-logo.png" alt="OFPPT">
-  <img src="./images/logo-solicode.png" alt="Solicode">
+  <img src="/Presentation/images/ofppt-logo.png" alt="OFPPT">
+  <img src="/rapport/images/logo-solicode.png" alt="Solicode">
 </div>
 
 # Projet de Fin de Formation
@@ -136,13 +305,14 @@ style: |
 ---
 ## 📋 Sommaire
 
-<div class="sommaire-grid">
+<div class="sommaire-grid-3">
   <div class="sommaire-item"><div class="sommaire-num">1</div><div class="sommaire-text">Contexte du projet</div></div>
   <div class="sommaire-item"><div class="sommaire-num">2</div><div class="sommaire-text">Méthodologie</div></div>
   <div class="sommaire-item"><div class="sommaire-num">3</div><div class="sommaire-text">Branche Fonctionnelle</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Branche Technique</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">4</div><div class="sommaire-text">Outils Utilisés</div></div>
   <div class="sommaire-item"><div class="sommaire-num">5</div><div class="sommaire-text">Conception</div></div>
-  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Conception</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">6</div><div class="sommaire-text">Architecture du projet</div></div>
+  <div class="sommaire-item"><div class="sommaire-num">7</div><div class="sommaire-text">Conclusion</div></div>
 </div>
 
 
@@ -160,7 +330,7 @@ style: |
 ## 2. Méthodologie : Design Thinking
 
 <div class="img-container">
-  <img src="./images/designThinking.png" class="img-methodo" alt="Design Thinking">
+  <img src="images/designThinking.png" class="img-methodo" alt="Design Thinking">
 </div>
 
 
@@ -169,7 +339,7 @@ style: |
 ## Méthodologie : Scrum (Agile)
 
 <div class="img-container">
-  <img src="./images/scrum.jpg" class="img-methodo" alt="Scrum">
+  <img src="images/scrum.jpg" class="img-methodo" alt="Scrum">
 </div>
 
 
@@ -194,98 +364,77 @@ style: |
 </div>
 
 ---
+<!-- _class: uml-slide -->
 
-##  Branche Fonctionnelle
+## 3. Branche Fonctionnelle — Global Use Case
 
-### Global use case :  
-<div class="img-container">
-  <img src="./images/use-case.png" class="img-methodo" alt="Use Case">
-</div>
-
---- 
-
-##  Branche Fonctionnelle
-
-### Global use case :Espace Admin
-<div class="img-container">
-  <img src="./images/use-case.ecpace.Admin.png" class="img-methodo" alt="Use Case">
+### Espace Admin
+<div class="img-container-large">
+  <img src="./images/use-case.ecpace.Admin.png" class="img-uml" alt="Use Case">
 </div>
 
 ---
-##  Branche Fonctionnelle
+<!-- _class: uml-slide -->
+## 3. Branche Fonctionnelle
 
-### Global use case :Espace Admin
-<div class="img-container">
-  <img src="./images/use-case.user.ecpace.png" class="img-methodo" alt="Use Case">
+### Global use case : Espace User
+<div class="img-container-large">
+  <img src="./images/use-case.user.ecpace.png" class="img-uml" alt="Use Case">
 </div>
 
 ---
-##  Branche Fonctionnelle
+<!-- _class: uml-slide -->
+## 3. Branche Fonctionnelle
 
 ### Global use case : Mobile
-<div class="img-container">
-  <img src="./images/usecase.mobile.png" class="img-methodo" alt="Use Case">
+<div class="img-container-large">
+  <img src="./images/usecase.mobile.png" class="img-uml" alt="Use Case">
 </div>
 
 ---
+<!-- _class: stack-slide -->
 
-## 4. Branche Technique : Tech Stack
+## 4. Réalisation : Outils Utilisés
 
-<div class="sommaire-grid">
-  <div class="dt-card" style="margin-top:0;">
-    <h3>Architecture & Backend</h3>
-    <ul style="font-size: 0.8em; line-height: 1.4;">
-      <li><strong>MySQL :</strong> Base de données relationnelle.</li>
-      <li><strong>Laravel 12 :</strong> Framework PHP Moderne.</li>
-      <li><strong>Architecture N-Tiers :</strong> Séparation nette (Model, Service, Controller).</li>
-    </ul>
-  </div>
-  <div class="dt-card" style="margin-top:0; border-top-color: #3d8a54;">
-    <h3>Frontend & Outils</h3>
-    <ul style="font-size: 0.8em; line-height: 1.4;">
-      <li><strong>Tailwind CSS :</strong> UI Utility-First.</li>
-      <li><strong>Alpine.js :</strong> Réactivité légère.</li>
-      <li><strong>AJAX / Vite :</strong> Performance et fluidité.</li>
+<div class="stack-grid">
+  <div class="stack-card" style="--accent:#f59e0b; --soft:#fef3c7;">
+    <div class="stack-title"><span class="stack-icon">O</span>Outils Utilisés</div>
+    <ul class="stack-list">
+      <li>Antigravity</li>
+      <li>MySQL Workbench</li>
+      <li>GitHub</li>
+      <li>PlantUML / Mermaid</li>
     </ul>
   </div>
 </div>
 
-
 ---
+<!-- _class: uml-slide -->
 
 ## 5. Conception : Diagramme de classe
 
-<div class="img-container">
-  <img src="./images/diagramme-class.png" class="img-methodo" alt="Diagramme de classe">
+<div class="img-container-large">
+  <img src="./images/diagramme-class.png" class="img-uml" alt="Diagramme de classe">
+</div>
+
+---
+<!-- _class: uml-slide -->
+
+## 6. Réalisation : L'architecture du projet
+
+<div class="img-container-large">
+  <img src="./images/l’architecture du projet.png" class="img-uml" alt="l’architecture du projet">
 </div>
 
 ---
 
-## Interfaces Réalisées : Web
+##  7. Conclusion
 
-<div class="sommaire-grid">
-  <div class="img-container">
-    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface Public</h3>
-    <img src="./images/interface.home.png" class="img-methodo" alt="Desktop Mockup">
-  </div>
-  <div class="img-container">
-    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface admin</h3>
-    <img src="./images/interface.dashboard.png" class="img-methodo" alt="Mobile Mockup">
-  </div>
-</div>  
- 
----
-
-<div class="sommaire-grid">
-  <div class="img-container">
-    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface mobile Public</h3>
-    <img src="./images/interface.mobile.home.png" class="img-methodo" alt="Desktop Mockup">
-  </div>
-  <div class="img-container">
-    <h3 style="font-size: 0.9em; margin-bottom: 10px;">Interface mobile admin</h3>
-    <img src="./images/interface.mobile.dashboard.png" class="img-methodo" alt="Mobile Mockup">
-  </div>
-</div>  
+<div class="conclusion-single-card">
+  <p>
+    Le projet <strong>ProMatch</strong> répond avec succès aux défis de la gestion de terrains de sport en automatisant les réservations en temps réel et en sécurisant les accès. Cette expérience a permis de concrétiser nos compétences techniques (Laravel 12, MySQL, Alpine, Tailwind) et agiles (Scrum, Design Thinking), tout en ouvrant la voie à des évolutions futures telles que l'intégration du paiement en ligne et la gestion de tournois.
+  </p>
+</div>
 
 ---
 
