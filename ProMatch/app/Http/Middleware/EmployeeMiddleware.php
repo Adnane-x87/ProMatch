@@ -18,7 +18,7 @@ class EmployeeMiddleware
     {
         $user = Auth::user();
         
-        if ($user && $user->type === 'employee') {
+        if ($user && $user->hasRole('employee')) {
             return $next($request);
         }
 

@@ -11,6 +11,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 class ReservationService
 {
@@ -93,8 +94,13 @@ class ReservationService
                 'email' => $data['email'] ?? ('guest_' . Str::lower(Str::random(12)) . '@promatch.local'),
                 'password' => Hash::make(Str::random(32)),
                 'phone' => $data['phone'] ?? '',
-                'type' => 'tenant',
             ]);
+
+            Role::findOrCreate('tenant');
+            $account->assignRole('tenant');
+        } elseif (!$account->hasRole('tenant')) {
+            Role::findOrCreate('tenant');
+            $account->assignRole('tenant');
         }
 
         return Tenant::firstOrCreate(

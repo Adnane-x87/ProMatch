@@ -6,7 +6,6 @@ classDiagram
         String email
         String password
         String phone
-        String type
         boolean is_blocked
     }
     class Owner {
@@ -53,8 +52,7 @@ classDiagram
         Time end_time
         String status
     }
-    class TimeSlotStatus {
-        <<enumeration>>
+    class TimeSlotStatus <<enumeration>> {
         AVAILABLE
         RESERVED
         UNAVAILABLE
@@ -78,8 +76,7 @@ classDiagram
         confirm()
         cancel()
     }
-    class ReservationStatus {
-        <<enumeration>>
+    class ReservationStatus <<enumeration>> {
         PENDING
         APPROVED
         REJECTED

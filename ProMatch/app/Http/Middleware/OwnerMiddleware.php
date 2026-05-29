@@ -18,7 +18,7 @@ class OwnerMiddleware
     {
         $user = Auth::user();
         
-        if ($user && ($user->type === 'owner' || strtolower($user->first_name) === 'adnane')) {
+        if ($user && $user->hasRole('owner')) {
             return $next($request);
         }
 

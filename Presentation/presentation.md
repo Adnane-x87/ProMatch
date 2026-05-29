@@ -386,6 +386,15 @@ style: |
 <!-- _class: uml-slide -->
 ## 3. Branche Fonctionnelle
 
+### Global use case : Espace Staff
+<div class="img-container-large">
+  <img src="./images/use-case-stuff.png" class="img-uml" alt="Use Case">
+</div>
+
+---
+<!-- _class: uml-slide -->
+## 3. Branche Fonctionnelle
+
 ### Global use case : Mobile
 <div class="img-container-large">
   <img src="./images/usecase.mobile.png" class="img-uml" alt="Use Case">
@@ -414,7 +423,7 @@ style: |
 ## 5. Conception : Diagramme de classe
 
 <div class="img-container-large">
-  <img src="./images/diagramme-class.png" class="img-uml" alt="Diagramme de classe">
+  <img src="./images/diagramme-class.png" class="img-uml-full" alt="Diagramme de classe">
 </div>
 
 ---

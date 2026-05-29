@@ -26,11 +26,11 @@ class ReservationServiceTest extends TestCase
 
     public function test_can_get_all_reservations()
     {
-        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
+        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1']);
         $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
         
-        $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't@t.com', 'password' => '1', 'phone' => '2', 'type' => 'tenant']);
+        $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't@t.com', 'password' => '1', 'phone' => '2']);
         $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'cin1']);
 
         Reservation::create([
@@ -54,7 +54,7 @@ class ReservationServiceTest extends TestCase
 
     public function test_create_reservation_creates_missing_tenant_for_authenticated_user()
     {
-        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'owner-booking@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
+        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'owner-booking@t.com', 'password' => '1', 'phone' => '1']);
         $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F2', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 150]);
 
@@ -64,7 +64,6 @@ class ReservationServiceTest extends TestCase
             'email' => 'karim-auth@t.com',
             'password' => '1',
             'phone' => '0600000001',
-            'type' => 'tenant',
         ]);
 
         $reservation = $this->reservationService->createReservation([
@@ -90,7 +89,7 @@ class ReservationServiceTest extends TestCase
 
     public function test_create_reservation_creates_guest_user_and_tenant_when_needed()
     {
-        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'owner-guest@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
+        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'owner-guest@t.com', 'password' => '1', 'phone' => '1']);
         $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F3', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 250]);
 
@@ -124,11 +123,11 @@ class ReservationServiceTest extends TestCase
 
     public function test_can_cancel_reservation()
     {
-        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
+        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1']);
         $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
-        $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't_cancel@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
+        $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't_cancel@t.com', 'password' => '1', 'phone' => '1']);
         $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'c1']);
 
         $reservation = Reservation::create([
@@ -155,11 +154,11 @@ class ReservationServiceTest extends TestCase
 
     public function test_can_reject_reservation()
     {
-        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
+        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1']);
         $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
-        $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't_reject@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
+        $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't_reject@t.com', 'password' => '1', 'phone' => '1']);
         $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'c2']);
 
         $reservation = Reservation::create([
@@ -186,7 +185,7 @@ class ReservationServiceTest extends TestCase
 
     public function test_blocked_user_cannot_make_reservation()
     {
-        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
+        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1']);
         $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
@@ -196,7 +195,6 @@ class ReservationServiceTest extends TestCase
             'email' => 'blocked@t.com',
             'password' => '1',
             'phone' => '0600000010',
-            'type' => 'tenant',
             'is_blocked' => true,
         ]);
 
@@ -216,7 +214,7 @@ class ReservationServiceTest extends TestCase
 
     public function test_guest_with_blocked_user_email_cannot_make_reservation()
     {
-        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
+        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1']);
         $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
@@ -226,7 +224,6 @@ class ReservationServiceTest extends TestCase
             'email' => 'blocked_guest@t.com',
             'password' => '1',
             'phone' => '0600000011',
-            'type' => 'tenant',
             'is_blocked' => true,
         ]);
 

@@ -75,8 +75,8 @@
                     @auth
                         {{-- Modern Avatar trigger --}}
                         @php($accountUser = Auth::user())
-                        @php($isAdminAccount = $accountUser->type === 'owner' || strtolower($accountUser->first_name ?? '') === 'adnane')
-                        @php($isEmployeeAccount = $accountUser->type === 'employee')
+                        @php($isAdminAccount = $accountUser->hasRole('owner'))
+                        @php($isEmployeeAccount = $accountUser->hasRole('employee'))
                         <div id="accountMenuRoot" class="relative flex items-center">
                             <button id="avatarBtn" onclick="toggleAccountPanel(event)"
                                 type="button"

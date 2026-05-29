@@ -28,13 +28,13 @@ class StaffServiceTest extends TestCase
 
     private function createOwner()
     {
-        $u = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'owner' . uniqid() . '@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
+        $u = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'owner' . uniqid() . '@t.com', 'password' => '1', 'phone' => '1']);
         return Owner::create(['user_id' => $u->id, 'registration_date' => now()]);
     }
 
     private function createEmployee()
     {
-        $user = User::create(['first_name' => 'E', 'last_name' => 'U', 'email' => 'employee' . uniqid() . '@t.com', 'password' => '1', 'phone' => '1', 'type' => 'employee']);
+        $user = User::create(['first_name' => 'E', 'last_name' => 'U', 'email' => 'employee' . uniqid() . '@t.com', 'password' => '1', 'phone' => '1']);
 
         return Employee::create(['user_id' => $user->id, 'position' => 'Staff', 'hire_date' => now()]);
     }
@@ -42,7 +42,7 @@ class StaffServiceTest extends TestCase
     public function test_can_get_daily_schedule()
     {
         $owner = $this->createOwner();
-        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant1@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
+        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant1@t.com', 'password' => '1', 'phone' => '1']);
         $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 
@@ -67,7 +67,7 @@ class StaffServiceTest extends TestCase
     public function test_daily_schedule_does_not_use_request_date_as_reservation_date()
     {
         $owner = $this->createOwner();
-        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenantFuture@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
+        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenantFuture@t.com', 'password' => '1', 'phone' => '1']);
         $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'CF']);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 
@@ -92,7 +92,7 @@ class StaffServiceTest extends TestCase
     public function test_daily_schedule_only_shows_accepted_reservations()
     {
         $owner = $this->createOwner();
-        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenantPending@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
+        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenantPending@t.com', 'password' => '1', 'phone' => '1']);
         $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'CP']);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 
@@ -117,7 +117,7 @@ class StaffServiceTest extends TestCase
     public function test_can_verify_client_arrival()
     {
         $owner = $this->createOwner();
-        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant2@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
+        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant2@t.com', 'password' => '1', 'phone' => '1']);
         $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 
@@ -146,7 +146,7 @@ class StaffServiceTest extends TestCase
     public function test_can_verify_client_absence()
     {
         $owner = $this->createOwner();
-        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant3@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
+        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant3@t.com', 'password' => '1', 'phone' => '1']);
         $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C2']);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 
@@ -177,7 +177,7 @@ class StaffServiceTest extends TestCase
         $owner = $this->createOwner();
         $employee = $this->createEmployee();
         $otherEmployee = $this->createEmployee();
-        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant4@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
+        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant4@t.com', 'password' => '1', 'phone' => '1']);
         $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C4']);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 

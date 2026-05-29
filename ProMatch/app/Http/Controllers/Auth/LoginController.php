@@ -24,12 +24,11 @@ class LoginController extends Controller
 
             $user = Auth::user();
 
-            // Rediriger uniquement Adnane (owner) vers le dashboard
-            if ($user->type === 'owner' || strtolower($user->first_name) === 'adnane') {
+            if ($user->hasRole('owner')) {
                 return redirect()->intended(route('admin.dashboard'));
             }
 
-            if ($user->type === 'employee') {
+            if ($user->hasRole('employee')) {
                 return redirect()->intended(route('employee.dashboard'));
             }
 
