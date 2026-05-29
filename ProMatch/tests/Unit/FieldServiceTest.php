@@ -24,7 +24,7 @@ class FieldServiceTest extends TestCase
 
     public function test_can_get_all_fields()
     {
-        $user = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
+        $user = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'o@t.com', 'password' => '1', 'phone' => '1']);
         $owner = Owner::create(['user_id' => $user->id, 'registration_date' => now()]);
         
         Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);

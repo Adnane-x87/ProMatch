@@ -11,6 +11,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 class ReservationService
 {
@@ -93,8 +94,13 @@ class ReservationService
                 'email' => $data['email'] ?? ('guest_' . Str::lower(Str::random(12)) . '@promatch.local'),
                 'password' => Hash::make(Str::random(32)),
                 'phone' => $data['phone'] ?? '',
-                'type' => 'tenant',
             ]);
+
+            Role::findOrCreate('tenant');
+            $account->assignRole('tenant');
+        } elseif (!$account->hasRole('tenant')) {
+            Role::findOrCreate('tenant');
+            $account->assignRole('tenant');
         }
 
         return Tenant::firstOrCreate(
@@ -143,13 +149,27 @@ class ReservationService
      */
     public function getDailyPlanning(?string $date): Collection
     {
-        $query = Reservation::with(['field']);
+        $query = Reservation::with(['field', 'timeSlot'])
+            ->whereIn('status', ['APPROVED', 'ARRIVED', 'ABSENT']);
 
         if ($date) {
-            $query->whereDate('request_date', $date);
+            $query->where(function ($reservationQuery) use ($date) {
+                $reservationQuery->whereDate('start_time', $date)
+                    ->orWhereHas('timeSlot', function ($slotQuery) use ($date) {
+                        $slotQuery->whereDate('date', $date);
+                    });
+            });
         }
 
-        return $query->orderBy('start_time')->get();
+        return $query->get()
+            ->sortBy(function (Reservation $reservation) {
+                if ($reservation->start_time) {
+                    return $reservation->start_time;
+                }
+
+                return $reservation->timeSlot?->start_time ?? '00:00:00';
+            })
+            ->values();
     }
 
     /**

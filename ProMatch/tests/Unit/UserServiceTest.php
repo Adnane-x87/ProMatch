@@ -28,7 +28,6 @@ class UserServiceTest extends TestCase
             'email' => 'admin@test.com',
             'password' => bcrypt('password'),
             'phone' => '1234567890',
-            'type' => 'employee'
         ]);
 
         $users = $this->userService->getAllUsers();
@@ -44,13 +43,58 @@ class UserServiceTest extends TestCase
             'email' => 'delete@test.com',
             'password' => bcrypt('password'),
             'phone' => '0987654321',
-            'type' => 'tenant'
         ]);
 
         $result = $this->userService->deleteUser($user->id);
 
         $this->assertTrue($result);
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
+    }
+
+    public function test_register_assigns_default_tenant_role()
+    {
+        $user = $this->userService->register([
+            'first_name' => 'Tenant',
+            'last_name' => 'User',
+            'email' => 'new-tenant@test.com',
+            'password' => 'password',
+            'phone' => '0600000000',
+        ]);
+
+        $this->assertTrue($user->hasRole('tenant'));
+        $this->assertNotNull($user->tenant);
+    }
+
+    public function test_register_assigns_requested_owner_role()
+    {
+        $user = $this->userService->register([
+            'first_name' => 'Owner',
+            'last_name' => 'User',
+            'email' => 'new-owner@test.com',
+            'password' => 'password',
+            'phone' => '0600000001',
+            'role' => 'owner',
+        ]);
+
+        $this->assertTrue($user->hasRole('owner'));
+        $this->assertNotNull($user->owner);
+    }
+
+    public function test_register_assigns_requested_employee_role()
+    {
+        $user = $this->userService->register([
+            'first_name' => 'Employee',
+            'last_name' => 'User',
+            'email' => 'new-employee@test.com',
+            'password' => 'password',
+            'phone' => '0600000002',
+            'role' => 'employee',
+            'position' => 'Reception',
+        ]);
+
+        $this->assertTrue($user->hasRole('employee'));
+        $this->assertNotNull($user->employee);
+        $this->assertEquals('Reception', $user->employee->position);
     }
 
     public function test_owner_can_block_and_unblock_user()
@@ -61,7 +105,6 @@ class UserServiceTest extends TestCase
             'email' => 'owner@test.com',
             'password' => bcrypt('password'),
             'phone' => '1112223333',
-            'type' => 'owner'
         ]);
 
         $owner = \App\Models\Owner::create([
@@ -75,7 +118,6 @@ class UserServiceTest extends TestCase
             'email' => 'tenant@test.com',
             'password' => bcrypt('password'),
             'phone' => '4445556666',
-            'type' => 'tenant'
         ]);
 
         // Default should be false

@@ -11,9 +11,11 @@
             <div class="flex items-center gap-2">
                 <div class="relative">
                     <svg class="w-5 h-5 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    <input x-model="search" type="text" placeholder="Rechercher par nom ou tel..." class="pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 w-64">
+                    <input x-model="search" type="search" placeholder="Rechercher par nom ou tel..." class="pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 w-64">
                 </div>
-                <select x-model="status" class="px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 text-slate-600">
+                <select x-model="status"
+                    data-hs-select='{"placeholder":"Filtrer par statut","toggleTag":"<button type=\"button\" aria-expanded=\"false\"></button>","toggleClasses":"relative py-2 px-3 pe-9 flex items-center text-nowrap w-44 cursor-pointer bg-white border border-slate-200 rounded-lg text-start text-sm text-slate-600 focus:outline-none focus:border-brand-500","dropdownClasses":"mt-2 z-50 w-44 max-h-72 p-1 space-y-0.5 bg-white border border-slate-200 rounded-lg shadow-lg overflow-hidden overflow-y-auto","optionClasses":"py-2 px-3 w-full text-sm text-slate-700 cursor-pointer hover:bg-slate-100 rounded-md focus:outline-none focus:bg-slate-100","optionTemplate":"<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block text-brand-600\">✓</span></div>","extraMarkup":"<div class=\"absolute top-1/2 end-3 -translate-y-1/2 pointer-events-none\"><svg class=\"size-3.5 text-slate-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></svg></div>"}'
+                    class="hidden">
                     <option value="">Tous les statuts</option>
                     <option value="APPROVED">Confirmé</option>
                     <option value="PENDING">En attente</option>

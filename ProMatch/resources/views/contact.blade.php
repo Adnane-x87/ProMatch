@@ -107,7 +107,9 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1.5" for="subject">Sujet</label>
-                            <select id="subject" name="subject" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all">
+                            <select id="subject" name="subject"
+                                data-hs-select='{"placeholder":"Choisir un sujet","toggleTag":"<button type=\"button\" aria-expanded=\"false\"></button>","toggleClasses":"relative py-2.5 px-4 pe-9 flex items-center text-nowrap w-full cursor-pointer bg-white border border-slate-300 rounded-xl text-start text-sm text-slate-700 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-200","dropdownClasses":"mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden overflow-y-auto","optionClasses":"py-2.5 px-3 w-full text-sm text-slate-700 cursor-pointer hover:bg-slate-100 rounded-lg focus:outline-none focus:bg-slate-100","optionTemplate":"<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block text-brand-600\">✓</span></div>","extraMarkup":"<div class=\"absolute top-1/2 end-3 -translate-y-1/2 pointer-events-none\"><svg class=\"size-3.5 text-slate-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></svg></div>"}'
+                                class="hidden">
                                 <option value="reservation">Réservation de terrain</option>
                                 <option value="event">Organisation d'événement</option>
                                 <option value="partnership">Partenariat</option>

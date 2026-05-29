@@ -10,13 +10,16 @@ use App\Models\Employee;
 use App\Models\Field;
 use App\Models\TimeSlot;
 use App\Models\Reservation;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Spatie\Permission\Models\Role;
 
 class CsvSeeder extends Seeder
 {
     public function run(): void
     {
         // Disable FK checks so we can truncate freely
-        \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         // Truncate in reverse dependency order
         Reservation::truncate();
@@ -26,8 +29,13 @@ class CsvSeeder extends Seeder
         Tenant::truncate();
         Owner::truncate();
         User::truncate();
+        $this->truncatePermissionTables();
 
-        \Illuminate\Support\Facades\DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        Role::findOrCreate('owner');
+        Role::findOrCreate('employee');
+        Role::findOrCreate('tenant');
 
         // Seed in dependency order
         $this->seedCsv(User::class, 'users.csv');
@@ -61,10 +69,48 @@ class CsvSeeder extends Seeder
                 $data['password'] = bcrypt($data['password']);
             }
 
+            if ($modelClass === \App\Models\TimeSlot::class) {
+                $data['date'] = now()->toDateString();
+            }
+
+            if ($modelClass === \App\Models\Reservation::class && isset($data['request_date'])) {
+                $timePart = '12:00:00';
+                $parts = explode(' ', $data['request_date']);
+
+                if (count($parts) > 1) {
+                    $timePart = $parts[1];
+                }
+
+                $data['request_date'] = now()->toDateString() . ' ' . $timePart;
+            }
+
+            if ($modelClass === User::class) {
+                $role = $data['role'] ?? null;
+                unset($data['role']);
+
+                $user = User::create($data);
+
+                if ($role) {
+                    Role::findOrCreate($role);
+                    $user->assignRole($role);
+                }
+
+                continue;
+            }
+
             $modelClass::create($data);
         }
 
         fclose($file);
         $this->command->info("Seeded {$filename}");
+    }
+
+    private function truncatePermissionTables(): void
+    {
+        foreach (['model_has_permissions', 'model_has_roles', 'role_has_permissions', 'permissions', 'roles'] as $table) {
+            if (Schema::hasTable($table)) {
+                DB::table($table)->truncate();
+            }
+        }
     }
 }

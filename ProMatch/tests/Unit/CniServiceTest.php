@@ -29,14 +29,14 @@ class CniServiceTest extends TestCase
     {
         Storage::fake('public');
 
-        $ownerUser = User::create(['first_name' => 'Owner', 'last_name' => 'User', 'email' => 'owner_cni@t.com', 'password' => '1', 'phone' => '9', 'type' => 'owner']);
+        $ownerUser = User::create(['first_name' => 'Owner', 'last_name' => 'User', 'email' => 'owner_cni@t.com', 'password' => '1', 'phone' => '9']);
         $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
-        $tenantUser1 = User::create(['first_name' => 'T1', 'last_name' => 'U1', 'email' => 't1_cni@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
+        $tenantUser1 = User::create(['first_name' => 'T1', 'last_name' => 'U1', 'email' => 't1_cni@t.com', 'password' => '1', 'phone' => '1']);
         $tenant1 = Tenant::create(['user_id' => $tenantUser1->id, 'cin' => 'c1', 'is_cni_valid' => false]);
 
-        $tenantUser2 = User::create(['first_name' => 'T2', 'last_name' => 'U2', 'email' => 't2_cni@t.com', 'password' => '1', 'phone' => '2', 'type' => 'tenant']);
+        $tenantUser2 = User::create(['first_name' => 'T2', 'last_name' => 'U2', 'email' => 't2_cni@t.com', 'password' => '1', 'phone' => '2']);
         $tenant2 = Tenant::create(['user_id' => $tenantUser2->id, 'cin' => 'c2', 'is_cni_valid' => false]);
 
         $reservationToApprove = Reservation::create([

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('phone')->nullable();
-            $table->string('type'); // owner | tenant | employee
             $table->boolean('is_blocked')->default(false);
             $table->timestamps();
         });

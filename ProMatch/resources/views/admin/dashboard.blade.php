@@ -57,11 +57,11 @@
                             <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-100 -translate-y-1/2"></div>
                             <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 relative">
                                 <template x-for="slot in planning" :key="slot.id">
-                                    <div :class="slot.status === 'APPROVED' ? 'bg-brand-50 border-brand-100' : 'bg-white border-dashed border-slate-200 opacity-60'" class="border p-3 rounded-lg text-center">
-                                        <div :class="slot.status === 'APPROVED' ? 'bg-brand-500' : 'bg-slate-300'" class="w-2 h-2 rounded-full mx-auto mb-2"></div>
-                                        <p class="text-xs font-semibold" :class="slot.status === 'APPROVED' ? 'text-brand-700' : 'text-slate-400'" x-text="formatTime(slot.start_time)"></p>
+                                    <div :class="['APPROVED', 'ARRIVED'].includes(slot.status) ? 'bg-brand-50 border-brand-100' : 'bg-white border-dashed border-slate-200 opacity-80'" class="border p-3 rounded-lg text-center">
+                                        <div :class="['APPROVED', 'ARRIVED'].includes(slot.status) ? 'bg-brand-500' : 'bg-slate-300'" class="w-2 h-2 rounded-full mx-auto mb-2"></div>
+                                        <p class="text-xs font-semibold" :class="['APPROVED', 'ARRIVED'].includes(slot.status) ? 'text-brand-700' : 'text-slate-400'" x-text="formatPlanningTime(slot)"></p>
                                         <p class="text-xs text-slate-600 mt-1 truncate" x-text="slot.first_name ? slot.first_name + ' ' + slot.last_name : 'LIBRE'"></p>
-                                        <p class="text-[10px] font-medium mt-0.5" :class="slot.status === 'APPROVED' ? 'text-brand-400' : 'text-slate-300'" x-text="slot.field ? slot.field.name : 'T1'"></p>
+                                        <p class="text-[10px] font-medium mt-0.5" :class="['APPROVED', 'ARRIVED'].includes(slot.status) ? 'text-brand-400' : 'text-slate-300'" x-text="slot.field ? slot.field.name : 'T1'"></p>
                                     </div>
                                 </template>
                                 <div x-show="planning.length === 0" class="col-span-4 text-center py-4 text-slate-400 text-sm">
@@ -106,7 +106,8 @@
                                             <span :class="{
                                                 'bg-amber-50 text-amber-700': res.status === 'PENDING',
                                                 'bg-emerald-50 text-emerald-700': res.status === 'APPROVED',
-                                                'bg-rose-50 text-rose-700': res.status === 'REJECTED' || res.status === 'CANCELED'
+                                                'bg-blue-50 text-blue-700': res.status === 'ARRIVED',
+                                                'bg-rose-50 text-rose-700': res.status === 'REJECTED' || res.status === 'CANCELED' || res.status === 'ABSENT'
                                             }" class="px-2 py-1 rounded-full text-xs font-medium" x-text="statusLabel(res.status)"></span>
                                         </td>
                                         <td class="px-5 py-3 text-right">
@@ -225,6 +226,10 @@
                 return timeStr.substring(0, 5);
             },
 
+            formatPlanningTime(slot) {
+                return this.formatTime(slot.start_time || slot.time_slot?.start_time);
+            },
+
             formatDate(dateStr) {
                 if (!dateStr) return '';
 
@@ -250,6 +255,8 @@
                     APPROVED: 'Confirme',
                     REJECTED: 'Rejetee',
                     CANCELED: 'Annulee',
+                    ARRIVED: 'Present',
+                    ABSENT: 'Absent',
                 };
 
                 return labels[status] || status || '';

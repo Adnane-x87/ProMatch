@@ -24,7 +24,7 @@ class DashboardService
             'validated_cnis' => Tenant::where('is_cni_valid', true)->count(),
             'pending_cnis' => $this->getPendingCniReservationsQuery()->count(),
             'todays_income' => Reservation::whereDate('request_date', $today)
-                ->where('status', 'APPROVED')
+                ->whereIn('status', ['APPROVED', 'ARRIVED'])
                 ->sum('price'),
             'todays_reservations' => Reservation::whereDate('request_date', $today)->count()
         ];
@@ -33,7 +33,7 @@ class DashboardService
     public function getRecentReservations(int $limit = 5)
     {
         return Reservation::with('field')
-            ->whereIn('status', ['PENDING', 'APPROVED', 'REJECTED', 'CANCELED'])
+            ->whereIn('status', ['PENDING', 'APPROVED', 'REJECTED', 'CANCELED', 'ARRIVED', 'ABSENT'])
             ->orderByDesc('created_at')
             ->limit($limit)
             ->get();

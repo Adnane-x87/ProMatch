@@ -17,7 +17,6 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'type', // 'owner' | 'tenant' | 'employee'
         'is_blocked',
     ];
 

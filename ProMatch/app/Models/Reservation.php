@@ -30,6 +30,11 @@ class Reservation extends Model
         return $this->belongsTo(Employee::class);
     }
 
+    public function timeSlot()
+    {
+        return $this->belongsTo(TimeSlot::class);
+    }
+
     public function confirm()
     {
         $this->update(['status' => 'APPROVED']);

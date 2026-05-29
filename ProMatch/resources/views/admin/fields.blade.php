@@ -20,7 +20,7 @@
             address: field.address, 
             price_per_hour: field.price_per_hour, 
             description: field.description || '',
-            image_url: field.image ? '/storage/' + field.image : ''
+            image_url: field.image_url || ''
         };
         this.showEditModal = true;
     },
@@ -65,7 +65,7 @@
             <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
             </svg>
-            <input x-model="search" type="text" placeholder="Rechercher un terrain par nom ou adresse..." class="w-full pl-10 pr-4 py-2.5 text-sm border border-slate-200 rounded-lg focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all">
+            <input x-model="search" type="search" placeholder="Rechercher un terrain par nom ou adresse..." class="w-full pl-10 pr-4 py-2.5 text-sm border border-slate-200 rounded-lg focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none transition-all">
         </div>
         
         <!-- Add button -->
@@ -80,7 +80,7 @@
     <!-- Terrains Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         @foreach($fields as $field)
-        <div x-data="{ name: '{{ strtolower(addslashes($field->name)) }}', address: '{{ strtolower(addslashes($field->address)) }}' }"
+        <div x-data="{ name: @js(strtolower($field->name)), address: @js(strtolower($field->address)) }"
              x-show="search === '' || name.includes(search.toLowerCase()) || address.includes(search.toLowerCase())"
              class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group">
             
@@ -129,15 +129,15 @@
                 <!-- Actions -->
                 <div class="flex gap-2.5 mt-5 pt-4 border-t border-slate-100">
                     <button type="button" 
-                            @click="openEdit({
-                                id: {{ $field->id }},
-                                name: '{{ addslashes($field->name) }}',
-                                address: '{{ addslashes($field->address) }}',
-                                price_per_hour: {{ $field->price_per_hour }},
-                                description: '{{ addslashes($field->description) }}',
-                                image: '{{ $field->image }}',
-                                image_url: '{{ $field->image ? (str_contains($field->image, '/') ? asset('storage/' . $field->image) : asset('images/fields/' . $field->image)) : '' }}'
-                            })" 
+                            @click="openEdit(@js([
+                                'id' => $field->id,
+                                'name' => $field->name,
+                                'address' => $field->address,
+                                'price_per_hour' => $field->price_per_hour,
+                                'description' => $field->description,
+                                'image' => $field->image,
+                                'image_url' => $field->image ? (str_contains($field->image, '/') ? asset('storage/' . $field->image) : asset('images/fields/' . $field->image)) : '',
+                            ]))" 
                             class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 transition-colors shadow-sm">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -146,7 +146,7 @@
                     </button>
                     
                     <button type="button" 
-                            @click="confirmDelete({{ $field->id }}, '{{ addslashes($field->name) }}')"
+                            @click="confirmDelete({{ $field->id }}, @js($field->name))"
                             class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 transition-colors shadow-sm">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

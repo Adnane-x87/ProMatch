@@ -1,93 +1,111 @@
 classDiagram
-class User {
-    id : String
-    firstName : String
-    lastName : String
-    email : String
-    password : String
-    phone : String
-    isBlocked : Boolean
-    login()
-    logout()
-}
-class Owner {
-    registrationDate : Date
-    validateReservation(r : Reservation)
-    verifyCNI(cniImage : String)
-    blockUser(u : User)
-    unblockUser(u : User)
-}
-class Tenant {
-    cin : String
-    birthDate : Date
-    searchField()
-    reserve(c : TimeSlot, payload : ReservationPayload)
-    cancelReservation(r : Reservation)
-}
-class Employee {
-    position : String
-    hireDate : Date
-    verifyClientArrival(r : Reservation)
-    viewSchedule()
-}
-User <|-- Owner
-User <|-- Tenant
-User <|-- Employee
-class Field {
-    id : String
-    name : String
-    description : String
-    address : String
-    pricePerHour : Float
-    image : String
-    getAvailableTimeSlots()
-}
-class TimeSlot {
-    id : String
-    date : Date
-    startTime : Time
-    endTime : Time
-    status : TimeSlotStatus
-}
-class TimeSlotStatus {
-    AVAILABLE
-    RESERVED
-    UNAVAILABLE
-}
-Field "1" *-- "*" TimeSlot
-TimeSlot --> TimeSlotStatus
-class Reservation {
-    id : String
-    firstName : String
-    lastName : String
-    email : String
-    phone : String
-    requestDate : DateTime
-    price : Float
-    cniImage : String
-    status : ReservationStatus
-    confirm()
-    cancel()
-}
-class ReservationStatus {
-    PENDING
-    APPROVED
-    REJECTED
-    CANCELED
-}
-Reservation --> ReservationStatus
-Tenant "1" --> "*" Reservation
-Reservation "1" --> "1" TimeSlot
-Employee "1" --> "*" Reservation
-class Role {
-    name : String
-    guard_name : String
-}
-class Permission {
-    name : String
-    guard_name : String
-}
-User "*" -- "*" Role
-Role "*" -- "*" Permission
-User "*" -- "*" Permission
-Owner "1" --> "*" Field
+    class User {
+        int id
+        String first_name
+        String last_name
+        String email
+        String password
+        String phone
+        boolean is_blocked
+    }
+    class Owner {
+        int id
+        int user_id
+        Date registration_date
+        validateReservation(Reservation r)
+        verifyCNI(String cniImage)
+        blockUser(User u)
+        unblockUser(User u)
+    }
+    class Tenant {
+        int id
+        int user_id
+        String cin
+        String cni_image
+        boolean is_cni_valid
+        searchField()
+        reserve(TimeSlot slot, array payload)
+        cancelReservation(Reservation r)
+    }
+    class Employee {
+        int id
+        int user_id
+        String position
+        Date hire_date
+        verifyClientArrival(Reservation r)
+        viewSchedule()
+    }
+    class Field {
+        int id
+        int owner_id
+        String name
+        String description
+        String address
+        double price_per_hour
+        String image
+    }
+    class TimeSlot {
+        int id
+        int field_id
+        Date date
+        Time start_time
+        Time end_time
+        String status
+    }
+    class TimeSlotStatus <<enumeration>> {
+        AVAILABLE
+        RESERVED
+        UNAVAILABLE
+    }
+    class Reservation {
+        int id
+        int tenant_id
+        int field_id
+        int employee_id
+        int time_slot_id
+        String first_name
+        String last_name
+        String email
+        String phone
+        DateTime request_date
+        DateTime start_time
+        DateTime end_time
+        double price
+        String cni_image
+        String status
+        confirm()
+        cancel()
+    }
+    class ReservationStatus <<enumeration>> {
+        PENDING
+        APPROVED
+        REJECTED
+        CANCELED
+        ARRIVED
+        ABSENT
+    }
+    class Role {
+        int id
+        String name
+        String guard_name
+    }
+    class Permission {
+        int id
+        String name
+        String guard_name
+    }
+
+    User "1" --> "0..1" Owner : has profile
+    User "1" --> "0..1" Tenant : has profile
+    User "1" --> "0..1" Employee : has profile
+    User "0..*" -- "0..*" Role : has
+    User "0..*" -- "0..*" Permission : has
+    Role "0..*" -- "0..*" Permission : grants
+    Owner "1" --> "0..*" Field : owns
+    Field "1" --> "0..*" TimeSlot : has
+    TimeSlot --> TimeSlotStatus : status
+    Tenant "1" --> "0..*" Reservation : makes
+    Employee "0..1" --> "0..*" Reservation : manages
+    Field "0..1" --> "0..*" Reservation : reserved for
+    TimeSlot "0..1" --> "0..1" Reservation : booked by
+    Reservation --> ReservationStatus : status

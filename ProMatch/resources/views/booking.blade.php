@@ -80,11 +80,14 @@
                             <!-- Terrain -->
                             <div class="space-y-1.5">
                                 <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider ml-1" for="terrain">Terrain</label>
-                                <select id="terrain" name="terrain_id"
-                                    class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all">
-                                    @foreach($fields as $field)
+                                <select id="terrain" name="terrain_id" required
+                                    class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all">
+                                    <option value="" disabled selected>Choisir un terrain</option>
+                                    @forelse($fields as $field)
                                         <option value="{{ $field->id }}" data-price="{{ $field->price_per_hour ?? 300 }}">{{ $field->name }}</option>
-                                    @endforeach
+                                    @empty
+                                        <option value="" disabled>Aucun terrain disponible</option>
+                                    @endforelse
                                 </select>
                             </div>
 
@@ -236,8 +239,11 @@
         // Update price when terrain changes
         function updatePrice() {
             const selectedOption = terrainSelect.options[terrainSelect.selectedIndex];
+            if (!selectedOption || !selectedOption.value) {
+                return;
+            }
             const price = selectedOption.getAttribute('data-price') || 300;
-            priceDisplay.textContent = price + ' DH';
+            priceDisplay.textContent = price;
             const priceInput = document.getElementById('priceInput');
             if (priceInput) priceInput.value = price;
         }
@@ -253,6 +259,8 @@
         async function fetchSlots() {
             const terrainId = terrainSelect.value;
             const date = dateInput.value;
+            document.getElementById('selectedTime').value = '';
+            document.getElementById('timeSlotId').value = '';
 
             if (!terrainId || !date) {
                 return;

@@ -1,4 +1,4 @@
-id,first_name,last_name,email,password,phone,type
+id,first_name,last_name,email,password,phone,role
 1,adnane,kesksu,adnane@promatch.com,password,0600000001,owner
 2,said,Mansour,said@example.com,password,0600000002,tenant
 3,Karim,Naciri,karim@example.com,password,0600000003,employee

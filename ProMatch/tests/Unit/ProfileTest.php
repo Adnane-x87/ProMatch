@@ -29,7 +29,6 @@ class ProfileTest extends TestCase
             'email' => 'owner@t.com',
             'password' => bcrypt('password'),
             'phone' => '1',
-            'type' => 'owner'
         ]);
         return Owner::create(['user_id' => $u->id, 'registration_date' => now()]);
     }
@@ -49,7 +48,6 @@ class ProfileTest extends TestCase
             'email' => 'john@example.com',
             'password' => bcrypt('password'),
             'phone' => '12345',
-            'type' => 'tenant'
         ]);
         $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
         $field = Field::create([
@@ -89,7 +87,6 @@ class ProfileTest extends TestCase
             'email' => 'john@example.com',
             'password' => bcrypt('password'),
             'phone' => '12345',
-            'type' => 'tenant'
         ]);
         $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
         $field = Field::create([
@@ -132,7 +129,6 @@ class ProfileTest extends TestCase
             'email' => 'john@example.com',
             'password' => bcrypt('password'),
             'phone' => '12345',
-            'type' => 'tenant'
         ]);
         $tenant1 = Tenant::create(['user_id' => $user1->id, 'cin' => 'C1']);
 
@@ -142,7 +138,6 @@ class ProfileTest extends TestCase
             'email' => 'jane@example.com',
             'password' => bcrypt('password'),
             'phone' => '67890',
-            'type' => 'tenant'
         ]);
         $tenant2 = Tenant::create(['user_id' => $user2->id, 'cin' => 'C2']);
 

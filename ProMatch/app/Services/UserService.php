@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Spatie\Permission\Models\Role;
 
 class UserService
 {
@@ -51,28 +52,42 @@ class UserService
             'email'      => 'required|string|email|max:255|unique:users',
             'password'   => 'required|string|min:6',
             'phone'      => 'nullable|string',
-            'type'       => 'nullable|string|in:owner,tenant,employee',
+            'role'       => 'nullable|string|in:owner,tenant,employee',
+            'cin'        => 'nullable|string',
+            'position'   => 'nullable|string',
+            'hire_date'  => 'nullable|date',
         ])->validate();
 
-        // Default type to 'tenant' if not provided
-        $validated['type'] = $validated['type'] ?? 'tenant';
+        $role = $validated['role'] ?? 'tenant';
+        $cin = $validated['cin'] ?? null;
+        $position = $validated['position'] ?? 'Staff';
+        $hireDate = $validated['hire_date'] ?? now();
+
+        unset($validated['role']);
+        unset($validated['cin'], $validated['position'], $validated['hire_date']);
+
         $validated['password'] = bcrypt($validated['password']);
 
         $user = User::create($validated);
+        Role::findOrCreate($role);
+        $user->assignRole($role);
 
-        // Create the associated model depending on the type
-        if ($user->type === 'tenant') {
+        // Create the associated model depending on the role.
+        if ($user->hasRole('tenant')) {
             $user->tenant()->create([
-                'cin' => null,
+                'cin' => $cin,
                 'cni_image' => null,
                 'is_cni_valid' => false
             ]);
-        } elseif ($user->type === 'owner') {
+        } elseif ($user->hasRole('owner')) {
             $user->owner()->create([
                 'registration_date' => now()
             ]);
-        } elseif ($user->type === 'employee') {
-            $user->employee()->create();
+        } elseif ($user->hasRole('employee')) {
+            $user->employee()->create([
+                'position' => $position,
+                'hire_date' => $hireDate,
+            ]);
         }
 
         return $user;

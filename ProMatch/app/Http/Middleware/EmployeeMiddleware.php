@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class OwnerMiddleware
+class EmployeeMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class OwnerMiddleware
     {
         $user = Auth::user();
         
-        if ($user && $user->hasRole('owner')) {
+        if ($user && $user->hasRole('employee')) {
             return $next($request);
         }
 

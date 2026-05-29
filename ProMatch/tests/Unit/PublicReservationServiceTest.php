@@ -26,7 +26,7 @@ class PublicReservationServiceTest extends TestCase
 
     private function createOwner()
     {
-        $u = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'owner' . uniqid() . '@t.com', 'password' => '1', 'phone' => '1', 'type' => 'owner']);
+        $u = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'owner' . uniqid() . '@t.com', 'password' => '1', 'phone' => '1']);
         return Owner::create(['user_id' => $u->id, 'registration_date' => now()]);
     }
 
@@ -35,7 +35,7 @@ class PublicReservationServiceTest extends TestCase
         \Illuminate\Support\Facades\Storage::fake('public');
 
         $owner = $this->createOwner();
-        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant1@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
+        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant1@t.com', 'password' => '1', 'phone' => '1']);
         $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 
@@ -47,7 +47,7 @@ class PublicReservationServiceTest extends TestCase
             'start_time' => '2024-06-01 10:00:00',
             'end_time' => '2024-06-01 11:00:00',
             'price' => 50,
-            'cni_image' => \Illuminate\Http\UploadedFile::fake()->image('cni.jpg')
+            'cni_image' => \Illuminate\Http\UploadedFile::fake()->create('cni.jpg', 10, 'image/jpeg')
         ];
 
         $reservation = $this->reservationService->reserve($tenant->id, $field->id, $data);
@@ -58,7 +58,7 @@ class PublicReservationServiceTest extends TestCase
     public function test_can_get_tenant_history()
     {
         $owner = $this->createOwner();
-        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant2@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
+        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant2@t.com', 'password' => '1', 'phone' => '1']);
         $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 
@@ -83,7 +83,7 @@ class PublicReservationServiceTest extends TestCase
     public function test_can_cancel_reservation()
     {
         $owner = $this->createOwner();
-        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant3@t.com', 'password' => '1', 'phone' => '1', 'type' => 'tenant']);
+        $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant3@t.com', 'password' => '1', 'phone' => '1']);
         $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 
