@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@yield('title', 'ProMatch — Admin Dashboard')</title>
+    <title>@yield('title', 'ProMatch — Employee Dashboard')</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,7 +47,7 @@
 
             <!-- Logo -->
             <div class="h-20 relative flex items-center justify-center border-b border-slate-100">
-                <a href="{{ url('/admin/dashboard') }}" class="block">
+                <a href="{{ route('employee.dashboard') }}" class="block">
                     <img src="{{ asset('images/logo.png') }}" alt="ProMatch Logo"
                         class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-32 w-auto max-w-none">
                 </a>
@@ -54,51 +55,15 @@
 
             <!-- Navigation -->
             <nav class="flex-1 px-4 py-6 space-y-1">
-                <a href="{{ url('/admin/dashboard') }}"
-                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-semibold rounded-lg @if(request()->is('admin/dashboard*')) bg-brand-50 text-brand-700 @else text-slate-600 hover:bg-slate-50 hover:text-slate-900 @endif">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                    </svg>
-                    Tableau de bord
-                </a>
-                <a href="{{ url('/admin/fields') }}"
-                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-semibold rounded-lg @if(request()->is('admin/fields*')) bg-brand-50 text-brand-700 @else text-slate-600 hover:bg-slate-50 hover:text-slate-900 @endif">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 5a1 1 0 011-1h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 4v16m-8-8h16" />
-                    </svg>
-                    Terrains
-                </a>
-                <a href="{{ url('/admin/reservations') }}"
-                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg @if(request()->is('admin/reservations*')) bg-brand-50 text-brand-700 @else text-slate-600 hover:bg-slate-50 hover:text-slate-900 @endif">
+                <a href="{{ route('employee.dashboard') }}"
+                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-semibold rounded-lg @if(request()->routeIs('employee.dashboard')) bg-brand-50 text-brand-700 @else text-slate-600 hover:bg-slate-50 hover:text-slate-900 @endif">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    Réservations
+                    Planning du jour
                 </a>
-                <a href="{{ url('/admin/validations') }}"
-                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg @if(request()->is('admin/validations*')) bg-brand-50 text-brand-700 @else text-slate-600 hover:bg-slate-50 hover:text-slate-900 @endif">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Validations CNI
-                    {{-- TODO: wire up $pendingValidationsCount --}}
-                    <span data-testid="pending-validations-badge"
-                        class="ml-auto w-5 h-5 flex items-center justify-center rounded-full bg-rose-100 text-rose-600 text-xs font-bold">{{ $pendingValidationsCount ?? 0 }}</span>
-                </a>
-                <a href="{{ url('/admin/clients') }}"
-                    class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg @if(request()->is('admin/clients*')) bg-brand-50 text-brand-700 @else text-slate-600 hover:bg-slate-50 hover:text-slate-900 @endif">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                    Clients
-                </a>
+
                 <a href="{{ url('/') }}"
                     class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-50 hover:text-slate-900 border-t mt-4 pt-4 border-slate-100">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,20 +76,15 @@
 
             <!-- User Info & Logout -->
             <div class="p-4 border-t border-slate-100 space-y-3">
-                @php
-                    $adminUser = auth()->user();
-                    $adminName = trim(($adminUser->first_name ?? '') . ' ' . ($adminUser->last_name ?? '')) ?: 'Administrateur';
-                    $adminEmail = $adminUser->email ?? 'admin@promatch.ma';
-                @endphp
                 <div class="flex items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($adminName) }}&background=4da565&color=fff" alt="Admin"
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->first_name . ' ' . auth()->user()->last_name) }}&background=4da565&color=fff" alt="UserAvatar"
                         class="w-9 h-9 rounded-full">
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-semibold text-slate-900 truncate">{{ $adminName }}</p>
-                        <p class="text-xs text-slate-500 truncate">{{ $adminEmail }}</p>
+                        <p class="text-sm font-semibold text-slate-900 truncate">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</p>
+                        <p class="text-xs text-slate-500 truncate">{{ auth()->user()->email }}</p>
                     </div>
                 </div>
-
+                
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-lg transition-colors">
@@ -144,16 +104,17 @@
             <header class="sticky top-0 z-30 bg-white border-b border-slate-200">
                 <div class="px-6 py-4 flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <button class="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg">
+                        <div class="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg cursor-pointer">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
-                        </button>
+                        </div>
                         <div>
                             <h1 class="text-xl font-bold text-slate-900">@yield('page-title')</h1>
                             <p class="text-sm text-slate-500">@yield('page-subtitle')</p>
                         </div>
+                    </div>
                 </div>
             </header>
 

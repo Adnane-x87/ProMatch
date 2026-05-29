@@ -143,13 +143,27 @@ class ReservationService
      */
     public function getDailyPlanning(?string $date): Collection
     {
-        $query = Reservation::with(['field']);
+        $query = Reservation::with(['field', 'timeSlot'])
+            ->whereIn('status', ['APPROVED', 'ARRIVED', 'ABSENT']);
 
         if ($date) {
-            $query->whereDate('request_date', $date);
+            $query->where(function ($reservationQuery) use ($date) {
+                $reservationQuery->whereDate('start_time', $date)
+                    ->orWhereHas('timeSlot', function ($slotQuery) use ($date) {
+                        $slotQuery->whereDate('date', $date);
+                    });
+            });
         }
 
-        return $query->orderBy('start_time')->get();
+        return $query->get()
+            ->sortBy(function (Reservation $reservation) {
+                if ($reservation->start_time) {
+                    return $reservation->start_time;
+                }
+
+                return $reservation->timeSlot?->start_time ?? '00:00:00';
+            })
+            ->values();
     }
 
     /**

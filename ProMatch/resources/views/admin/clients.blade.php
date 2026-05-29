@@ -52,16 +52,20 @@
                 <!-- Search -->
                 <div class="relative flex-1 max-w-sm">
                     <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    <input x-model="search" type="text" placeholder="Rechercher un client..." class="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none">
+                    <input x-model="search" type="search" placeholder="Rechercher un client..." class="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg focus:border-brand-500 focus:ring-2 focus:ring-brand-100 outline-none">
                 </div>
                 <!-- Select -->
                 <div class="flex gap-2">
-                    <select x-model="blockStatus" class="py-2 px-3 block bg-white border border-slate-200 rounded-lg text-sm focus:border-brand-500 focus:ring-brand-500 outline-none">
+                    <select x-model="blockStatus"
+                        data-hs-select='{"placeholder":"Filtrer par accès","toggleTag":"<button type=\"button\" aria-expanded=\"false\"></button>","toggleClasses":"relative py-2 px-3 pe-9 flex items-center text-nowrap w-40 cursor-pointer bg-white border border-slate-200 rounded-lg text-start text-sm text-slate-600 focus:outline-none focus:border-brand-500","dropdownClasses":"mt-2 z-50 w-40 max-h-72 p-1 space-y-0.5 bg-white border border-slate-200 rounded-lg shadow-lg overflow-hidden overflow-y-auto","optionClasses":"py-2 px-3 w-full text-sm text-slate-700 cursor-pointer hover:bg-slate-100 rounded-md focus:outline-none focus:bg-slate-100","optionTemplate":"<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block text-brand-600\">✓</span></div>","extraMarkup":"<div class=\"absolute top-1/2 end-3 -translate-y-1/2 pointer-events-none\"><svg class=\"size-3.5 text-slate-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></svg></div>"}'
+                        class="hidden">
                         <option value="">Tous (Compte)</option>
                         <option value="BLOCKED">Bloqués</option>
                         <option value="UNBLOCKED">Actifs</option>
                     </select>
-                    <select x-model="status" class="py-2 px-3 block bg-white border border-slate-200 rounded-lg text-sm focus:border-brand-500 focus:ring-brand-500 outline-none">
+                    <select x-model="status"
+                        data-hs-select='{"placeholder":"Filtrer par CNI","toggleTag":"<button type=\"button\" aria-expanded=\"false\"></button>","toggleClasses":"relative py-2 px-3 pe-9 flex items-center text-nowrap w-40 cursor-pointer bg-white border border-slate-200 rounded-lg text-start text-sm text-slate-600 focus:outline-none focus:border-brand-500","dropdownClasses":"mt-2 z-50 w-40 max-h-72 p-1 space-y-0.5 bg-white border border-slate-200 rounded-lg shadow-lg overflow-hidden overflow-y-auto","optionClasses":"py-2 px-3 w-full text-sm text-slate-700 cursor-pointer hover:bg-slate-100 rounded-md focus:outline-none focus:bg-slate-100","optionTemplate":"<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block text-brand-600\">✓</span></div>","extraMarkup":"<div class=\"absolute top-1/2 end-3 -translate-y-1/2 pointer-events-none\"><svg class=\"size-3.5 text-slate-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></svg></div>"}'
+                        class="hidden">
                         <option value="">Tous (CNI)</option>
                         <option value="VALID">CNI Validée</option>
                         <option value="PENDING">En attente</option>
@@ -333,12 +337,3 @@
     </div>
 </div>
 @endsection
-
-@push('scripts')
-    <!-- Preline JS for models -->
-    <script src="https://unpkg.com/preline/dist/preline.js"></script>
-    <script>
-        // Init preline if dynamically added
-        window.HSStaticMethods.autoInit();
-    </script>
-@endpush

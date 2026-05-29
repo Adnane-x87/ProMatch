@@ -61,6 +61,21 @@ class CsvSeeder extends Seeder
                 $data['password'] = bcrypt($data['password']);
             }
 
+            if ($modelClass === \App\Models\TimeSlot::class) {
+                $data['date'] = now()->toDateString();
+            }
+
+            if ($modelClass === \App\Models\Reservation::class && isset($data['request_date'])) {
+                $timePart = '12:00:00';
+                $parts = explode(' ', $data['request_date']);
+
+                if (count($parts) > 1) {
+                    $timePart = $parts[1];
+                }
+
+                $data['request_date'] = now()->toDateString() . ' ' . $timePart;
+            }
+
             $modelClass::create($data);
         }
 

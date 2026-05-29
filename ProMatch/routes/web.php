@@ -45,6 +45,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/reservations/{id}/cancel', [PageController::class, 'cancelReservation'])->name('profile.reservations.cancel');
 });
 
+// Employee Routes (Authenticated)
+Route::middleware(['auth', \App\Http\Middleware\EmployeeMiddleware::class])->prefix('employee')->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\Employee\DashboardController::class, 'index'])->name('employee.dashboard');
+    Route::post('/reservations/{id}/arrive', [\App\Http\Controllers\Employee\DashboardController::class, 'arrive'])->name('employee.reservations.arrive');
+    Route::post('/reservations/{id}/absent', [\App\Http\Controllers\Employee\DashboardController::class, 'absent'])->name('employee.reservations.absent');
+});
+
 // Admin Routes (Authenticated)
 Route::middleware(['auth', \App\Http\Middleware\OwnerMiddleware::class])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');

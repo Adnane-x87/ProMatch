@@ -30,6 +30,10 @@
 
     @yield('content')
 
+    <script src="https://unpkg.com/preline/dist/preline.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => window.HSStaticMethods?.autoInit());
+    </script>
     @stack('scripts')
 </body>
 

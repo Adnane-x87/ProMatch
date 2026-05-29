@@ -29,6 +29,10 @@ class LoginController extends Controller
                 return redirect()->intended(route('admin.dashboard'));
             }
 
+            if ($user->type === 'employee') {
+                return redirect()->intended(route('employee.dashboard'));
+            }
+
             return redirect()->intended(route('home'));
         }
 

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Reservation;
 use Illuminate\Database\Eloquent\Collection;
+use Carbon\Carbon;
 
 class StaffService
 {
@@ -12,12 +13,32 @@ class StaffService
      *
      * @return Collection
      */
-    public function getDailySchedule(): Collection
+    public function getDailySchedule(?int $employeeId = null): Collection
     {
-        return Reservation::with(['tenant.user', 'field'])
-            ->whereDate('start_time', now()->toDateString())
-            ->orderBy('start_time', 'asc')
-            ->get();
+        $today = Carbon::today()->toDateString();
+        
+        return Reservation::with(['tenant.user', 'field', 'timeSlot'])
+            ->when($employeeId, function ($query) use ($employeeId) {
+                $query->where('employee_id', $employeeId);
+            })
+            ->whereIn('status', ['APPROVED', 'ARRIVED', 'ABSENT'])
+            ->where(function ($query) use ($today) {
+                $query->whereDate('start_time', $today)
+                    ->orWhereHas('timeSlot', function ($q) use ($today) {
+                        $q->whereDate('date', $today);
+                    });
+            })
+            ->get()
+            ->sortBy(function ($reservation) {
+                if ($reservation->start_time) {
+                    return Carbon::parse($reservation->start_time)->format('H:i:s');
+                }
+                if ($reservation->timeSlot) {
+                    return $reservation->timeSlot->start_time;
+                }
+                return '00:00:00';
+            })
+            ->values();
     }
 
     /**
@@ -26,17 +47,56 @@ class StaffService
      * @param int $reservationId
      * @return bool
      */
-    public function verifyClientArrival(int $reservationId): bool
+    public function verifyClientArrival(int $reservationId, ?int $employeeId = null): bool
     {
-        $reservation = Reservation::findOrFail($reservationId);
+        $reservation = $this->findEmployeeReservation($reservationId, $employeeId);
         
-        // Mark as approved/confirmed upon arrival if it was already approved
         if ($reservation->status === 'APPROVED') {
-            // Here you might want to add a specific 'ARRIVED' status or similar
-            // For now, let's just return true if it's a valid approved reservation being checked in
-            return true; 
+            return $reservation->update(['status' => 'ARRIVED']);
         }
 
         return false;
+    }
+
+    /**
+     * Verify that a client was absent for their reservation.
+     *
+     * @param int $reservationId
+     * @return bool
+     */
+    public function verifyClientAbsent(int $reservationId, ?int $employeeId = null): bool
+    {
+        $reservation = $this->findEmployeeReservation($reservationId, $employeeId);
+        
+        if ($reservation->status === 'APPROVED') {
+            return $reservation->update(['status' => 'ABSENT']);
+        }
+
+        return false;
+    }
+
+    /**
+     * Get daily dashboard statistics.
+     *
+     * @return array
+     */
+    public function getDailyStats(?int $employeeId = null): array
+    {
+        $reservations = $this->getDailySchedule($employeeId);
+
+        return [
+            'total' => $reservations->count(),
+            'arrived' => $reservations->where('status', 'ARRIVED')->count(),
+            'absent' => $reservations->where('status', 'ABSENT')->count(),
+        ];
+    }
+
+    private function findEmployeeReservation(int $reservationId, ?int $employeeId): Reservation
+    {
+        return Reservation::query()
+            ->when($employeeId, function ($query) use ($employeeId) {
+                $query->where('employee_id', $employeeId);
+            })
+            ->findOrFail($reservationId);
     }
 }

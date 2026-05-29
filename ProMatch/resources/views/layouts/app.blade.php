@@ -76,6 +76,7 @@
                         {{-- Modern Avatar trigger --}}
                         @php($accountUser = Auth::user())
                         @php($isAdminAccount = $accountUser->type === 'owner' || strtolower($accountUser->first_name ?? '') === 'adnane')
+                        @php($isEmployeeAccount = $accountUser->type === 'employee')
                         <div id="accountMenuRoot" class="relative flex items-center">
                             <button id="avatarBtn" onclick="toggleAccountPanel(event)"
                                 type="button"
@@ -109,7 +110,7 @@
                                 </div>
 
                                 <div class="mt-2 space-y-1">
-                                    @unless($isAdminAccount)
+                                    @unless($isAdminAccount || $isEmployeeAccount)
                                         <a href="{{ route('profile') }}"
                                             role="menuitem"
                                             class="group flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-700 transition-all hover:bg-brand-50 hover:text-brand-700">
@@ -121,6 +122,19 @@
                                             <span>Mon compte</span>
                                         </a>
                                     @endunless
+
+                                    @if($isEmployeeAccount)
+                                        <a href="{{ route('employee.dashboard') }}"
+                                            role="menuitem"
+                                            class="group flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-bold text-slate-700 transition-all hover:bg-brand-50 hover:text-brand-700">
+                                            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition-all group-hover:bg-white group-hover:text-brand-600 group-hover:shadow-sm">
+                                                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                                </svg>
+                                            </span>
+                                            <span>Tableau de bord</span>
+                                        </a>
+                                    @endif
 
                                     @if($isAdminAccount)
                                         <a href="{{ url('/admin/dashboard') }}"
@@ -271,7 +285,10 @@
         </div>
     </footer>
 
+    <script src="https://unpkg.com/preline/dist/preline.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', () => window.HSStaticMethods?.autoInit());
+
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             menu.classList.toggle('hidden');
