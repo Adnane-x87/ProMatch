@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Tenant;
+use App\Services\ClientService;
 use App\Services\DashboardService;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
+    protected $clientService;
     protected $dashboardService;
 
-    public function __construct(DashboardService $dashboardService)
+    public function __construct(ClientService $clientService, DashboardService $dashboardService)
     {
+        $this->clientService    = $clientService;
         $this->dashboardService = $dashboardService;
     }
 
@@ -21,72 +23,57 @@ class ClientController extends Controller
      */
     public function index()
     {
-        // Eager load relationships, counts, and sums to prevent N+1 queries and massively speed up the page
-        $clients = Tenant::with('user')
-            ->withCount('reservations')
-            ->withSum('reservations', 'price')
-            ->get();
-        
-        // Get stats for the top cards
-        $stats = $this->dashboardService->getDashboardStats();
-        
-        $totalClients = $stats['total_clients'] ?? $clients->count();
-        $activeClients = $stats['active_users'] ?? 0;
-        $validatedCniCount = $stats['validated_cnis'] ?? 0;
-        $pendingValidationsCount = $stats['pending_cnis'] ?? 0;
+        $clients = $this->clientService->getAllClients();
+        $stats   = $this->dashboardService->getDashboardStats();
+
+        $totalClients            = $stats['total_clients']  ?? $clients->count();
+        $activeClients           = $stats['active_users']   ?? 0;
+        $validatedCniCount       = $stats['validated_cnis'] ?? 0;
+        $pendingValidationsCount = $stats['pending_cnis']   ?? 0;
 
         return view('admin.clients', compact(
-            'clients', 
-            'totalClients', 
-            'activeClients', 
-            'validatedCniCount', 
+            'clients',
+            'totalClients',
+            'activeClients',
+            'validatedCniCount',
             'pendingValidationsCount'
         ));
     }
 
+    /**
+     * Block a tenant's user account.
+     */
     public function block($id, Request $request)
     {
-        $tenant = Tenant::with('user')->findOrFail($id);
-        $user = $tenant->user;
-        $owner = \App\Models\Owner::first(); // Assuming first owner or authenticated owner
-        
-        if ($owner) {
-            $owner->blockUser($user);
-        } else {
-            $user->is_blocked = true;
-            $user->save();
-        }
+        $this->clientService->blockClient((int) $id);
 
         if ($request->wantsJson()) {
             return response()->json(['success' => true, 'is_blocked' => true]);
         }
+
         return redirect()->back()->with('success', 'Utilisateur bloqué avec succès.');
     }
 
+    /**
+     * Unblock a tenant's user account.
+     */
     public function unblock($id, Request $request)
     {
-        $tenant = Tenant::with('user')->findOrFail($id);
-        $user = $tenant->user;
-        $owner = \App\Models\Owner::first(); // Assuming first owner or authenticated owner
-        
-        if ($owner) {
-            $owner->unblockUser($user);
-        } else {
-            $user->is_blocked = false;
-            $user->save();
-        }
+        $this->clientService->unblockClient((int) $id);
 
         if ($request->wantsJson()) {
             return response()->json(['success' => true, 'is_blocked' => false]);
         }
+
         return redirect()->back()->with('success', 'Utilisateur débloqué avec succès.');
     }
 
+    /**
+     * Mark a tenant's CNI as validated.
+     */
     public function validateCni($id)
     {
-        $tenant = Tenant::findOrFail($id);
-        $tenant->is_cni_valid = true;
-        $tenant->save();
+        $this->clientService->validateCni((int) $id);
 
         return redirect()->back()->with('success', 'CNI du client validé avec succès.');
     }
