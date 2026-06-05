@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\ReservationService;
+use App\Models\Reservation;
 
 class ReservationController extends Controller
 {
@@ -15,6 +16,32 @@ class ReservationController extends Controller
         $this->reservationService = $reservationService;
     }
 
+    public function index(Request $request)
+    {
+        $query = Reservation::with(['tenant.user', 'employee.user', 'field', 'timeSlot']);
+
+        if ($request->filled('status')) {
+            $query->where('status', strtoupper($request->query('status')));
+        }
+
+        if ($request->filled('date')) {
+            $date = $request->query('date');
+            $query->where(function ($reservationQuery) use ($date) {
+                $reservationQuery->whereDate('request_date', $date)
+                    ->orWhereDate('start_time', $date)
+                    ->orWhereHas('timeSlot', function ($slotQuery) use ($date) {
+                        $slotQuery->whereDate('date', $date);
+                    });
+            });
+        }
+
+        $reservations = $query->latest('request_date')->get()->makeVisible('cni_image');
+
+        return response()->json([
+            'success' => true,
+            'data' => $reservations,
+        ]);
+    }
     // UC6: Guest makes a reservation (No Auth required)
     public function store(Request $request)
     {
