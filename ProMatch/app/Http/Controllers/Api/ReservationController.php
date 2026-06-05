@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\ReservationService;
 use App\Models\Reservation;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ReservationController extends Controller
 {
@@ -45,30 +47,37 @@ class ReservationController extends Controller
     // UC6: Guest makes a reservation (No Auth required)
     public function store(Request $request)
     {
-        $data = $request->all();
+        $user = Auth::guard('sanctum')->user() ?? $request->user();
+        $data = $this->normalizeReservationPayload($request, $user);
 
-        // Map terrain_id from Blade to field_id for the Service
-        if ($request->has('terrain_id')) {
-            $data['field_id'] = $request->terrain_id;
+        $validator = Validator::make($data, [
+            'field_id' => 'required|exists:fields,id',
+            'time_slot_id' => 'nullable|exists:time_slots,id',
+            'date' => 'required|date',
+            'selected_time' => 'nullable|date',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'required|string|max:30',
+            'price' => 'nullable|numeric|min:0',
+            'cni_image' => 'nullable',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid reservation data',
+                'errors' => $validator->errors(),
+            ], 422);
         }
 
-        // The UI uses mocked time slots with fake IDs (e.g. 9990+) if real slots aren't found.
-        if (isset($data['time_slot_id']) && $data['time_slot_id'] >= 9000) {
-            $data['time_slot_id'] = null;
-        }
-
-        // Fix time format
-        if (isset($data['selected_time']) && isset($data['date'])) {
-            $timePart = strlen($data['selected_time']) === 5 ? $data['selected_time'] . ':00' : $data['selected_time'];
-            $data['selected_time'] = $data['date'] . ' ' . $timePart;
-        }
+        $validated = $validator->validated();
 
         if ($request->hasFile('cni_image')) {
-            $data['cni_image'] = $request->file('cni_image');
+            $validated['cni_image'] = $request->file('cni_image');
         }
 
-        // Create reservation via service directly from request (user defaults to null inside service)
-        $reservation = $this->reservationService->createReservation($data);
+        $reservation = $this->reservationService->createReservation($validated, $user);
 
         return response()->json([
             'success' => true,
@@ -82,17 +91,95 @@ class ReservationController extends Controller
         ], 201);
     }
 
+    private function normalizeReservationPayload(Request $request, $user = null): array
+    {
+        $data = $request->all();
+
+        $data['field_id'] = $data['field_id']
+            ?? $data['terrain_id']
+            ?? $data['fieldId']
+            ?? $data['terrainId']
+            ?? null;
+
+        $data['time_slot_id'] = $data['time_slot_id']
+            ?? $data['timeSlotId']
+            ?? $data['slot_id']
+            ?? $data['slotId']
+            ?? null;
+
+        $data['date'] = $data['date']
+            ?? $data['request_date']
+            ?? $data['reservation_date']
+            ?? $data['reservationDate']
+            ?? null;
+
+        $selectedTime = $data['selected_time']
+            ?? $data['selectedTime']
+            ?? $data['start_time']
+            ?? $data['startTime']
+            ?? $data['time']
+            ?? null;
+
+        if (!$data['date'] && is_string($selectedTime) && preg_match('/^\d{4}-\d{2}-\d{2}/', $selectedTime)) {
+            $data['date'] = substr($selectedTime, 0, 10);
+        }
+
+        if ($selectedTime && $data['date']) {
+            $data['selected_time'] = $this->normalizeSelectedTime($selectedTime, $data['date']);
+        }
+
+        if (!empty($data['full_name']) && (empty($data['first_name']) || empty($data['last_name']))) {
+            [$firstName, $lastName] = array_pad(explode(' ', trim($data['full_name']), 2), 2, '');
+            $data['first_name'] = $data['first_name'] ?? $firstName;
+            $data['last_name'] = $data['last_name'] ?? ($lastName ?: $firstName);
+        }
+
+        if (!empty($data['name']) && (empty($data['first_name']) || empty($data['last_name']))) {
+            [$firstName, $lastName] = array_pad(explode(' ', trim($data['name']), 2), 2, '');
+            $data['first_name'] = $data['first_name'] ?? $firstName;
+            $data['last_name'] = $data['last_name'] ?? ($lastName ?: $firstName);
+        }
+
+        $data['first_name'] = $data['first_name'] ?? $user?->first_name;
+        $data['last_name'] = $data['last_name'] ?? $user?->last_name;
+        $data['email'] = $data['email'] ?? $user?->email;
+        $data['phone'] = $data['phone'] ?? $data['phone_number'] ?? $data['phoneNumber'] ?? $user?->phone;
+
+        if (isset($data['time_slot_id']) && (int) $data['time_slot_id'] >= 9000) {
+            $data['time_slot_id'] = null;
+        }
+
+        return $data;
+    }
+
+    private function normalizeSelectedTime(string $selectedTime, string $date): string
+    {
+        if (preg_match('/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}/', $selectedTime)) {
+            return str_replace('T', ' ', substr($selectedTime, 0, 19));
+        }
+
+        if (preg_match('/^\d{2}:\d{2}(:\d{2})?$/', $selectedTime)) {
+            return $date . ' ' . (strlen($selectedTime) === 5 ? $selectedTime . ':00' : $selectedTime);
+        }
+
+        return $selectedTime;
+    }
+
 
     public function availableSlots(Request $request)
     {
+        if (!$request->filled('field_id') && $request->filled('fieldId')) {
+            $request->merge(['field_id' => $request->query('fieldId')]);
+        }
+
         $request->validate([
             'field_id' => 'required|integer',
             'date' => 'required|date',
         ]);
 
         $slots = $this->reservationService->getAvailableSlots(
-            $request->query('field_id'),
-            $request->query('date')
+            (int) $request->input('field_id'),
+            $request->input('date')
         );
 
         // If no real slots are found, generate some fake ones to facilitate UI testing
