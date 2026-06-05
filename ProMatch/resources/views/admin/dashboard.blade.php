@@ -46,28 +46,69 @@
             <!-- Main Column -->
             <div class="lg:col-span-2 space-y-6">
                 
-                <!-- Today's Schedule -->
+                <!-- Daily Plan -->
                 <div class="bg-white rounded-xl border border-slate-200">
-                    <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-                        <h2 class="font-semibold text-slate-900">Planning du jour</h2>
-                        <span class="text-xs font-medium text-slate-400" x-text="todayDate()"></span>
+                    <div class="px-5 py-4 border-b border-slate-100 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <h2 class="font-semibold text-slate-900">Daily plan</h2>
+                            <p class="text-xs text-slate-500">Reservations confirmees et statut d'arrivee</p>
+                        </div>
+                        <input x-model="selectedDate" @change="fetchPlanning()" type="date" class="w-full sm:w-auto px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-brand-500 text-slate-600">
                     </div>
                     <div class="p-5">
-                        <div class="relative">
-                            <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-100 -translate-y-1/2"></div>
-                            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 relative">
-                                <template x-for="slot in planning" :key="slot.id">
-                                    <div :class="['APPROVED', 'ARRIVED'].includes(slot.status) ? 'bg-brand-50 border-brand-100' : 'bg-white border-dashed border-slate-200 opacity-80'" class="border p-3 rounded-lg text-center">
-                                        <div :class="['APPROVED', 'ARRIVED'].includes(slot.status) ? 'bg-brand-500' : 'bg-slate-300'" class="w-2 h-2 rounded-full mx-auto mb-2"></div>
-                                        <p class="text-xs font-semibold" :class="['APPROVED', 'ARRIVED'].includes(slot.status) ? 'text-brand-700' : 'text-slate-400'" x-text="formatPlanningTime(slot)"></p>
-                                        <p class="text-xs text-slate-600 mt-1 truncate" x-text="slot.first_name ? slot.first_name + ' ' + slot.last_name : 'LIBRE'"></p>
-                                        <p class="text-[10px] font-medium mt-0.5" :class="['APPROVED', 'ARRIVED'].includes(slot.status) ? 'text-brand-400' : 'text-slate-300'" x-text="slot.field ? slot.field.name : 'T1'"></p>
-                                    </div>
-                                </template>
-                                <div x-show="planning.length === 0" class="col-span-4 text-center py-4 text-slate-400 text-sm">
-                                    Aucun planning disponible pour aujourd'hui.
-                                </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
+                            <div class="rounded-lg border border-emerald-100 bg-emerald-50 px-4 py-3">
+                                <p class="text-xs font-medium text-emerald-700">Arrives</p>
+                                <p class="mt-1 text-2xl font-bold text-emerald-800" x-text="planningCount('ARRIVED')">0</p>
                             </div>
+                            <div class="rounded-lg border border-amber-100 bg-amber-50 px-4 py-3">
+                                <p class="text-xs font-medium text-amber-700">Pas encore arrives</p>
+                                <p class="mt-1 text-2xl font-bold text-amber-800" x-text="planningCount('APPROVED')">0</p>
+                            </div>
+                            <div class="rounded-lg border border-rose-100 bg-rose-50 px-4 py-3">
+                                <p class="text-xs font-medium text-rose-700">Absents</p>
+                                <p class="mt-1 text-2xl font-bold text-rose-800" x-text="planningCount('ABSENT')">0</p>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-slate-50 text-xs font-medium text-slate-500 uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3 rounded-l-lg">Heure</th>
+                                        <th class="px-4 py-3">Client</th>
+                                        <th class="px-4 py-3">Terrain</th>
+                                        <th class="px-4 py-3">Reservation</th>
+                                        <th class="px-4 py-3 rounded-r-lg">Arrivee</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    <template x-for="slot in planning" :key="slot.id">
+                                        <tr class="hover:bg-slate-50/70">
+                                            <td class="px-4 py-3 font-semibold text-slate-900" x-text="formatPlanningTime(slot)"></td>
+                                            <td class="px-4 py-3">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-semibold text-slate-600" x-text="getInitials(slot.first_name, slot.last_name)"></div>
+                                                    <div class="min-w-0">
+                                                        <p class="font-medium text-slate-900 truncate" x-text="slot.first_name ? slot.first_name + ' ' + slot.last_name : 'Client'"></p>
+                                                        <p class="text-xs text-slate-500 truncate" x-text="slot.phone || slot.email || ''"></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 text-slate-600" x-text="slot.field ? slot.field.name : 'Terrain'"></td>
+                                            <td class="px-4 py-3">
+                                                <span class="px-2 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700" x-text="statusLabel(slot.status)"></span>
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <span :class="attendanceClass(slot.status)" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold" x-text="attendanceLabel(slot.status)"></span>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                    <tr x-show="planning.length === 0">
+                                        <td colspan="5" class="px-4 py-6 text-center text-slate-400">Aucun planning disponible pour cette date.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -165,9 +206,11 @@
             stats: @json($stats),
             recentReservations: @json($recentReservations),
             planning: [],
+            selectedDate: '',
             pendingTasks: @json($pendingCniTasks),
 
             async init() {
+                this.selectedDate = this.todayIsoLocal();
                 await this.fetchStats();
                 await this.fetchPlanning();
             },
@@ -194,8 +237,7 @@
 
             async fetchPlanning() {
                 try {
-                    const today = new Date().toISOString().split('T')[0];
-                    const response = await fetch(`/admin/api/planning?date=${today}`, {
+                    const response = await fetch(`/admin/api/planning?date=${this.selectedDate}`, {
                         headers: { 'Accept': 'application/json' }
                     });
 
@@ -227,7 +269,7 @@
             },
 
             formatPlanningTime(slot) {
-                return this.formatTime(slot.start_time || slot.time_slot?.start_time);
+                return this.formatTime(slot.start_time || slot.time_slot?.start_time || slot.request_date);
             },
 
             formatDate(dateStr) {
@@ -249,6 +291,30 @@
                 return ((first ? first[0] : '') + (last ? last[0] : '')).toUpperCase();
             },
 
+            planningCount(status) {
+                return this.planning.filter((slot) => slot.status === status).length;
+            },
+
+            attendanceLabel(status) {
+                const labels = {
+                    ARRIVED: 'Arrive',
+                    APPROVED: 'Pas encore arrive',
+                    ABSENT: 'Absent',
+                };
+
+                return labels[status] || 'Non defini';
+            },
+
+            attendanceClass(status) {
+                const classes = {
+                    ARRIVED: 'bg-emerald-50 text-emerald-700 border border-emerald-100',
+                    APPROVED: 'bg-amber-50 text-amber-700 border border-amber-100',
+                    ABSENT: 'bg-rose-50 text-rose-700 border border-rose-100',
+                };
+
+                return classes[status] || 'bg-slate-50 text-slate-600 border border-slate-100';
+            },
+
             statusLabel(status) {
                 const labels = {
                     PENDING: 'En attente',
@@ -260,6 +326,14 @@
                 };
 
                 return labels[status] || status || '';
+            },
+
+            todayIsoLocal() {
+                const now = new Date();
+                const offset = now.getTimezoneOffset();
+                const localDate = new Date(now.getTime() - (offset * 60 * 1000));
+
+                return localDate.toISOString().split('T')[0];
             },
 
             todayDate() {

@@ -52,6 +52,33 @@ class ReservationServiceTest extends TestCase
         $this->assertEquals('F1', $reservations->first()->field->name);
     }
 
+    public function test_daily_planning_can_use_request_date_without_start_time_or_slot()
+    {
+        $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'owner-planning@t.com', 'password' => '1', 'phone' => '1']);
+        $owner = Owner::create(['user_id' => $ownerUser->id, 'registration_date' => now()]);
+        $field = Field::create(['owner_id' => $owner->id, 'name' => 'Planning Field', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
+
+        $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant-planning@t.com', 'password' => '1', 'phone' => '2']);
+        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'cin-planning']);
+
+        $reservation = Reservation::create([
+            'tenant_id' => $tenant->id,
+            'field_id' => $field->id,
+            'first_name' => 'Daily',
+            'last_name' => 'Plan',
+            'email' => 'daily@plan.com',
+            'phone' => '123',
+            'request_date' => '2026-05-29 14:00:00',
+            'price' => 100,
+            'status' => 'APPROVED'
+        ]);
+
+        $planning = $this->reservationService->getDailyPlanning('2026-05-29');
+
+        $this->assertCount(1, $planning);
+        $this->assertTrue($planning->first()->is($reservation));
+    }
+
     public function test_create_reservation_creates_missing_tenant_for_authenticated_user()
     {
         $ownerUser = User::create(['first_name' => 'O', 'last_name' => 'U', 'email' => 'owner-booking@t.com', 'password' => '1', 'phone' => '1']);
