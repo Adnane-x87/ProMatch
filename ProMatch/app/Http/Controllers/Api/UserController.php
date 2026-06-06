@@ -17,6 +17,28 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
+        if ($request->is('register')) {
+            $request->validate([
+                'name' => ['required', 'string', 'min:3', 'max:255'],
+                'phone' => ['nullable', 'string', 'min:8', 'max:30', 'regex:/^[0-9+\s().-]+$/'],
+                'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+                'password' => ['required', 'string', 'min:6', 'max:255', 'confirmed'],
+                'terms' => ['accepted'],
+            ], [
+                'name.required' => 'Le nom complet est obligatoire.',
+                'name.min' => 'Le nom complet doit contenir au moins 3 caracteres.',
+                'phone.min' => 'Le telephone doit contenir au moins 8 caracteres.',
+                'phone.regex' => 'Veuillez saisir un numero de telephone valide.',
+                'email.required' => 'L email est obligatoire.',
+                'email.email' => 'Veuillez saisir une adresse email valide.',
+                'email.unique' => 'Cette adresse email est deja utilisee.',
+                'password.required' => 'Le mot de passe est obligatoire.',
+                'password.min' => 'Le mot de passe doit contenir au moins 6 caracteres.',
+                'password.confirmed' => 'Les mots de passe ne correspondent pas.',
+                'terms.accepted' => 'Vous devez accepter les conditions generales.',
+            ]);
+        }
+
         $data = $this->userService->register($request->all());
         return response()->json(['success' => true, 'data' => $data], 201);
     }

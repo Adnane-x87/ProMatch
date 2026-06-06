@@ -66,6 +66,7 @@
                             </svg>
                         </div>
                     </div>
+                    <p data-error-for="name" class="text-xs font-semibold text-rose-600 mt-1 hidden"></p>
                 </div>
 
                 <!-- Phone -->
@@ -82,6 +83,7 @@
                             </svg>
                         </div>
                     </div>
+                    <p data-error-for="phone" class="text-xs font-semibold text-rose-600 mt-1 hidden"></p>
                 </div>
 
                 <!-- Email -->
@@ -98,6 +100,7 @@
                             </svg>
                         </div>
                     </div>
+                    <p data-error-for="email" class="text-xs font-semibold text-rose-600 mt-1 hidden"></p>
                 </div>
 
                 <!-- Password -->
@@ -125,6 +128,7 @@
                             </svg>
                         </button>
                     </div>
+                    <p data-error-for="password" class="text-xs font-semibold text-rose-600 mt-1 hidden"></p>
                 </div>
 
                 <!-- Password Strength Bar -->
@@ -173,6 +177,7 @@
                     </div>
                     <p id="match-error" class="text-xs text-red-500 mt-1 hidden">Les mots de passe ne correspondent pas.
                     </p>
+                    <p data-error-for="password_confirmation" class="text-xs font-semibold text-rose-600 mt-1 hidden"></p>
                 </div>
 
                 <!-- Terms & Conditions -->
@@ -189,6 +194,7 @@
                                 confidentialité</a>
                         </span>
                     </label>
+                    <p data-error-for="terms" class="text-xs font-semibold text-rose-600 mt-1 hidden"></p>
                 </div>
 
             </div>
@@ -314,8 +320,28 @@
         }
 
         /* ── Form submit ─────────────────────────────────────── */
+        function clearFieldErrors() {
+            document.querySelectorAll('[data-error-for]').forEach(errorElement => {
+                errorElement.textContent = '';
+                errorElement.classList.add('hidden');
+            });
+        }
+
+        function showFieldErrors(errors = {}) {
+            Object.entries(errors).forEach(([field, messages]) => {
+                const errorElement = document.querySelector(`[data-error-for="${field}"]`);
+                if (!errorElement || !messages || messages.length === 0) {
+                    return;
+                }
+
+                errorElement.textContent = messages[0];
+                errorElement.classList.remove('hidden');
+            });
+        }
+
         async function handleSubmit(e) {
             e.preventDefault();
+            clearFieldErrors();
 
             const pwd = document.getElementById('password').value;
             const cpwd = document.getElementById('password_confirmation').value;
@@ -323,6 +349,7 @@
 
             if (pwd !== cpwd) {
                 err.classList.remove('hidden');
+                showFieldErrors({ password_confirmation: ['Les mots de passe ne correspondent pas.'] });
                 document.getElementById('password_confirmation').classList.add('border-red-400');
                 return;
             }
@@ -353,7 +380,11 @@
                     form.classList.add('hidden');
                     document.getElementById('successState').classList.remove('hidden');
                 } else {
-                    alert('Erreur: ' + (result.message || 'Une erreur est survenue.'));
+                    if (result.errors) {
+                        showFieldErrors(result.errors);
+                    } else {
+                        alert('Erreur: ' + (result.message || 'Une erreur est survenue.'));
+                    }
                     btn.disabled = false;
                     btn.innerHTML = originalText;
                 }

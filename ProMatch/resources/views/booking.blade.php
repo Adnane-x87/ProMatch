@@ -68,11 +68,11 @@
                         @csrf
 
                         <!-- Error Banner -->
-                        <div id="errorBanner" class="hidden items-center gap-3 p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl mb-6 transition-all duration-300">
+                        <div id="errorBanner" class="{{ $errors->any() ? 'flex' : 'hidden' }} items-center gap-3 p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl mb-6 transition-all duration-300">
                             <div class="w-8 h-8 rounded-xl bg-rose-100 flex items-center justify-center text-rose-600 shrink-0">
                                 <x-lucide-x-circle class="w-4 h-4" />
                             </div>
-                            <div class="text-sm font-semibold" id="errorBannerText"></div>
+                            <div class="text-sm font-semibold" id="errorBannerText">{{ $errors->first() }}</div>
                         </div>
 
                         <!-- Selection Area -->
@@ -82,20 +82,22 @@
                                 <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider ml-1" for="terrain">Terrain</label>
                                 <select id="terrain" name="terrain_id" required
                                     class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all">
-                                    <option value="" disabled selected>Choisir un terrain</option>
+                                    <option value="" disabled @selected(!old('terrain_id'))>Choisir un terrain</option>
                                     @forelse($fields as $field)
-                                        <option value="{{ $field->id }}" data-price="{{ $field->price_per_hour ?? 300 }}">{{ $field->name }}</option>
+                                        <option value="{{ $field->id }}" data-price="{{ $field->price_per_hour ?? 300 }}" @selected(old('terrain_id') == $field->id)>{{ $field->name }}</option>
                                     @empty
                                         <option value="" disabled>Aucun terrain disponible</option>
                                     @endforelse
                                 </select>
+                                <p data-error-for="terrain_id" class="text-xs font-semibold text-rose-600 {{ $errors->has('terrain_id') ? '' : 'hidden' }}">{{ $errors->first('terrain_id') }}</p>
                             </div>
 
                             <!-- Date -->
                             <div class="space-y-1.5">
                                 <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider ml-1" for="date">Date</label>
-                                <input type="date" id="date" name="date" required
+                                <input type="date" id="date" name="date" value="{{ old('date') }}" required
                                     class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all">
+                                <p data-error-for="date" class="text-xs font-semibold text-rose-600 {{ $errors->has('date') ? '' : 'hidden' }}">{{ $errors->first('date') }}</p>
                             </div>
                         </div>
 
@@ -107,8 +109,9 @@
                                     Veuillez sélectionner une date pour voir les créneaux disponibles.
                                 </div>
                             </div>
-                            <input type="hidden" id="selectedTime" name="selected_time">
-                            <input type="hidden" id="timeSlotId" name="time_slot_id">
+                            <input type="hidden" id="selectedTime" name="selected_time" value="{{ old('selected_time') }}">
+                            <input type="hidden" id="timeSlotId" name="time_slot_id" value="{{ old('time_slot_id') }}">
+                            <p data-error-for="selected_time" class="text-xs font-semibold text-rose-600 {{ $errors->has('selected_time') ? '' : 'hidden' }}">{{ $errors->first('selected_time') }}</p>
                         </div>
 
                         <!-- Personal Info -->
@@ -116,21 +119,25 @@
                              <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider ml-1">Vos informations</label>
                              
                              <div class="grid grid-cols-2 gap-4">
-                                <input type="text" placeholder="Prénom" name="first_name" required
-                                    value="{{ optional(auth()->user())->first_name }}"
+                                <input type="text" placeholder="Prénom" name="first_name" required maxlength="100" pattern="[\p{L}\s'-]{2,100}" oninput="this.value = this.value.replace(/[^\p{L}\s'-]/gu, '')"
+                                    value="{{ old('first_name', optional(auth()->user())->first_name) }}"
                                     class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all">
-                                <input type="text" placeholder="Nom" name="last_name" required
-                                    value="{{ optional(auth()->user())->last_name }}"
+                                <input type="text" placeholder="Nom" name="last_name" required maxlength="100" pattern="[\p{L}\s'-]{2,100}" oninput="this.value = this.value.replace(/[^\p{L}\s'-]/gu, '')"
+                                    value="{{ old('last_name', optional(auth()->user())->last_name) }}"
                                     class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all">
+                                <p data-error-for="first_name" class="text-xs font-semibold text-rose-600 {{ $errors->has('first_name') ? '' : 'hidden' }}">{{ $errors->first('first_name') }}</p>
+                                <p data-error-for="last_name" class="text-xs font-semibold text-rose-600 {{ $errors->has('last_name') ? '' : 'hidden' }}">{{ $errors->first('last_name') }}</p>
                              </div>
 
                              <div class="grid grid-cols-2 gap-4">
-                                <input type="tel" placeholder="Téléphone" name="phone" required
-                                    value="{{ optional(auth()->user())->phone }}"
+                                <input type="tel" placeholder="Téléphone" name="phone" required minlength="8" maxlength="30" pattern="[0-9+\s().-]{8,30}" inputmode="tel" oninput="this.value = this.value.replace(/[^0-9+\s().-]/g, '')"
+                                    value="{{ old('phone', optional(auth()->user())->phone) }}"
                                     class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all">
                                 <input type="email" placeholder="Email" name="email" required
-                                    value="{{ optional(auth()->user())->email }}"
+                                    value="{{ old('email', optional(auth()->user())->email) }}"
                                     class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all">
+                                <p data-error-for="phone" class="text-xs font-semibold text-rose-600 {{ $errors->has('phone') ? '' : 'hidden' }}">{{ $errors->first('phone') }}</p>
+                                <p data-error-for="email" class="text-xs font-semibold text-rose-600 {{ $errors->has('email') ? '' : 'hidden' }}">{{ $errors->first('email') }}</p>
                              </div>
 
                              <!-- CNI Area -->
@@ -150,6 +157,7 @@
                                     </div>
                                 </div>
                                 <input type="file" id="cni_image" name="cni_image" accept="image/jpeg, image/png, image/jpg" class="hidden">
+                                <p data-error-for="cni_image" class="text-xs font-semibold text-rose-600 mt-1 {{ $errors->has('cni_image') ? '' : 'hidden' }}">{{ $errors->first('cni_image') }}</p>
                              </div>
                              @endif
                         </div>
@@ -247,6 +255,25 @@
             const priceInput = document.getElementById('priceInput');
             if (priceInput) priceInput.value = price;
         }
+
+        function clearFieldErrors() {
+            document.querySelectorAll('[data-error-for]').forEach(errorElement => {
+                errorElement.textContent = '';
+                errorElement.classList.add('hidden');
+            });
+        }
+
+        function showFieldErrors(errors = {}) {
+            Object.entries(errors).forEach(([field, messages]) => {
+                const errorElement = document.querySelector(`[data-error-for="${field}"]`);
+                if (!errorElement || !messages || messages.length === 0) {
+                    return;
+                }
+
+                errorElement.textContent = messages[0];
+                errorElement.classList.remove('hidden');
+            });
+        }
         
         terrainSelect.addEventListener('change', () => {
             updatePrice();
@@ -291,9 +318,19 @@
                         
                         btn.addEventListener('click', () => {
                             document.querySelectorAll('.time-slot').forEach(b => {
-                                b.classList.remove('border-brand-500', 'text-brand-600', 'bg-brand-50', 'ring-4', 'ring-brand-500/10');
+                                b.classList.remove('border-brand-600', 'bg-brand-600', 'text-white', 'shadow-lg', 'shadow-brand-600/20', 'ring-4', 'ring-brand-500/20');
+                                b.removeAttribute('aria-pressed');
+                                b.style.backgroundColor = '';
+                                b.style.borderColor = '';
+                                b.style.color = '';
+                                b.style.boxShadow = '';
                             });
-                            btn.classList.add('border-brand-500', 'text-brand-600', 'bg-brand-50', 'ring-4', 'ring-brand-500/10');
+                            btn.classList.add('border-brand-600', 'bg-brand-600', 'text-white', 'shadow-lg', 'shadow-brand-600/20', 'ring-4', 'ring-brand-500/20');
+                            btn.setAttribute('aria-pressed', 'true');
+                            btn.style.backgroundColor = '#4da565';
+                            btn.style.borderColor = '#4da565';
+                            btn.style.color = '#ffffff';
+                            btn.style.boxShadow = '0 10px 22px rgba(77, 165, 101, 0.28)';
                             document.getElementById('selectedTime').value = displayTime;
                             document.getElementById('timeSlotId').value = slot.id || '';
                         });
@@ -346,10 +383,11 @@
                 errorBanner.classList.add('hidden');
                 errorBanner.classList.remove('flex');
             }
+            clearFieldErrors();
             
             // Basic validation
             if (!formData.get('selected_time')) {
-                alert('Veuillez sélectionner une heure.');
+                showFieldErrors({ selected_time: ['Veuillez sélectionner une heure.'] });
                 return;
             }
 
@@ -387,6 +425,7 @@
                         if (firstKey && result.errors[firstKey].length > 0) {
                             errorMsg = result.errors[firstKey][0];
                         }
+                        showFieldErrors(result.errors);
                     }
                     if (errorBanner && errorBannerText) {
                         errorBannerText.textContent = errorMsg;

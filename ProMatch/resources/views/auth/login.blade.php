@@ -38,6 +38,9 @@
                         </svg>
                     </div>
                 </div>
+                @error('email')
+                    <p class="text-xs font-semibold text-rose-600 mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>
@@ -53,6 +56,9 @@
                         </svg>
                     </div>
                 </div>
+                @error('password')
+                    <p class="text-xs font-semibold text-rose-600 mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="flex items-center justify-between text-sm">

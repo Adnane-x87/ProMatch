@@ -366,4 +366,36 @@
     </div>
 
 </div>
+@if($errors->any() || old())
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const errors = @json($errors->toArray());
+            const oldValues = @json(old());
+            const createForm = document.querySelector('form[action="{{ route('admin.fields.store') }}"]');
+
+            if (createForm) {
+                ['name', 'address', 'price_per_hour', 'description'].forEach(field => {
+                    const input = createForm.querySelector(`[name="${field}"]`);
+                    if (input && Object.prototype.hasOwnProperty.call(oldValues, field)) {
+                        input.value = oldValues[field] ?? '';
+                    }
+                });
+            }
+
+            Object.entries(errors).forEach(([field, messages]) => {
+                document.querySelectorAll(`[name="${field}"]`).forEach(input => {
+                    if (!messages || messages.length === 0 || input.nextElementSibling?.dataset?.validationError === field) {
+                        return;
+                    }
+
+                    const error = document.createElement('p');
+                    error.dataset.validationError = field;
+                    error.className = 'text-xs font-semibold text-rose-600 mt-1';
+                    error.textContent = messages[0];
+                    input.insertAdjacentElement('afterend', error);
+                });
+            });
+        });
+    </script>
+@endif
 @endsection
