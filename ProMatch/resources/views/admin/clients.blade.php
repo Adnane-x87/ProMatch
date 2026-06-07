@@ -34,7 +34,7 @@
     <div x-data="{ 
         search: '', 
         status: '', 
-        blockStatus: '',
+        blockStatus: 'ALL',
         selectedClient: null,
         showDetailsModal: false,
         openDetails(client) {
@@ -59,7 +59,7 @@
                     <select x-model="blockStatus"
                         data-hs-select='{"placeholder":"Filtrer par accès","toggleTag":"<button type=\"button\" aria-expanded=\"false\"></button>","toggleClasses":"relative py-2 px-3 pe-9 flex items-center text-nowrap w-40 cursor-pointer bg-white border border-slate-200 rounded-lg text-start text-sm text-slate-600 focus:outline-none focus:border-brand-500","dropdownClasses":"mt-2 z-50 w-40 max-h-72 p-1 space-y-0.5 bg-white border border-slate-200 rounded-lg shadow-lg overflow-hidden overflow-y-auto","optionClasses":"py-2 px-3 w-full text-sm text-slate-700 cursor-pointer hover:bg-slate-100 rounded-md focus:outline-none focus:bg-slate-100","optionTemplate":"<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block text-brand-600\">✓</span></div>","extraMarkup":"<div class=\"absolute top-1/2 end-3 -translate-y-1/2 pointer-events-none\"><svg class=\"size-3.5 text-slate-400\" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></svg></div>"}'
                         class="hidden">
-                        <option value="">Tous (Compte)</option>
+                        <option value="ALL">Tout</option>
                         <option value="BLOCKED">Bloqués</option>
                         <option value="UNBLOCKED">Actifs</option>
                     </select>
@@ -123,7 +123,7 @@
                             }"
                             x-show="(search === '' || name.includes(search.toLowerCase()) || phone.includes(search)) && 
                                     (status === '' || cniStatus === status) &&
-                                    (blockStatus === '' || (blockStatus === 'BLOCKED' && isBlocked) || (blockStatus === 'UNBLOCKED' && !isBlocked))"
+                                    (blockStatus === '' || blockStatus === 'ALL' || (blockStatus === 'BLOCKED' && isBlocked) || (blockStatus === 'UNBLOCKED' && !isBlocked))"
                         >
                             <td class="px-5 py-4">
                                 <div class="flex items-center gap-3">

@@ -91,19 +91,33 @@
                     <h3 class="text-xl font-bold text-slate-900 mb-6">Envoyez-nous un message</h3>
                     <form method="POST" action="{{ url('/contact') }}" class="space-y-4">
                         @csrf
+                        @if (session('success'))
+                            <div class="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm font-semibold text-emerald-700">
+                                {{ session('success') }}
+                            </div>
+                        @endif
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-1.5" for="first_name">Prénom</label>
-                                <input type="text" id="first_name" name="first_name" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all">
+                                <input type="text" id="first_name" name="first_name" value="{{ old('first_name') }}" required maxlength="100" pattern="[\p{L}\s'-]{2,100}" oninput="this.value = this.value.replace(/[^\p{L}\s'-]/gu, '')" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all">
+                                @error('first_name')
+                                    <p class="text-xs font-semibold text-rose-600 mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-1.5" for="last_name">Nom</label>
-                                <input type="text" id="last_name" name="last_name" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all">
+                                <input type="text" id="last_name" name="last_name" value="{{ old('last_name') }}" required maxlength="100" pattern="[\p{L}\s'-]{2,100}" oninput="this.value = this.value.replace(/[^\p{L}\s'-]/gu, '')" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all">
+                                @error('last_name')
+                                    <p class="text-xs font-semibold text-rose-600 mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1.5" for="email">Email</label>
-                            <input type="email" id="email" name="email" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all">
+                            <input type="email" id="email" name="email" value="{{ old('email') }}" required class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all">
+                            @error('email')
+                                <p class="text-xs font-semibold text-rose-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1.5" for="subject">Sujet</label>
@@ -115,10 +129,16 @@
                                 <option value="partnership">Partenariat</option>
                                 <option value="other">Autre demande</option>
                             </select>
+                            @error('subject')
+                                <p class="text-xs font-semibold text-rose-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1.5" for="message">Message</label>
-                            <textarea id="message" name="message" rows="4" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all"></textarea>
+                            <textarea id="message" name="message" rows="4" required class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none transition-all">{{ old('message') }}</textarea>
+                            @error('message')
+                                <p class="text-xs font-semibold text-rose-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <button type="submit" class="w-full rounded-xl bg-brand-500 px-6 py-3 text-sm font-bold text-white hover:bg-brand-600 transition-colors shadow-lg shadow-brand-500/20">
                             Envoyer le message
@@ -129,4 +149,14 @@
             </div>
         </div>
     </main>
+    @if(old('subject'))
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const subjectSelect = document.getElementById('subject');
+                if (subjectSelect) {
+                    subjectSelect.value = @js(old('subject'));
+                }
+            });
+        </script>
+    @endif
 @endsection

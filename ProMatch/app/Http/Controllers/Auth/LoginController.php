@@ -16,6 +16,10 @@ class LoginController extends Controller
         $credentials = $request->validate([
             'email'    => ['required', 'email'],
             'password' => ['required'],
+        ], [
+            'email.required' => 'L email est obligatoire.',
+            'email.email' => 'Veuillez saisir une adresse email valide.',
+            'password.required' => 'Le mot de passe est obligatoire.',
         ]);
 
         // Force remember false since users table doesn't have remember_token

@@ -155,6 +155,7 @@ class ReservationService
         if ($date) {
             $query->where(function ($reservationQuery) use ($date) {
                 $reservationQuery->whereDate('start_time', $date)
+                    ->orWhereDate('request_date', $date)
                     ->orWhereHas('timeSlot', function ($slotQuery) use ($date) {
                         $slotQuery->whereDate('date', $date);
                     });
@@ -167,7 +168,7 @@ class ReservationService
                     return $reservation->start_time;
                 }
 
-                return $reservation->timeSlot?->start_time ?? '00:00:00';
+                return $reservation->timeSlot?->start_time ?? $reservation->request_date ?? '00:00:00';
             })
             ->values();
     }

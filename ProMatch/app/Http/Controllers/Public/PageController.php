@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ContactRequest;
 use App\Services\PublicFieldService;
 use Illuminate\Http\Request;
 
@@ -44,9 +45,8 @@ class PageController extends Controller
     /**
      * Handle contact form submission.
      */
-    public function submitContact(Request $request)
+    public function submitContact(ContactRequest $request)
     {
-        // Simple placeholder for contact form submission
         return back()->with('success', 'Votre message a été envoyé avec succès !');
     }
 

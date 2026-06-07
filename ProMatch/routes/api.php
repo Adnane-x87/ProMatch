@@ -17,6 +17,7 @@ Route::get('/public-fields', [PublicFieldController::class, 'index']);
 Route::get('/public-fields/{id}', [PublicFieldController::class, 'show']);
 
 // UC6: Guest reservation (no auth required)
+Route::get('/reservations', [ReservationController::class, 'index']);
 Route::post('/reservations', [ReservationController::class, 'store']);
 Route::get('/available-slots', [ReservationController::class, 'availableSlots']);
 
