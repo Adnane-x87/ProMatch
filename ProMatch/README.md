@@ -1,59 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ProMatch Chatbot
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This document explains how the quick reservation chatbot works in the ProMatch Laravel project.
 
-## About Laravel
+## Goal
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The chatbot helps a signed-in client create a quick terrain reservation from the chat widget. It follows the same reservation logic as the normal booking form and sends the request to the admin dashboard as a `PENDING` reservation.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## User Workflow
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. The user opens the floating chatbot.
+2. The chatbot asks: `Quel terrain voulez-vous reserver ?`
+3. The user chooses a terrain by name or by number.
+4. The chatbot asks for the reservation date.
+5. The user sends a date like `2026-06-08`, `08/06/2026`, `aujourd hui`, or `demain`.
+6. The chatbot checks available hours for that terrain and date.
+7. The chatbot replies with available hours, for example: `08:00, 10:00, 14:00, 16:00, 18:00, 20:00`.
+8. The user chooses an hour like `10h` or `10:00`.
+9. The chatbot creates a reservation request with status `PENDING`.
+10. The request appears in the admin reservation dashboard.
 
-## Learning Laravel
+If the user is not signed in, the chatbot does not create a reservation. It asks the user to log in first.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Important Files
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- `routes/web.php`
+  - Defines the chatbot route: `POST /chatbot/message`.
 
-## Laravel Sponsors
+- `app/Http/Controllers/Public/ChatbotController.php`
+  - Handles the guided chat workflow.
+  - Checks authentication.
+  - Detects terrain, date, and hour from user messages.
+  - Reads available hours from `time_slots`.
+  - Uses fallback hours when no real slots exist, matching the manual booking form.
+  - Creates the reservation through `ReservationService`.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- `app/Services/ReservationService.php`
+  - Creates the final `reservations` table record.
+  - Resolves or creates the client tenant.
+  - Sets reservation status to `PENDING`.
 
-### Premium Partners
+- `resources/views/components/chatbot.blade.php`
+  - Contains the floating chatbot UI.
+  - Shows the initial bot message.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- `resources/js/chatbot.js`
+  - Opens and closes the chat panel.
+  - Sends user messages to Laravel.
+  - Keeps the current reservation state in the browser.
+  - Displays bot replies.
 
-## Contributing
+- `resources/views/layouts/app.blade.php`
+  - Includes the chatbot on public pages using the shared layout.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- `resources/views/booking.blade.php`
+  - Includes the chatbot on the standalone booking page.
 
-## Code of Conduct
+## Reservation State
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+The frontend sends a small state object with each message:
 
-## Security Vulnerabilities
+```json
+{
+  "field_id": 1,
+  "date": "2026-06-08",
+  "time": "10:00"
+}
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+The server returns an updated state after each step. When the reservation is created successfully, the state is reset to an empty object.
 
-## License
+## Availability Logic
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The chatbot first checks real available slots:
+
+- Same `field_id`
+- Same `date`
+- `status = AVAILABLE`
+- No active `PENDING` or `APPROVED` reservation for that slot
+
+If no real `time_slots` exist for that date, the chatbot uses the same fallback hours as the manual booking page:
+
+```text
+08:00, 10:00, 14:00, 16:00, 18:00, 20:00
+```
+
+Reservations created from fallback hours have `time_slot_id = null`, but still store `field_id`, `start_time`, `request_date`, client info, price, and `PENDING` status.
+
+## Success Message
+
+After creating the reservation, the chatbot replies:
+
+```text
+Demande envoyee pour Atlas - Terrain 3, le 2026-06-08 a 10:00. Elle est en attente de validation.
+```
+
+## Notes
+
+- The chatbot quick reservation requires a signed-in user.
+- The chatbot does not upload CNI files. It creates a quick request using the connected user's account information.
+- The admin still validates or cancels the request from the dashboard.

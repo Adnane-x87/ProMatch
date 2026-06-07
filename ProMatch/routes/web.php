@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\ValidationController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\FieldController;
+use App\Http\Controllers\Public\ChatbotController;
 use App\Http\Controllers\Public\PageController;
 use Illuminate\Http\Request;
 
@@ -38,6 +39,9 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/register', [ApiUserController::class, 'register']);
 Route::post('/contact', [PageController::class, 'submitContact']);
+Route::post('/chatbot/message', [ChatbotController::class, 'message'])
+    ->middleware('throttle:20,1')
+    ->name('chatbot.message');
 
 // User Profile & Reservations Routes (Authenticated)
 Route::middleware('auth')->group(function () {
