@@ -39,6 +39,7 @@ class FieldController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'No owner account is available for this field.',
+                'errors' => [],
             ], 422);
         }
 

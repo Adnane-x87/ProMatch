@@ -36,6 +36,13 @@ class PublicFieldService
         return Field::with(['owner.user'])->findOrFail($fieldId);
     }
 
+    public function getFieldDetailsWithSlots(int $fieldId): Field
+    {
+        return Field::with(['owner.user', 'timeSlots' => function ($query) {
+            $query->orderBy('date')->orderBy('start_time');
+        }])->findOrFail($fieldId);
+    }
+
     /**
      * Get available time slots for a field on a specific date.
      *

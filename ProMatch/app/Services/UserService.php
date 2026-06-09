@@ -69,8 +69,8 @@ class UserService
         $validated['password'] = bcrypt($validated['password']);
 
         $user = User::create($validated);
-        Role::findOrCreate($role);
-        $user->assignRole($role);
+        $roleModel = Role::findOrCreate($role, 'web');
+        $user->assignRole($roleModel);
 
         // Create the associated model depending on the role.
         if ($user->hasRole('tenant')) {

@@ -3,12 +3,25 @@
 namespace App\Services;
 
 use App\Models\Reservation;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class CniService
 {
+    public function uploadDocument(UploadedFile $document, ?User $user = null): string
+    {
+        $path = $document->store('cnis', 'public');
+
+        if ($user?->tenant && !$user->tenant->cni_image) {
+            $user->tenant->update(['cni_image' => $path]);
+        }
+
+        return $path;
+    }
+
     /**
      * Verify a reservation CNI submission.
      *

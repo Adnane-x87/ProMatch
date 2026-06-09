@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\ReservationService;
 use App\Models\Reservation;
+use App\Models\TimeSlot;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ReservationController extends Controller
 {
@@ -149,6 +151,15 @@ class ReservationController extends Controller
             $data['time_slot_id'] = null;
         }
 
+        if (!empty($data['time_slot_id']) && empty($data['selected_time'])) {
+            $slot = TimeSlot::find($data['time_slot_id']);
+
+            if ($slot) {
+                $data['date'] = $data['date'] ?? $slot->date;
+                $data['selected_time'] = $slot->date . ' ' . $slot->start_time;
+            }
+        }
+
         return $data;
     }
 
@@ -170,6 +181,10 @@ class ReservationController extends Controller
     {
         if (!$request->filled('field_id') && $request->filled('fieldId')) {
             $request->merge(['field_id' => $request->query('fieldId')]);
+        }
+
+        if (!$request->filled('field_id') && $request->filled('terrain_id')) {
+            $request->merge(['field_id' => $request->query('terrain_id')]);
         }
 
         $request->validate([
@@ -208,7 +223,12 @@ class ReservationController extends Controller
     // UC4: Admin validates the reservation
     public function validateReservation(Request $request, $id)
     {
-        $reservation = $this->reservationService->updateStatus($id, $request->status);
+        $validated = $request->validate([
+            'status' => ['nullable', Rule::in(['APPROVED', 'REJECTED', 'CANCELED', 'ARRIVED', 'ABSENT'])],
+        ]);
+
+        $reservation = $this->reservationService->updateStatus($id, $validated['status'] ?? 'APPROVED');
+
         return response()->json([
             'success' => true,
             'data' => [
