@@ -36,7 +36,7 @@ class PublicReservationServiceTest extends TestCase
 
         $owner = $this->createOwner();
         $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant1@t.com', 'password' => '1', 'phone' => '1']);
-        $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
+        $tenant = Tenant::create(['user_id' => $user->id]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 
         $data = [
@@ -59,7 +59,7 @@ class PublicReservationServiceTest extends TestCase
     {
         $owner = $this->createOwner();
         $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant2@t.com', 'password' => '1', 'phone' => '1']);
-        $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
+        $tenant = Tenant::create(['user_id' => $user->id]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 
         Reservation::create([
@@ -84,7 +84,7 @@ class PublicReservationServiceTest extends TestCase
     {
         $owner = $this->createOwner();
         $user = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant3@t.com', 'password' => '1', 'phone' => '1']);
-        $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
+        $tenant = Tenant::create(['user_id' => $user->id]);
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F', 'address' => 'A', 'price_per_hour' => 50]);
 
         $reservation = Reservation::create([

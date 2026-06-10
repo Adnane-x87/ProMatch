@@ -116,7 +116,7 @@ class MobileApiContractTest extends TestCase
             'password' => Hash::make('password'),
             'phone' => '0633333333',
         ]);
-        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'AA12345']);
+        $tenant = Tenant::create(['user_id' => $tenantUser->id]);
         $reservation = Reservation::create([
             'tenant_id' => $tenant->id,
             'field_id' => $field->id,

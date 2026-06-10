@@ -1,3 +1,9 @@
-id,user_id,cin,cni_image,is_cni_valid
-1,2,AB123456,cni_1.jpg,1
-2,4,CD789012,cni_2.jpg,0
+id,user_id,cni_image,is_cni_valid
+1,2,cni_1.jpg,1
+2,4,cni_2.jpg,0
+3,5,cni_3.jpg,1
+4,6,cni_4.jpg,1
+5,7,cni_5.jpg,0
+6,8,cni_6.jpg,1
+7,9,cni_7.jpg,0
+8,10,cni_8.jpg,1

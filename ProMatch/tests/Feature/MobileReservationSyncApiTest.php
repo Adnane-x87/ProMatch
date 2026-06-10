@@ -28,7 +28,7 @@ class MobileReservationSyncApiTest extends TestCase
             'password' => Hash::make('password'),
             'phone' => '0611111111',
         ]);
-        Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'MT12345']);
+        Tenant::create(['user_id' => $tenantUser->id]);
 
         Sanctum::actingAs($tenantUser);
 
@@ -62,7 +62,7 @@ class MobileReservationSyncApiTest extends TestCase
             'password' => Hash::make('password'),
             'phone' => '0622222222',
         ]);
-        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'WT12345']);
+        $tenant = Tenant::create(['user_id' => $tenantUser->id]);
 
         Reservation::create([
             'tenant_id' => $tenant->id,

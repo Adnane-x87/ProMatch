@@ -120,15 +120,7 @@ class ReservationService
             $account->assignRole($tenantRole);
         }
 
-        return Tenant::firstOrCreate(
-            ['user_id' => $account->id],
-            ['cin' => $data['cin'] ?? $data['tenant_cin'] ?? $this->generatePlaceholderCin($account)]
-        );
-    }
-
-    private function generatePlaceholderCin(User $user): string
-    {
-        return 'TMP-' . $user->id . '-' . Str::upper(Str::random(8));
+        return Tenant::firstOrCreate(['user_id' => $account->id]);
     }
 
     /**
@@ -195,7 +187,7 @@ class ReservationService
      */
     public function getAllReservations(): Collection
     {
-        return Reservation::with(['tenant.user', 'employee.user', 'field'])->get();
+        return Reservation::with(['tenant.user', 'employee.user', 'field', 'timeSlot.field'])->get();
     }
 
     /**

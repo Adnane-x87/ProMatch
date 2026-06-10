@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tenant extends Model
 {
-    protected $fillable = ['user_id', 'cin', 'cni_image', 'is_cni_valid'];
+    protected $fillable = ['user_id', 'cni_image', 'is_cni_valid'];
 
     public function user()
     {

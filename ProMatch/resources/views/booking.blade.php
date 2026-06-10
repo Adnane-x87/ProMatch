@@ -65,6 +65,12 @@
                         <p class="text-brand-600 font-bold tracking-widest text-[10px] uppercase">Réservation par créneau d'1 heure</p>
                     </div>
 
+                    @php
+                        $selectedTerrainId = old('terrain_id', request('terrain_id'));
+                        $selectedField = $fields->firstWhere('id', (int) $selectedTerrainId);
+                        $initialPrice = $selectedField?->price_per_hour;
+                    @endphp
+
                     <form method="POST" action="{{ url('/booking') }}" enctype="multipart/form-data" id="bookingForm" class="space-y-6 flex-1">
                         @csrf
 
@@ -83,9 +89,9 @@
                                 <label class="text-[11px] font-black text-slate-400 uppercase tracking-wider ml-1" for="terrain">Terrain</label>
                                 <select id="terrain" name="terrain_id" required
                                     class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all">
-                                    <option value="" disabled @selected(!old('terrain_id'))>Choisir un terrain</option>
+                                    <option value="" disabled @selected(!$selectedTerrainId)>Choisir un terrain</option>
                                     @forelse($fields as $field)
-                                        <option value="{{ $field->id }}" data-price="{{ $field->price_per_hour ?? 300 }}" @selected(old('terrain_id') == $field->id)>{{ $field->name }}</option>
+                                        <option value="{{ $field->id }}" data-price="{{ $field->price_per_hour ?? 0 }}" @selected((string) $selectedTerrainId === (string) $field->id)>{{ $field->name }}</option>
                                     @empty
                                         <option value="" disabled>Aucun terrain disponible</option>
                                     @endforelse
@@ -168,7 +174,7 @@
                             <div class="mb-8">
                                 <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">Total estimé</p>
                                 <div class="flex items-baseline gap-4 mb-1">
-                                    <span id="totalPrice" class="text-5xl font-black text-slate-900 tracking-tighter">300</span>
+                                    <span id="totalPrice" class="text-5xl font-black text-slate-900 tracking-tighter">{{ $initialPrice ?? 0 }}</span>
                                     <span class="text-2xl font-bold text-slate-400">DH</span>
                                 </div>
                                 <p class="text-[11px] font-bold text-slate-400 italic">Durée: 1 heure de service</p>
@@ -186,7 +192,7 @@
                                     <x-lucide-arrow-right class="w-4 h-4" />
                                 </button>
                             </div>
-                            <input type="hidden" id="priceInput" name="price" value="300">
+                            <input type="hidden" id="priceInput" name="price" value="{{ $initialPrice ?? '' }}">
                         </div>
                     </form>
 
@@ -251,9 +257,12 @@
         function updatePrice() {
             const selectedOption = terrainSelect.options[terrainSelect.selectedIndex];
             if (!selectedOption || !selectedOption.value) {
+                priceDisplay.textContent = '0';
+                const priceInput = document.getElementById('priceInput');
+                if (priceInput) priceInput.value = '';
                 return;
             }
-            const price = selectedOption.getAttribute('data-price') || 300;
+            const price = selectedOption.getAttribute('data-price') || 0;
             priceDisplay.textContent = price;
             const priceInput = document.getElementById('priceInput');
             if (priceInput) priceInput.value = price;

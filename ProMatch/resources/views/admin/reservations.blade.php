@@ -70,14 +70,14 @@
                             </td>
                             <td class="px-6 py-4">
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-medium border border-slate-200">
-                                    {{ $reservation->field->name ?? 'Terrain' }}
+                                    {{ $reservation->field?->name ?? $reservation->timeSlot?->field?->name ?? 'Terrain' }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-slate-600">
                                 {{ $reservation->request_date }} {{ $reservation->start_time ? substr($reservation->start_time, 0, 5) : '' }}
                             </td>
                             <td class="px-6 py-4 font-medium text-slate-900">
-                                {{ $reservation->price ?? $reservation->field->price_per_hour ?? '0' }} DH
+                                {{ $reservation->price ?? $reservation->field?->price_per_hour ?? $reservation->timeSlot?->field?->price_per_hour ?? '0' }} DH
                             </td>
                             <td class="px-6 py-4">
                                 @if($reservation->status === 'PENDING')

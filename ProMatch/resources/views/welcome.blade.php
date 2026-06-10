@@ -121,12 +121,12 @@
                     <div class="mt-auto flex items-center justify-between gap-3">
                         <!-- Price Pill -->
                         <div class="flex items-baseline gap-1 px-4 py-2.5 bg-slate-100 rounded-full">
-                            <span class="text-base font-black text-slate-900">{{ $field->price_per_hour ?? 300 }}</span>
+                            <span class="text-base font-black text-slate-900">{{ $field->price_per_hour ?? 0 }}</span>
                             <span class="text-[11px] font-bold text-slate-400">DH</span>
                         </div>
 
                         <!-- CTA Button -->
-                        <a href="{{ url('/booking') }}"
+                        <a href="{{ url('/booking?terrain_id=' . $field->id) }}"
                            class="flex-1 flex items-center justify-center gap-2 py-2.5 bg-slate-900 text-white text-sm font-black rounded-full hover:bg-slate-700 active:scale-95 transition-all duration-300 shadow-lg shadow-slate-900/20 group/btn">
                             Réserver
                             <span class="w-6 h-6 rounded-full bg-white/15 flex items-center justify-center transform group-hover/btn:translate-x-0.5 transition-transform">

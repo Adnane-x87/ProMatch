@@ -67,7 +67,7 @@ class PageController extends Controller
                 $query->orWhere('tenant_id', $user->tenant->id);
             }
         })
-        ->with('field')
+        ->with(['field', 'timeSlot.field'])
         ->orderBy('request_date', 'desc')
         ->orderBy('start_time', 'desc')
         ->get();
