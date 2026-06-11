@@ -49,7 +49,7 @@ class ProfileTest extends TestCase
             'password' => bcrypt('password'),
             'phone' => '12345',
         ]);
-        $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
+        $tenant = Tenant::create(['user_id' => $user->id]);
         $field = Field::create([
             'owner_id' => $owner->id,
             'name' => 'Terrain Super',
@@ -88,7 +88,7 @@ class ProfileTest extends TestCase
             'password' => bcrypt('password'),
             'phone' => '12345',
         ]);
-        $tenant = Tenant::create(['user_id' => $user->id, 'cin' => 'C1']);
+        $tenant = Tenant::create(['user_id' => $user->id]);
         $field = Field::create([
             'owner_id' => $owner->id,
             'name' => 'Terrain Super',
@@ -130,7 +130,7 @@ class ProfileTest extends TestCase
             'password' => bcrypt('password'),
             'phone' => '12345',
         ]);
-        $tenant1 = Tenant::create(['user_id' => $user1->id, 'cin' => 'C1']);
+        $tenant1 = Tenant::create(['user_id' => $user1->id]);
 
         $user2 = User::create([
             'first_name' => 'Jane',
@@ -139,7 +139,7 @@ class ProfileTest extends TestCase
             'password' => bcrypt('password'),
             'phone' => '67890',
         ]);
-        $tenant2 = Tenant::create(['user_id' => $user2->id, 'cin' => 'C2']);
+        $tenant2 = Tenant::create(['user_id' => $user2->id]);
 
         $field = Field::create([
             'owner_id' => $owner->id,

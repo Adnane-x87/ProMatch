@@ -1,4 +1,12 @@
-id,tenant_id,time_slot_id,employee_id,first_name,last_name,email,phone,request_date,price,cni_image,status
-1,1,2,1,Said,Mansour,said@example.com,0600000002,2026-05-29 10:30:00,200.00,storage/app/public/cni_proof.jpg,APPROVED
-2,2,3,1,Youssef,Tazi,youssef@example.com,0600000004,2026-05-29 14:00:00,250.00,storage/app/public/cni_proof.jpg,PENDING
-3,1,4,1,Said,Mansour,said@example.com,0600000002,2026-05-29 16:00:00,300.00,storage/app/public/cni_proof.jpg,APPROVED
+id,tenant_id,field_id,time_slot_id,employee_id,first_name,last_name,email,phone,request_date,price,cni_image,status
+1,1,1,2,1,Said,Mansour,said@example.com,0600000002,2026-05-29 10:30:00,250.00,storage/app/public/cni_proof.jpg,APPROVED
+2,2,1,3,1,Youssef,Tazi,youssef@example.com,0600000004,2026-05-29 14:00:00,250.00,storage/app/public/cni_proof.jpg,PENDING
+3,1,2,4,1,Said,Mansour,said@example.com,0600000002,2026-05-29 16:00:00,250.00,storage/app/public/cni_proof.jpg,APPROVED
+4,3,1,5,1,Amine,Bennani,amine@example.com,0600000005,2026-05-29 09:00:00,250.00,cni_3.jpg,APPROVED
+5,4,1,6,1,Anas,El Fassi,anas@example.com,0600000006,2026-05-29 11:00:00,250.00,cni_4.jpg,ARRIVED
+6,5,2,8,1,Omar,Idrissi,omar@example.com,0600000007,2026-05-29 09:00:00,250.00,cni_5.jpg,PENDING
+7,6,2,10,1,Ilyas,Alaoui,ilyas@example.com,0600000008,2026-05-29 15:00:00,250.00,cni_6.jpg,APPROVED
+8,7,3,11,1,Mehdi,Rami,mehdi@example.com,0600000009,2026-05-29 10:00:00,250.00,cni_7.jpg,PENDING
+9,8,3,13,1,Walid,Boukhari,walid@example.com,0600000010,2026-05-29 17:00:00,250.00,cni_8.jpg,APPROVED
+10,3,4,15,1,Amine,Bennani,amine@example.com,0600000005,2026-05-29 14:00:00,250.00,cni_3.jpg,ABSENT
+11,6,4,16,1,Ilyas,Alaoui,ilyas@example.com,0600000008,2026-05-29 20:00:00,250.00,cni_6.jpg,APPROVED

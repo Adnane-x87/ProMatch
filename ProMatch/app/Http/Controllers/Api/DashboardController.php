@@ -46,6 +46,13 @@ class DashboardController extends Controller
         return response()->json(['success' => true, 'data' => $slots]);
     }
 
+    public function showSlot($id)
+    {
+        $slot = TimeSlot::with('field')->findOrFail($id);
+
+        return response()->json(['success' => true, 'data' => $slot]);
+    }
+
     /**
      * Create a new time slot.
      */
@@ -60,7 +67,11 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid slot data',
+                'errors' => $validator->errors(),
+            ], 422);
         }
 
         $slot = TimeSlot::create($request->all());
@@ -76,7 +87,11 @@ class DashboardController extends Controller
         $slot = TimeSlot::find($id);
 
         if (!$slot) {
-            return response()->json(['success' => false, 'message' => 'Slot not found'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Slot not found',
+                'errors' => [],
+            ], 404);
         }
 
         $validator = Validator::make($request->all(), [
@@ -88,7 +103,11 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid slot data',
+                'errors' => $validator->errors(),
+            ], 422);
         }
 
         $slot->update($request->all());
@@ -104,7 +123,11 @@ class DashboardController extends Controller
         $slot = TimeSlot::find($id);
 
         if (!$slot) {
-            return response()->json(['success' => false, 'message' => 'Slot not found'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Slot not found',
+                'errors' => [],
+            ], 404);
         }
 
         $slot->delete();

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
@@ -72,6 +73,22 @@ class ReservationService
             return $path;
         }
 
+        if (is_string($cniImage) && preg_match('/^data:image\/(\w+);base64,/', $cniImage, $matches)) {
+            $extension = strtolower($matches[1]) === 'jpeg' ? 'jpg' : strtolower($matches[1]);
+            $contents = base64_decode(substr($cniImage, strpos($cniImage, ',') + 1), true);
+
+            if ($contents !== false) {
+                $path = 'reservations/cnis/' . Str::uuid() . '.' . $extension;
+                Storage::disk('public')->put($path, $contents);
+
+                if ($tenant && !$tenant->cni_image) {
+                    $tenant->update(['cni_image' => $path]);
+                }
+
+                return $path;
+            }
+        }
+
         return is_string($cniImage) ? $cniImage : null;
     }
 
@@ -96,22 +113,14 @@ class ReservationService
                 'phone' => $data['phone'] ?? '',
             ]);
 
-            Role::findOrCreate('tenant');
-            $account->assignRole('tenant');
+            $tenantRole = Role::findOrCreate('tenant', 'web');
+            $account->assignRole($tenantRole);
         } elseif (!$account->hasRole('tenant')) {
-            Role::findOrCreate('tenant');
-            $account->assignRole('tenant');
+            $tenantRole = Role::findOrCreate('tenant', 'web');
+            $account->assignRole($tenantRole);
         }
 
-        return Tenant::firstOrCreate(
-            ['user_id' => $account->id],
-            ['cin' => $data['cin'] ?? $data['tenant_cin'] ?? $this->generatePlaceholderCin($account)]
-        );
-    }
-
-    private function generatePlaceholderCin(User $user): string
-    {
-        return 'TMP-' . $user->id . '-' . Str::upper(Str::random(8));
+        return Tenant::firstOrCreate(['user_id' => $account->id]);
     }
 
     /**
@@ -178,7 +187,7 @@ class ReservationService
      */
     public function getAllReservations(): Collection
     {
-        return Reservation::with(['tenant.user', 'employee.user', 'field'])->get();
+        return Reservation::with(['tenant.user', 'employee.user', 'field', 'timeSlot.field'])->get();
     }
 
     /**

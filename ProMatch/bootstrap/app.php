@@ -25,5 +25,39 @@ return Application::configure(basePath: dirname(__DIR__))
 })
 
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (\Illuminate\Validation\ValidationException $e, \Illuminate\Http\Request $request) {
+            if (!$request->is('api/*')) {
+                return null;
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage() ?: 'Invalid request data',
+                'errors' => $e->errors(),
+            ], $e->status);
+        });
+
+        $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, \Illuminate\Http\Request $request) {
+            if (!$request->is('api/*')) {
+                return null;
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthenticated',
+                'errors' => [],
+            ], 401);
+        });
+
+        $exceptions->render(function (\Illuminate\Database\Eloquent\ModelNotFoundException $e, \Illuminate\Http\Request $request) {
+            if (!$request->is('api/*')) {
+                return null;
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Resource not found',
+                'errors' => [],
+            ], 404);
+        });
     })->create();

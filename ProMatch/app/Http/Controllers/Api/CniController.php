@@ -18,15 +18,22 @@ class CniController extends Controller
     public function upload(Request $request)
     {
         $request->validate([
-            'cni_document' => 'required|file|mimes:jpeg,png,pdf|max:2048',
+            'cni_document' => 'required_without:cni_image|file|mimes:jpeg,png,jpg,pdf|max:2048',
+            'cni_image' => 'required_without:cni_document|file|mimes:jpeg,png,jpg,pdf|max:2048',
         ]);
 
-        $path = $this->cniService->uploadDocument($request->file('cni_document'), $request->user());
+        $path = $this->cniService->uploadDocument(
+            $request->file('cni_document') ?? $request->file('cni_image'),
+            $request->user()
+        );
         
         return response()->json([
             'success' => true, 
             'message' => 'CNI uploaded successfully', 
-            'path' => $path
+            'data' => [
+                'path' => $path,
+            ],
+            'path' => $path,
         ]);
     }
 }

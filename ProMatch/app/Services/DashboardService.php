@@ -32,7 +32,7 @@ class DashboardService
 
     public function getRecentReservations(int $limit = 5)
     {
-        return Reservation::with('field')
+        return Reservation::with(['field', 'timeSlot.field'])
             ->whereIn('status', ['PENDING', 'APPROVED', 'REJECTED', 'CANCELED', 'ARRIVED', 'ABSENT'])
             ->orderByDesc('created_at')
             ->limit($limit)
@@ -42,7 +42,7 @@ class DashboardService
     public function getPendingCniTasks(int $limit = 3): array
     {
         return $this->getPendingCniReservationsQuery()
-            ->with('field')
+            ->with(['field', 'timeSlot.field'])
             ->limit($limit)
             ->get()
             ->map(function (Reservation $reservation) {
@@ -50,7 +50,7 @@ class DashboardService
                     'id' => $reservation->id,
                     'first_name' => $reservation->first_name,
                     'last_name' => $reservation->last_name,
-                    'field_name' => $reservation->field?->name,
+                    'field_name' => $reservation->field?->name ?? $reservation->timeSlot?->field?->name,
                     'request_date' => $reservation->request_date,
                     'status' => $reservation->status,
                     'cni_image_url' => $reservation->cni_image ? '/storage/' . $reservation->cni_image : null,

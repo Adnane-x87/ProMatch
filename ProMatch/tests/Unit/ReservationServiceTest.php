@@ -31,7 +31,7 @@ class ReservationServiceTest extends TestCase
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
         
         $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't@t.com', 'password' => '1', 'phone' => '2']);
-        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'cin1']);
+        $tenant = Tenant::create(['user_id' => $tenantUser->id]);
 
         Reservation::create([
             'tenant_id' => $tenant->id,
@@ -59,7 +59,7 @@ class ReservationServiceTest extends TestCase
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'Planning Field', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
         $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 'tenant-planning@t.com', 'password' => '1', 'phone' => '2']);
-        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'cin-planning']);
+        $tenant = Tenant::create(['user_id' => $tenantUser->id]);
 
         $reservation = Reservation::create([
             'tenant_id' => $tenant->id,
@@ -155,7 +155,7 @@ class ReservationServiceTest extends TestCase
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
         $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't_cancel@t.com', 'password' => '1', 'phone' => '1']);
-        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'c1']);
+        $tenant = Tenant::create(['user_id' => $tenantUser->id]);
 
         $reservation = Reservation::create([
             'tenant_id' => $tenant->id,
@@ -186,7 +186,7 @@ class ReservationServiceTest extends TestCase
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
         $tenantUser = User::create(['first_name' => 'T', 'last_name' => 'U', 'email' => 't_reject@t.com', 'password' => '1', 'phone' => '1']);
-        $tenant = Tenant::create(['user_id' => $tenantUser->id, 'cin' => 'c2']);
+        $tenant = Tenant::create(['user_id' => $tenantUser->id]);
 
         $reservation = Reservation::create([
             'tenant_id' => $tenant->id,

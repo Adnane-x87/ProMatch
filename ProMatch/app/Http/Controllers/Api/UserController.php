@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Owner;
+use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -17,7 +21,12 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
+        // Web form route POST /register sends a combined 'name' field.
+        // API route POST /api/register sends 'first_name' and 'last_name' separately.
+        // The old check $request->is('register') was DEAD CODE because the route is
+        // /api/register (path = "api/register"), so it never matched. Fixed below.
         if ($request->is('register')) {
+            // Web form validation (POST /register, no /api prefix)
             $request->validate([
                 'name' => ['required', 'string', 'min:3', 'max:255'],
                 'phone' => ['nullable', 'string', 'min:8', 'max:30', 'regex:/^[0-9+\s().-]+$/'],
@@ -37,10 +46,42 @@ class UserController extends Controller
                 'password.confirmed' => 'Les mots de passe ne correspondent pas.',
                 'terms.accepted' => 'Vous devez accepter les conditions generales.',
             ]);
+        } elseif ($request->expectsJson() || $request->is('api/*')) {
+            // API / mobile validation (POST /api/register)
+            $request->validate([
+                'first_name' => ['required', 'string', 'max:255'],
+                'last_name'  => ['required', 'string', 'max:255'],
+                'email'      => ['required', 'email', 'max:255', 'unique:users,email'],
+                'phone'      => ['nullable', 'string', 'min:8', 'max:30'],
+                'password'   => ['required', 'string', 'min:6'],
+                'role'       => ['nullable', Rule::in(['tenant', 'owner', 'employee'])],
+                'type'       => ['nullable', Rule::in(['tenant', 'owner', 'employee'])],
+            ], [
+                'first_name.required' => 'Le prénom est requis.',
+                'last_name.required'  => 'Le nom de famille est requis.',
+                'email.required'      => 'L\'email est requis.',
+                'email.unique'        => 'Cette adresse email est déjà utilisée.',
+                'password.required'   => 'Le mot de passe est requis.',
+                'password.min'        => 'Le mot de passe doit contenir au moins 6 caractères.',
+            ]);
         }
 
-        $data = $this->userService->register($request->all());
-        return response()->json(['success' => true, 'data' => $data], 201);
+        $payload = $request->all();
+        $payload['role'] = $payload['role'] ?? $payload['type'] ?? 'tenant';
+
+        validator($payload, [
+            'role' => ['nullable', Rule::in(['tenant', 'owner', 'employee'])],
+            'type' => ['nullable', Rule::in(['tenant', 'owner', 'employee'])],
+        ])->validate();
+
+        $user = $this->userService->register($payload)->load(['tenant', 'owner', 'employee', 'roles']);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => $user,
+            ],
+        ], 201);
     }
 
     public function login(Request $request)
@@ -50,16 +91,16 @@ class UserController extends Controller
             'password' => 'required',
         ]);
 
-        $user = \App\Models\User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
 
-        if (!$user || !\Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Identifiants invalides'
+                'message' => 'Identifiants invalides',
+                'errors' => [],
             ], 401);
         }
 
-        // If using Sanctum, we could create a token here:
         $token = $user->createToken('auth_token')->plainTextToken;
 
         // Eager-load relations to supply roles and attributes to the client
@@ -67,32 +108,42 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Connexion réussie',
-            'data' => $user,
-            'token' => $token
+            'message' => 'Connexion reussie',
+            'data' => [
+                'user' => $user,
+                'token' => $token,
+                'token_type' => 'Bearer',
+            ],
+            'token' => $token,
         ]);
     }
 
     public function logout(Request $request)
     {
         $this->userService->logout($request->user());
-        return response()->json(['success' => true, 'message' => 'Logged out successfully']);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Logged out successfully',
+            'data' => null,
+        ]);
     }
 
     public function index()
     {
         $users = $this->userService->getAllUsers();
+
         return response()->json([
             'success' => true,
-            'data' => $users
+            'data' => $users,
         ]);
     }
 
     public function block($id)
     {
-        $user = \App\Models\User::findOrFail($id);
-        $owner = \App\Models\Owner::first(); // Current admin/owner
-        
+        $user = User::findOrFail($id);
+        $owner = Owner::first();
+
         if ($owner) {
             $owner->blockUser($user);
         } else {
@@ -102,16 +153,16 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Utilisateur bloqué avec succès.',
-            'data' => $user->fresh()
+            'message' => 'Utilisateur bloque avec succes.',
+            'data' => $user->fresh(),
         ]);
     }
 
     public function unblock($id)
     {
-        $user = \App\Models\User::findOrFail($id);
-        $owner = \App\Models\Owner::first(); // Current admin/owner
-        
+        $user = User::findOrFail($id);
+        $owner = Owner::first();
+
         if ($owner) {
             $owner->unblockUser($user);
         } else {
@@ -121,8 +172,8 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Utilisateur débloqué avec succès.',
-            'data' => $user->fresh()
+            'message' => 'Utilisateur debloque avec succes.',
+            'data' => $user->fresh(),
         ]);
     }
 }

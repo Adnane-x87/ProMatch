@@ -34,10 +34,10 @@ class CniServiceTest extends TestCase
         $field = Field::create(['owner_id' => $owner->id, 'name' => 'F1', 'description' => 'D', 'address' => 'A', 'price_per_hour' => 100]);
 
         $tenantUser1 = User::create(['first_name' => 'T1', 'last_name' => 'U1', 'email' => 't1_cni@t.com', 'password' => '1', 'phone' => '1']);
-        $tenant1 = Tenant::create(['user_id' => $tenantUser1->id, 'cin' => 'c1', 'is_cni_valid' => false]);
+        $tenant1 = Tenant::create(['user_id' => $tenantUser1->id, 'is_cni_valid' => false]);
 
         $tenantUser2 = User::create(['first_name' => 'T2', 'last_name' => 'U2', 'email' => 't2_cni@t.com', 'password' => '1', 'phone' => '2']);
-        $tenant2 = Tenant::create(['user_id' => $tenantUser2->id, 'cin' => 'c2', 'is_cni_valid' => false]);
+        $tenant2 = Tenant::create(['user_id' => $tenantUser2->id, 'is_cni_valid' => false]);
 
         $reservationToApprove = Reservation::create([
             'tenant_id' => $tenant1->id,

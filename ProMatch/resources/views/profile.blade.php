@@ -148,7 +148,7 @@
                                         </div>
                                         <div>
                                             <h4 class="text-base font-black text-slate-900 group-hover:text-brand-600 transition-colors">
-                                                {{ $res->field->name ?? 'Terrain de Football' }}
+                                                {{ $res->field?->name ?? $res->timeSlot?->field?->name ?? 'Terrain de Football' }}
                                             </h4>
                                             
                                             <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-slate-400 font-semibold">

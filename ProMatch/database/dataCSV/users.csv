@@ -3,3 +3,9 @@ id,first_name,last_name,email,password,phone,role
 2,said,Mansour,said@example.com,password,0600000002,tenant
 3,Karim,Naciri,karim@example.com,password,0600000003,employee
 4,Youssef,Tazi,youssef@example.com,password,0600000004,tenant
+5,Amine,Bennani,amine@example.com,password,0600000005,tenant
+6,Anas,El Fassi,anas@example.com,password,0600000006,tenant
+7,Omar,Idrissi,omar@example.com,password,0600000007,tenant
+8,Ilyas,Alaoui,ilyas@example.com,password,0600000008,tenant
+9,Mehdi,Rami,mehdi@example.com,password,0600000009,tenant
+10,Walid,Boukhari,walid@example.com,password,0600000010,tenant

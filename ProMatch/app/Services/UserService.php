@@ -53,29 +53,26 @@ class UserService
             'password'   => 'required|string|min:6',
             'phone'      => 'nullable|string',
             'role'       => 'nullable|string|in:owner,tenant,employee',
-            'cin'        => 'nullable|string',
             'position'   => 'nullable|string',
             'hire_date'  => 'nullable|date',
         ])->validate();
 
         $role = $validated['role'] ?? 'tenant';
-        $cin = $validated['cin'] ?? null;
         $position = $validated['position'] ?? 'Staff';
         $hireDate = $validated['hire_date'] ?? now();
 
         unset($validated['role']);
-        unset($validated['cin'], $validated['position'], $validated['hire_date']);
+        unset($validated['position'], $validated['hire_date']);
 
         $validated['password'] = bcrypt($validated['password']);
 
         $user = User::create($validated);
-        Role::findOrCreate($role);
-        $user->assignRole($role);
+        $roleModel = Role::findOrCreate($role, 'web');
+        $user->assignRole($roleModel);
 
         // Create the associated model depending on the role.
         if ($user->hasRole('tenant')) {
             $user->tenant()->create([
-                'cin' => $cin,
                 'cni_image' => null,
                 'is_cni_valid' => false
             ]);
